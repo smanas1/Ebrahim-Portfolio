@@ -91,6 +91,7 @@ const Icon = ({
   name: string;
   className?: string;
 }) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const iconMap: Record<string, any> = {
     phone: Phone,
     mail: Mail,
@@ -122,7 +123,7 @@ const Icon = ({
 // Product Card Component
 const ProductCard = ({
   name,
-  image,
+
   details,
   moq,
   cost,

@@ -32,7 +32,6 @@ interface NavItem {
   dropdown?: boolean;
   subItems?: SubItem[];
 }
-
 interface SubItem {
   title: string;
   items: { label: string; href: string; tag?: string }[];
@@ -56,21 +55,18 @@ const Button = ({
 }) => {
   const baseClasses =
     "font-medium rounded transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2";
-
   const variantClasses = {
     primary:
-      "bg-red-600 hover:bg-red-700 text-white focus:ring-red-500 shadow-lg hover:shadow-xl",
+      "bg-emerald-600 hover:bg-emerald-700 text-white focus:ring-emerald-500 shadow-lg hover:shadow-xl",
     secondary: "bg-gray-800 hover:bg-gray-900 text-white focus:ring-gray-500",
     outline:
-      "border-2 border-red-600 text-red-600 hover:bg-red-600 hover:text-white focus:ring-red-500",
+      "border-2 border-emerald-600 text-emerald-600 hover:bg-emerald-600 hover:text-white focus:ring-emerald-500",
   };
-
   const sizeClasses = {
     sm: "px-4 py-2 text-sm",
     md: "px-6 py-3",
     lg: "px-8 py-4 text-lg",
   };
-
   return (
     <button
       onClick={onClick}
@@ -92,7 +88,6 @@ const Icon = ({
   name: string;
   className?: string;
 }) => {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const iconMap: Record<string, any> = {
     phone: Phone,
     mail: Mail,
@@ -115,15 +110,9 @@ const Icon = ({
     shield: Shield,
     target: Target,
   };
-
   const SelectedIcon = iconMap[name] || Phone;
-
   return <SelectedIcon className={className} />;
 };
-
-// Product Card Component
-
-// Blog Card Component
 
 // Main HomePage Component
 const HomePage = () => {
@@ -185,7 +174,7 @@ const HomePage = () => {
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 to-black text-white">
       {/* Top Header Bar */}
-      <div className="bg-gradient-to-r from-red-900 to-red-700 text-white text-sm py-2 px-4">
+      <div className="bg-gradient-to-r from-emerald-900 to-emerald-700 text-white text-sm py-2 px-4">
         <div className="container mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
           <div className="flex flex-wrap gap-6">
             <div className="flex items-center gap-2">
@@ -202,10 +191,10 @@ const HomePage = () => {
             </div>
           </div>
           <div className="flex gap-4">
-            <a href="#" className="hover:text-red-200 transition-colors">
+            <a href="#" className="hover:text-emerald-200 transition-colors">
               <Linkedin className="w-5 h-5" />
             </a>
-            <a href="#" className="hover:text-red-200 transition-colors">
+            <a href="#" className="hover:text-emerald-200 transition-colors">
               <Instagram className="w-5 h-5" />
             </a>
           </div>
@@ -216,14 +205,11 @@ const HomePage = () => {
       <header className="sticky top-0 z-40 bg-gray-900/90 backdrop-blur-sm border-b border-gray-800">
         <div className="container mx-auto px-4">
           <div className="flex justify-between h-16">
-            {/* Logo */}
             <div className="flex-shrink-0 flex items-center">
-              <div className="text-xl font-bold text-red-500">
+              <div className="text-xl font-bold text-emerald-500">
                 EBRAHIM KAMAL
               </div>
             </div>
-
-            {/* Desktop Navigation */}
             <nav className="hidden md:flex items-center space-x-8">
               {navItems.map((item, index) => (
                 <div
@@ -236,23 +222,21 @@ const HomePage = () => {
                 >
                   {item.dropdown ? (
                     <div className="flex items-center gap-1 cursor-pointer group">
-                      <span className="text-gray-300 hover:text-red-400 font-medium group-hover:text-red-400 transition-colors">
+                      <span className="text-gray-300 hover:text-emerald-400 font-medium group-hover:text-emerald-400 transition-colors">
                         {item.label}
                       </span>
-                      <ChevronDown className="w-4 h-4 text-gray-500 group-hover:text-red-400 transition-colors" />
+                      <ChevronDown className="w-4 h-4 text-gray-500 group-hover:text-emerald-400 transition-colors" />
                     </div>
                   ) : (
                     <a
                       href={item.href}
-                      className="text-gray-300 hover:text-red-400 font-medium transition-colors"
+                      className="text-gray-300 hover:text-emerald-400 font-medium transition-colors"
                     >
                       {item.label}
                     </a>
                   )}
                 </div>
               ))}
-
-              {/* Action Buttons */}
               <div className="flex gap-3">
                 <Button variant="outline" size="sm">
                   Contact
@@ -262,12 +246,10 @@ const HomePage = () => {
                 </Button>
               </div>
             </nav>
-
-            {/* Mobile menu button */}
             <div className="md:hidden flex items-center">
               <button
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
-                className="inline-flex items-center justify-center p-2 rounded-md text-gray-300 hover:text-red-400 focus:outline-none"
+                className="inline-flex items-center justify-center p-2 rounded-md text-gray-300 hover:text-emerald-400 focus:outline-none"
               >
                 {isMenuOpen ? (
                   <X className="h-6 w-6" />
@@ -287,7 +269,7 @@ const HomePage = () => {
                 <a
                   key={index}
                   href={item.href}
-                  className="text-gray-300 hover:text-red-400 py-2 px-4 rounded hover:bg-gray-700 transition-colors"
+                  className="text-gray-300 hover:text-emerald-400 py-2 px-4 rounded hover:bg-gray-700 transition-colors"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   {item.label}
@@ -306,7 +288,7 @@ const HomePage = () => {
         )}
       </header>
 
-      {/* Services Dropdown - Full Screen Overlay */}
+      {/* Services Dropdown */}
       {activeDropdown === "Services" && (
         <div
           className="fixed inset-x-0 top-16 z-50 bg-gray-900 shadow-2xl border-b border-gray-800"
@@ -324,27 +306,26 @@ const HomePage = () => {
                   end-to-end solutions to help you navigate the complexities of
                   global trade.
                 </p>
-                <div className="bg-gradient-to-r from-red-900/50 to-red-700/50 p-6 rounded-xl border border-red-800/50">
-                  <h4 className="font-bold text-red-400 mb-2">
+                <div className="bg-gradient-to-r from-emerald-900/50 to-emerald-700/50 p-6 rounded-xl border border-emerald-800/50">
+                  <h4 className="font-bold text-emerald-400 mb-2">
                     Why Choose Me?
                   </h4>
                   <ul className="space-y-2">
                     <li className="flex items-center gap-2">
-                      <Check className="w-4 h-4 text-green-500" />
+                      <Check className="w-4 h-4 text-green-400" />
                       <span>8+ Years Experience</span>
                     </li>
                     <li className="flex items-center gap-2">
-                      <Check className="w-4 h-4 text-green-500" />
+                      <Check className="w-4 h-4 text-green-400" />
                       <span>4M+ USD in Products Sourced</span>
                     </li>
                     <li className="flex items-center gap-2">
-                      <Check className="w-4 h-4 text-green-500" />
+                      <Check className="w-4 h-4 text-green-400" />
                       <span>Personalized Attention</span>
                     </li>
                   </ul>
                 </div>
               </div>
-
               <div className="md:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-6">
                 {navItems
                   .find((item) => item.label === "Services")
@@ -361,7 +342,7 @@ const HomePage = () => {
                           <li key={serviceIndex}>
                             <a
                               href={service.href}
-                              className="text-gray-300 hover:text-red-400 flex justify-between items-center py-2 transition-colors"
+                              className="text-gray-300 hover:text-emerald-400 flex justify-between items-center py-2 transition-colors"
                             >
                               <span>{service.label}</span>
                               {service.tag && (
@@ -383,47 +364,44 @@ const HomePage = () => {
 
       {/* Hero Section */}
       <section className="py-16 md:py-24 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-red-900/10 to-black z-0"></div>
-        <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-red-900/10 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute bottom-1/3 right-1/4 w-72 h-72 bg-red-700/10 rounded-full blur-3xl animate-pulse"></div>
-
+        <div className="absolute inset-0 bg-gradient-to-br from-emerald-900/10 to-black z-0"></div>
+        <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-emerald-900/10 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute bottom-1/3 right-1/4 w-72 h-72 bg-emerald-700/10 rounded-full blur-3xl animate-pulse"></div>
         <div className="container mx-auto px-4 relative z-10">
           <div className="flex flex-col md:flex-row items-center gap-12">
             <div className="md:w-1/2 space-y-6">
-              <p className="text-sm uppercase tracking-wider opacity-80 text-red-400">
+              <p className="text-sm uppercase tracking-wider opacity-80 text-emerald-400">
                 SOURCING & LOGISTICS EXPERT
               </p>
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
                 Freight Done Right — <br />
-                <span className="text-red-500">Start to Finish</span>
+                <span className="text-emerald-500">Start to Finish</span>
               </h1>
               <p className="text-lg md:text-xl opacity-90">
                 You don't need a logistics department. You need a logistics
                 partner. From sourcing to doorstep delivery, I handle everything
                 so you can focus on growing your business.
               </p>
-
               <div className="space-y-3 mt-6">
                 <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-full bg-red-900 flex items-center justify-center">
-                    <Zap className="w-5 h-5 text-red-400" />
+                  <div className="w-8 h-8 rounded-full bg-emerald-900 flex items-center justify-center">
+                    <Zap className="w-5 h-5 text-emerald-400" />
                   </div>
                   <span>Efficient end-to-end solutions</span>
                 </div>
                 <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-full bg-red-900 flex items-center justify-center">
-                    <Shield className="w-5 h-5 text-red-400" />
+                  <div className="w-8 h-8 rounded-full bg-emerald-900 flex items-center justify-center">
+                    <Shield className="w-5 h-5 text-emerald-400" />
                   </div>
                   <span>Trusted by 50+ businesses globally</span>
                 </div>
                 <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-full bg-red-900 flex items-center justify-center">
-                    <Target className="w-5 h-5 text-red-400" />
+                  <div className="w-8 h-8 rounded-full bg-emerald-900 flex items-center justify-center">
+                    <Target className="w-5 h-5 text-emerald-400" />
                   </div>
                   <span>Cost optimization guaranteed</span>
                 </div>
               </div>
-
               <div className="mt-8 flex flex-wrap gap-4">
                 <Button variant="primary" size="lg">
                   Book a Consultation
@@ -432,7 +410,6 @@ const HomePage = () => {
                   View My Work
                 </Button>
               </div>
-
               <div className="mt-8 flex items-center gap-4">
                 <div className="flex -space-x-3">
                   {[1, 2, 3, 4, 5].map((i) => (
@@ -446,7 +423,7 @@ const HomePage = () => {
                 </div>
                 <div>
                   <p className="text-sm">
-                    <span className="font-bold text-red-400">50+</span>{" "}
+                    <span className="font-bold text-emerald-400">50+</span>{" "}
                     satisfied clients worldwide
                   </p>
                   <div className="flex items-center">
@@ -463,19 +440,18 @@ const HomePage = () => {
                 </div>
               </div>
             </div>
-
             <div className="md:w-1/2 relative">
               <div className="relative">
-                <div className="absolute -top-6 -left-6 w-full h-full bg-red-900/20 rounded-2xl -z-10"></div>
+                <div className="absolute -top-6 -left-6 w-full h-full bg-emerald-900/20 rounded-2xl -z-10"></div>
                 <div className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl p-1 border border-gray-700">
                   <div className="bg-gray-800 rounded-xl p-8 flex flex-col items-center">
-                    <div className="w-32 h-32 rounded-full bg-gradient-to-br from-red-700 to-red-900 mb-6 flex items-center justify-center">
+                    <div className="w-32 h-32 rounded-full bg-gradient-to-br from-emerald-700 to-emerald-900 mb-6 flex items-center justify-center">
                       <div className="bg-gray-200 border-2 border-dashed rounded-xl w-24 h-24" />
                     </div>
                     <h3 className="text-xl font-bold text-white mb-2">
                       Ebrahim Mohammad Kamal
                     </h3>
-                    <p className="text-red-400 mb-4">
+                    <p className="text-emerald-400 mb-4">
                       Sourcing & Logistics Expert
                     </p>
                     <div className="flex gap-4">
@@ -502,58 +478,45 @@ const HomePage = () => {
         </div>
       </section>
 
-      {/* About Me Section - Personal Brand Focus */}
+      {/* About Me Section */}
       <section className="py-16 md:py-24 bg-gradient-to-br from-gray-900 to-black relative overflow-hidden">
-        {/* Decorative Background Elements */}
-        <div className="absolute top-10 left-0 w-32 h-32 bg-red-900/10 rounded-full blur-xl"></div>
-        <div className="absolute bottom-10 right-0 w-48 h-48 bg-red-700/10 rounded-full blur-xl"></div>
-
+        <div className="absolute top-10 left-0 w-32 h-32 bg-emerald-900/10 rounded-full blur-xl"></div>
+        <div className="absolute bottom-10 right-0 w-48 h-48 bg-emerald-700/10 rounded-full blur-xl"></div>
         <div className="container mx-auto px-4 relative z-10">
           <div className="flex flex-col lg:flex-row items-center gap-12">
-            {/* Left Side: Photo + Visual Accents */}
             <div className="lg:w-1/2 relative">
               <div className="relative">
-                {/* Placeholder for real photo */}
-                <div className="aspect-square rounded-2xl overflow-hidden border-4 border-red-500 shadow-2xl">
+                <div className="aspect-square rounded-2xl overflow-hidden border-4 border-emerald-500 shadow-2xl">
                   <img
                     src="https://via.placeholder.com/600x600?text=Ebrahim+Kamal"
                     alt="Ebrahim Kamal - Sourcing & Logistics Expert"
                     className="w-full h-full object-cover"
                   />
                 </div>
-
-                {/* Diagonal Striped Accent */}
-                <div className="absolute -bottom-6 -left-6 w-40 h-40 bg-gradient-to-tr from-red-500/20 to-transparent rotate-45 rounded-lg"></div>
+                <div className="absolute -bottom-6 -left-6 w-40 h-40 bg-gradient-to-tr from-emerald-500/20 to-transparent rotate-45 rounded-lg"></div>
               </div>
             </div>
-
-            {/* Right Side: Text Content */}
             <div className="lg:w-1/2 space-y-6">
-              <span className="inline-block px-4 py-1 text-xs font-semibold bg-red-900 text-red-300 rounded-full uppercase tracking-wider">
+              <span className="inline-block px-4 py-1 text-xs font-semibold bg-emerald-900 text-emerald-300 rounded-full uppercase tracking-wider">
                 ABOUT ME
               </span>
-
               <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight">
                 I Help You Scale Without Hiring a Team
               </h2>
-
               <p className="text-lg text-gray-300">
                 As your dedicated sourcing and logistics partner, I handle
                 everything from finding reliable suppliers in China to
                 delivering your products to your doorstep — so you can focus on
                 growing your business, not managing operations.
               </p>
-
               <div className="space-y-4 pt-4">
                 <p className="text-gray-400">
                   Whether you’re a first-time importer or scaling across
                   borders, I act as your <strong>personal freight team</strong>.
                   No corporate bureaucracy. Just results.
                 </p>
-
-                {/* Social Proof Badge */}
                 <div className="flex items-center gap-3 p-4 bg-gray-800/50 rounded-lg border border-gray-700">
-                  <div className="w-10 h-10 bg-red-900 rounded-full flex items-center justify-center">
+                  <div className="w-10 h-10 bg-emerald-900 rounded-full flex items-center justify-center">
                     <Award className="w-5 h-5 text-yellow-400" />
                   </div>
                   <div>
@@ -566,8 +529,6 @@ const HomePage = () => {
                   </div>
                 </div>
               </div>
-
-              {/* CTA Buttons */}
               <div className="pt-6 flex flex-wrap gap-4">
                 <Button
                   variant="primary"
@@ -590,12 +551,11 @@ const HomePage = () => {
         </div>
       </section>
 
-      {/* Service Process / How It Works Section */}
+      {/* How It Works */}
       <section className="py-16 bg-gray-50">
         <div className="container mx-auto px-4">
-          {/* Header */}
           <div className="text-center max-w-3xl mx-auto mb-12">
-            <span className="inline-block px-4 py-1 text-xs font-semibold bg-red-600 text-white rounded-full uppercase tracking-wider mb-4">
+            <span className="inline-block px-4 py-1 text-xs font-semibold bg-emerald-600 text-white rounded-full uppercase tracking-wider mb-4">
               HOW IT WORKS
             </span>
             <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">
@@ -607,14 +567,10 @@ const HomePage = () => {
               to get your products moving.
             </p>
           </div>
-
-          {/* Steps */}
           <div className="flex flex-col lg:flex-row items-center justify-between gap-8 mt-12">
-            {/* Step 1 */}
             <div className="flex flex-col items-center text-center w-full lg:w-1/3">
-              <div className="w-16 h-16 bg-red-600 rounded-full flex items-center justify-center mb-4">
-                <Icon name="zap" className="w-8 h-8 text-white" />{" "}
-                {/* Brain Icon */}
+              <div className="w-16 h-16 bg-emerald-600 rounded-full flex items-center justify-center mb-4">
+                <Icon name="zap" className="w-8 h-8 text-white" />
               </div>
               <h3 className="text-xl font-bold text-gray-800 mb-2">Step 1</h3>
               <p className="text-gray-600">
@@ -622,19 +578,14 @@ const HomePage = () => {
                 first product or scaling globally.
               </p>
             </div>
-
-            {/* Arrow Separator */}
             <div className="hidden lg:flex items-center justify-center">
               <div className="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center">
                 <ChevronDown className="w-5 h-5 text-gray-600 rotate-90" />
               </div>
             </div>
-
-            {/* Step 2 */}
             <div className="flex flex-col items-center text-center w-full lg:w-1/3">
-              <div className="w-16 h-16 bg-red-600 rounded-full flex items-center justify-center mb-4">
-                <Icon name="target" className="w-8 h-8 text-white" />{" "}
-                {/* Target/Blueprint Icon */}
+              <div className="w-16 h-16 bg-emerald-600 rounded-full flex items-center justify-center mb-4">
+                <Icon name="target" className="w-8 h-8 text-white" />
               </div>
               <h3 className="text-xl font-bold text-gray-800 mb-2">Step 2</h3>
               <p className="text-gray-600">
@@ -642,19 +593,14 @@ const HomePage = () => {
                 timeline, and business goals.
               </p>
             </div>
-
-            {/* Arrow Separator */}
             <div className="hidden lg:flex items-center justify-center">
               <div className="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center">
                 <ChevronDown className="w-5 h-5 text-gray-600 rotate-90" />
               </div>
             </div>
-
-            {/* Step 3 */}
             <div className="flex flex-col items-center text-center w-full lg:w-1/3">
-              <div className="w-16 h-16 bg-red-600 rounded-full flex items-center justify-center mb-4">
-                <Icon name="truck" className="w-8 h-8 text-white" />{" "}
-                {/* Truck Icon */}
+              <div className="w-16 h-16 bg-emerald-600 rounded-full flex items-center justify-center mb-4">
+                <Icon name="truck" className="w-8 h-8 text-white" />
               </div>
               <h3 className="text-xl font-bold text-gray-800 mb-2">Step 3</h3>
               <p className="text-gray-600">
@@ -663,8 +609,6 @@ const HomePage = () => {
               </p>
             </div>
           </div>
-
-          {/* Footer Tagline */}
           <div className="text-center mt-12 pt-8 border-t border-gray-200">
             <p className="text-xl font-bold text-gray-800">
               Your dedicated logistics partner. No contracts. No hassle.
@@ -673,21 +617,20 @@ const HomePage = () => {
         </div>
       </section>
 
-      {/* Why Choose Me - Modern UI/UX */}
+      {/* Why Choose Me */}
       <section className="py-16 bg-white">
         <div className="container mx-auto px-4">
           <div className="flex flex-col lg:flex-row gap-12 items-center">
-            {/* Left Side: Benefits List */}
             <div className="lg:w-1/2 space-y-6">
               <h2 className="text-3xl md:text-4xl font-bold text-gray-800">
-                Why Choose <span className="text-red-600">Ebrahim Kamal</span>
+                Why Choose{" "}
+                <span className="text-emerald-600">Ebrahim Kamal</span>
               </h2>
               <p className="text-lg text-gray-600 mb-6">
                 I operate as your dedicated logistics partner — handling
                 sourcing, shipping, customs, and coordination with zero
                 overhead. No corporate fluff. Just results.
               </p>
-
               <ul className="space-y-4">
                 {[
                   "No internal logistics hires required",
@@ -704,16 +647,12 @@ const HomePage = () => {
                   </li>
                 ))}
               </ul>
-
-              {/* Teaser Question */}
-              <div className="mt-6 p-4 bg-red-50 rounded-lg border-l-4 border-red-500">
-                <p className="text-red-700 font-medium">
+              <div className="mt-6 p-4 bg-emerald-50 rounded-lg border-l-4 border-emerald-500">
+                <p className="text-emerald-700 font-medium">
                   → What if you could eliminate freight headaches and cut costs
                   by 30%?
                 </p>
               </div>
-
-              {/* CTA Button */}
               <div className="pt-4">
                 <Button
                   variant="primary"
@@ -729,16 +668,12 @@ const HomePage = () => {
                 </Button>
               </div>
             </div>
-
-            {/* Right Side: Savings Card */}
             <div className="lg:w-1/2">
               <div className="bg-gray-50 rounded-2xl p-6 shadow-lg border border-gray-200 hover:shadow-xl transition-shadow">
                 <h3 className="text-xl font-bold text-gray-800 mb-6 text-center">
                   Before & After Savings
                 </h3>
-
                 <div className="space-y-6">
-                  {/* Before */}
                   <div className="flex justify-between items-center pb-3 border-b border-gray-300">
                     <span className="text-gray-600">Before Ebrahim</span>
                     <span className="text-2xl font-bold text-gray-900">
@@ -748,8 +683,6 @@ const HomePage = () => {
                   <div className="text-xs text-gray-500 ml-1">
                     Per unit cost
                   </div>
-
-                  {/* After */}
                   <div className="flex justify-between items-center pb-3 border-b border-gray-300">
                     <span className="text-red-600 font-medium">
                       After Ebrahim
@@ -761,8 +694,6 @@ const HomePage = () => {
                   <div className="text-xs text-gray-500 ml-1">
                     Per unit cost
                   </div>
-
-                  {/* Annual Savings */}
                   <div className="bg-green-50 rounded-lg p-4 mt-4">
                     <div className="flex justify-between items-center">
                       <span className="text-green-700 font-medium">
@@ -783,12 +714,11 @@ const HomePage = () => {
         </div>
       </section>
 
-      {/* Services Section - Red Gradient Background */}
-      <section className="py-16 bg-gradient-to-r from-red-900 to-red-700 text-white">
+      {/* Services Section */}
+      <section className="py-16 bg-gradient-to-r from-emerald-900 to-emerald-700 text-white">
         <div className="container mx-auto px-4">
-          {/* Header */}
           <div className="text-center max-w-3xl mx-auto mb-12">
-            <span className="inline-block px-4 py-1 text-xs font-semibold bg-white text-red-600 rounded-full uppercase tracking-wider mb-4">
+            <span className="inline-block px-4 py-1 text-xs font-semibold bg-white text-emerald-600 rounded-full uppercase tracking-wider mb-4">
               SERVICES
             </span>
             <h2 className="text-3xl md:text-4xl font-bold leading-tight">
@@ -799,73 +729,47 @@ const HomePage = () => {
               growing your business — without hiring a team.
             </p>
           </div>
-
-          {/* Services Grid */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {/* Service 1: Product Sourcing */}
-            <div className="bg-white/10 backdrop-blur-sm rounded-xl overflow-hidden border border-white/20 hover:bg-white/20 transition-all">
-              <div className="h-48 bg-gray-800 flex items-center justify-center">
-                <img
-                  src="https://images.unsplash.com/photo-1581092580497-e0d23cbdf340?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
-                  alt="Product Sourcing Team in Warehouse"
-                  className="w-full h-full object-cover"
-                />
+            {[
+              {
+                title: "Product Sourcing",
+                img: "https://images.unsplash.com/photo-1581092580497-e0d23cbdf340?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+                desc: "Helping you find reliable suppliers in China and source high-quality products at competitive prices — no guesswork, no middlemen.",
+              },
+              {
+                title: "Product Inspection",
+                img: "https://images.unsplash.com/photo-1581092680537-4f2e34a656d1?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+                desc: "Identifying and rectifying any potential issues in your products before they ship — helping you avoid costly returns and protect your brand.",
+              },
+              {
+                title: "Freight Forwarding",
+                img: "https://images.unsplash.com/photo-1581092580537-4f2e34a656d1?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+                desc: "Handling the coordination, documentation, and transportation of your goods from China to your doorstep — with real-time tracking and zero stress.",
+              },
+            ].map((service, i) => (
+              <div
+                key={i}
+                className="bg-white/10 backdrop-blur-sm rounded-xl overflow-hidden border border-white/20 hover:bg-white/20 transition-all"
+              >
+                <div className="h-48 bg-gray-800 flex items-center justify-center">
+                  <img
+                    src={service.img}
+                    alt={service.title}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <div className="p-6">
+                  <h3 className="text-xl font-bold mb-2">{service.title}</h3>
+                  <p className="text-gray-200 text-sm">{service.desc}</p>
+                </div>
               </div>
-              <div className="p-6">
-                <h3 className="text-xl font-bold mb-2">Product Sourcing</h3>
-                <p className="text-gray-200 text-sm">
-                  Helping you find reliable suppliers in China and source
-                  high-quality products at competitive prices — no guesswork, no
-                  middlemen.
-                </p>
-              </div>
-            </div>
-
-            {/* Service 2: Product Inspection */}
-            <div className="bg-white/10 backdrop-blur-sm rounded-xl overflow-hidden border border-white/20 hover:bg-white/20 transition-all">
-              <div className="h-48 bg-gray-800 flex items-center justify-center">
-                <img
-                  src="https://images.unsplash.com/photo-1581092680537-4f2e34a656d1?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
-                  alt="Quality Inspector Checking Box"
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <div className="p-6">
-                <h3 className="text-xl font-bold mb-2">Product Inspection</h3>
-                <p className="text-gray-200 text-sm">
-                  Identifying and rectifying any potential issues in your
-                  products before they ship — helping you avoid costly returns
-                  and protect your brand.
-                </p>
-              </div>
-            </div>
-
-            {/* Service 3: Freight Forwarding */}
-            <div className="bg-white/10 backdrop-blur-sm rounded-xl overflow-hidden border border-white/20 hover:bg-white/20 transition-all">
-              <div className="h-48 bg-gray-800 flex items-center justify-center">
-                <img
-                  src="https://images.unsplash.com/photo-1581092580537-4f2e34a656d1?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
-                  alt="Cargo Ship with Containers"
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <div className="p-6">
-                <h3 className="text-xl font-bold mb-2">Freight Forwarding</h3>
-                <p className="text-gray-200 text-sm">
-                  Handling the coordination, documentation, and transportation
-                  of your goods from China to your doorstep — with real-time
-                  tracking and zero stress.
-                </p>
-              </div>
-            </div>
+            ))}
           </div>
-
-          {/* CTA Button */}
           <div className="text-center mt-12">
             <Button
               variant="outline"
               size="lg"
-              className="bg-white text-red-600 hover:bg-red-50 border-red-600"
+              className="bg-white text-emerald-600 hover:bg-emerald-50 border-emerald-600"
             >
               See How It Works
             </Button>
@@ -873,13 +777,12 @@ const HomePage = () => {
         </div>
       </section>
 
-      {/* Our Partners / Trusted By Section */}
+      {/* Partners Section */}
       <section className="py-16 bg-gray-50 border-t border-b border-gray-200">
         <div className="container mx-auto px-4">
-          {/* Header */}
           <div className="flex flex-col md:flex-row justify-between items-start gap-8 mb-12">
             <div>
-              <span className="inline-block px-4 py-1 text-xs font-semibold bg-red-100 text-red-600 rounded-full uppercase tracking-wider mb-4">
+              <span className="inline-block px-4 py-1 text-xs font-semibold bg-emerald-100 text-emerald-700 rounded-full uppercase tracking-wider mb-4">
                 PARTNERSHIPS
               </span>
               <h2 className="text-3xl md:text-4xl font-bold text-gray-800">
@@ -891,79 +794,51 @@ const HomePage = () => {
                 relationships with leading platforms and service providers.
               </p>
             </div>
-
-            {/* Optional Right-Aligned Text (Like Your Example) */}
             <div className="md:w-1/3 text-gray-600 text-sm leading-relaxed">
               I use my experience and global reach to drive economic prosperity
               for my clients — and I’m proud of the impact we’ve created
               together through long-term collaborations.
             </div>
           </div>
-
-          {/* Partner Logos Grid */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 items-center justify-items-center">
-            {/* Row 1 */}
-            <div className="grayscale hover:grayscale-0 transition-all duration-300 opacity-70 hover:opacity-100">
-              <img
-                src="https://upload.wikimedia.org/wikipedia/commons/4/4a/Amazon_logo.svg"
-                alt="Amazon FBA"
-                className="h-12 w-auto object-contain"
-              />
-            </div>
-            <div className="grayscale hover:grayscale-0 transition-all duration-300 opacity-70 hover:opacity-100">
-              <img
-                src="https://upload.wikimedia.org/wikipedia/commons/4/4b/Alibaba_Logo.svg"
-                alt="Alibaba"
-                className="h-12 w-auto object-contain"
-              />
-            </div>
-            <div className="grayscale hover:grayscale-0 transition-all duration-300 opacity-70 hover:opacity-100">
-              <img
-                src="https://upload.wikimedia.org/wikipedia/commons/5/5f/DHL_Logo.svg"
-                alt="DHL"
-                className="h-12 w-auto object-contain"
-              />
-            </div>
-            <div className="grayscale hover:grayscale-0 transition-all duration-300 opacity-70 hover:opacity-100">
-              <img
-                src="https://upload.wikimedia.org/wikipedia/commons/2/29/FedEx_Express_logo.svg"
-                alt="FedEx"
-                className="h-12 w-auto object-contain"
-              />
-            </div>
-
-            {/* Row 2 */}
-            <div className="grayscale hover:grayscale-0 transition-all duration-300 opacity-70 hover:opacity-100">
-              <img
-                src="https://upload.wikimedia.org/wikipedia/commons/6/6c/UPS_Logo.svg"
-                alt="UPS"
-                className="h-12 w-auto object-contain"
-              />
-            </div>
-            <div className="grayscale hover:grayscale-0 transition-all duration-300 opacity-70 hover:opacity-100">
-              <img
-                src="https://upload.wikimedia.org/wikipedia/commons/3/3e/Shopify_Logo.svg"
-                alt="Shopify"
-                className="h-12 w-auto object-contain"
-              />
-            </div>
-            <div className="grayscale hover:grayscale-0 transition-all duration-300 opacity-70 hover:opacity-100">
-              <img
-                src="https://upload.wikimedia.org/wikipedia/commons/7/7a/Walmart_Logo.svg"
-                alt="Walmart"
-                className="h-12 w-auto object-contain"
-              />
-            </div>
-            <div className="grayscale hover:grayscale-0 transition-all duration-300 opacity-70 hover:opacity-100">
-              <img
-                src="https://upload.wikimedia.org/wikipedia/commons/2/2d/Etsy_logo.svg"
-                alt="Etsy"
-                className="h-12 w-auto object-contain"
-              />
-            </div>
+            {[
+              "Amazon_logo.svg",
+              "Alibaba_Logo.svg",
+              "DHL_Logo.svg",
+              "FedEx_Express_logo.svg",
+              "UPS_Logo.svg",
+              "Shopify_Logo.svg",
+              "Walmart_Logo.svg",
+              "Etsy_logo.svg",
+            ].map((logo, i) => (
+              <div
+                key={i}
+                className="grayscale hover:grayscale-0 transition-all duration-300 opacity-70 hover:opacity-100"
+              >
+                <img
+                  src={`https://upload.wikimedia.org/wikipedia/commons/${
+                    logo === "Amazon_logo.svg"
+                      ? "4/4a"
+                      : logo === "Alibaba_Logo.svg"
+                      ? "4/4b"
+                      : logo === "DHL_Logo.svg"
+                      ? "5/5f"
+                      : logo === "FedEx_Express_logo.svg"
+                      ? "2/29"
+                      : logo === "UPS_Logo.svg"
+                      ? "6/6c"
+                      : logo === "Shopify_Logo.svg"
+                      ? "3/3e"
+                      : logo === "Walmart_Logo.svg"
+                      ? "7/7a"
+                      : "2/2d"
+                  }/${logo}`}
+                  alt={logo.replace("_Logo.svg", "").replace(".svg", "")}
+                  className="h-12 w-auto object-contain"
+                />
+              </div>
+            ))}
           </div>
-
-          {/* Optional CTA or Note */}
           <div className="mt-12 text-center">
             <p className="text-gray-500 text-sm">
               *Logos shown are for illustrative purposes. Ebrahim Kamal partners
@@ -974,7 +849,7 @@ const HomePage = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-r from-red-900/30 to-red-700/30">
+      <section className="py-20 bg-gradient-to-r from-emerald-900/30 to-emerald-700/30">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-6">
             Ready to Optimize Your Supply Chain?
@@ -994,57 +869,42 @@ const HomePage = () => {
         </div>
       </section>
 
-      {/* Serving Globally / Achievements Section */}
+      {/* Global Reach */}
       <section className="py-16 bg-white">
         <div className="container mx-auto px-4">
           <div className="flex flex-col lg:flex-row items-center gap-12">
-            {/* Left Side: World Map */}
             <div className="lg:w-1/2 relative">
-              {/* Dot-Style World Map SVG */}
               <div className="relative w-full h-[400px]">
-                {/* Simplified SVG World Map (Dot Pattern) */}
                 <svg
                   viewBox="0 0 800 400"
-                  className="w-full h-full fill-red-100 stroke-red-300 stroke-[0.5]"
+                  className="w-full h-full fill-emerald-100 stroke-emerald-300 stroke-[0.5]"
                   xmlns="http://www.w3.org/2000/svg"
                 >
-                  {/* North America */}
                   <path d="M100,50 L150,30 L200,60 L180,100 L120,90 Z" />
-                  {/* South America */}
                   <path d="M150,120 L180,150 L160,180 L130,170 Z" />
-                  {/* Europe */}
                   <path d="M300,80 L330,60 L350,90 L320,110 Z" />
-                  {/* Africa */}
                   <path d="M320,120 L350,140 L330,170 L300,150 Z" />
-                  {/* Asia */}
                   <path d="M400,70 L450,50 L500,80 L480,120 L420,110 Z" />
-                  {/* Australia */}
                   <path d="M550,200 L580,210 L570,230 L540,220 Z" />
-                  {/* Rest of the world dots */}
                   {Array.from({ length: 120 }).map((_, i) => (
                     <circle
                       key={i}
                       cx={Math.random() * 700 + 50}
                       cy={Math.random() * 300 + 50}
                       r="1"
-                      className="fill-red-400 opacity-30"
+                      className="fill-emerald-400 opacity-30"
                     />
                   ))}
                 </svg>
-
-                {/* Pin Markers - Place where clients are located */}
-                <div className="absolute top-[15%] left-[25%] w-6 h-6 bg-red-600 rounded-full border-2 border-white shadow-lg animate-pulse"></div>
-                <div className="absolute top-[30%] left-[15%] w-6 h-6 bg-red-600 rounded-full border-2 border-white shadow-lg animate-pulse delay-1000"></div>
-                <div className="absolute top-[40%] left-[40%] w-6 h-6 bg-red-600 rounded-full border-2 border-white shadow-lg animate-pulse delay-2000"></div>
-                <div className="absolute top-[50%] left-[60%] w-6 h-6 bg-red-600 rounded-full border-2 border-white shadow-lg animate-pulse delay-3000"></div>
-                <div className="absolute top-[60%] left-[75%] w-6 h-6 bg-red-600 rounded-full border-2 border-white shadow-lg animate-pulse delay-4000"></div>
+                <div className="absolute top-[15%] left-[25%] w-6 h-6 bg-emerald-600 rounded-full border-2 border-white shadow-lg animate-pulse"></div>
+                <div className="absolute top-[30%] left-[15%] w-6 h-6 bg-emerald-600 rounded-full border-2 border-white shadow-lg animate-pulse delay-1000"></div>
+                <div className="absolute top-[40%] left-[40%] w-6 h-6 bg-emerald-600 rounded-full border-2 border-white shadow-lg animate-pulse delay-2000"></div>
+                <div className="absolute top-[50%] left-[60%] w-6 h-6 bg-emerald-600 rounded-full border-2 border-white shadow-lg animate-pulse delay-3000"></div>
+                <div className="absolute top-[60%] left-[75%] w-6 h-6 bg-emerald-600 rounded-full border-2 border-white shadow-lg animate-pulse delay-4000"></div>
               </div>
             </div>
-
-            {/* Right Side: Achievements */}
             <div className="lg:w-1/2 space-y-8">
-              {/* Header */}
-              <span className="inline-block px-4 py-1 text-xs font-semibold bg-red-600 text-white rounded-full uppercase tracking-wider mb-4">
+              <span className="inline-block px-4 py-1 text-xs font-semibold bg-emerald-600 text-white rounded-full uppercase tracking-wider mb-4">
                 OUR ACHIEVEMENTS
               </span>
               <h2 className="text-3xl md:text-4xl font-bold text-gray-800">
@@ -1056,49 +916,34 @@ const HomePage = () => {
                 delivery in the US, UK, Canada, and beyond — I make freight run
                 like clockwork for my clients.
               </p>
-
-              {/* Stats Grid */}
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mt-8">
-                {/* Stat 1 */}
-                <div className="text-center p-4 bg-gray-50 rounded-xl border border-gray-200 hover:bg-red-50 transition-colors">
-                  <div className="text-3xl md:text-4xl font-bold text-red-600">
-                    5,000+
+                {[
+                  { value: "5,000+", label: "Projects Delivered" },
+                  { value: "$5M", label: "Orders Processed" },
+                  { value: "$2K+", label: "Saved For Each Client" },
+                ].map((stat, i) => (
+                  <div
+                    key={i}
+                    className="text-center p-4 bg-gray-50 rounded-xl border border-gray-200 hover:bg-emerald-50 transition-colors"
+                  >
+                    <div className="text-3xl md:text-4xl font-bold text-emerald-600">
+                      {stat.value}
+                    </div>
+                    <div className="text-sm text-gray-600 mt-1">
+                      {stat.label}
+                    </div>
                   </div>
-                  <div className="text-sm text-gray-600 mt-1">
-                    Projects Delivered
-                  </div>
-                </div>
-
-                {/* Stat 2 */}
-                <div className="text-center p-4 bg-gray-50 rounded-xl border border-gray-200 hover:bg-red-50 transition-colors">
-                  <div className="text-3xl md:text-4xl font-bold text-red-600">
-                    $5M
-                  </div>
-                  <div className="text-sm text-gray-600 mt-1">
-                    Orders Processed
-                  </div>
-                </div>
-
-                {/* Stat 3 */}
-                <div className="text-center p-4 bg-gray-50 rounded-xl border border-gray-200 hover:bg-red-50 transition-colors">
-                  <div className="text-3xl md:text-4xl font-bold text-red-600">
-                    $2K+
-                  </div>
-                  <div className="text-sm text-gray-600 mt-1">
-                    Saved For Each Client
-                  </div>
-                </div>
+                ))}
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* What My Clients Say - Testimonial Section */}
-      <section className="py-16 bg-gradient-to-r from-gray-900 to-red-900 text-white">
+      {/* Testimonials */}
+      <section className="py-16 bg-gradient-to-r from-gray-900 to-emerald-900 text-white">
         <div className="container mx-auto px-4">
           <div className="flex flex-col lg:flex-row items-center gap-12">
-            {/* Left Side: Testimonial */}
             <div className="lg:w-1/2 space-y-6">
               <h2 className="text-3xl md:text-4xl font-bold">
                 What My Clients Say
@@ -1106,16 +951,14 @@ const HomePage = () => {
               <p className="text-lg opacity-90 leading-relaxed">
                 We used to juggle 4 different freight vendors. Ebrahim took over
                 everything — sourcing, shipping, compliance — and saved us over{" "}
-                <span className="font-bold text-red-300">£11,000</span> in the
-                first quarter alone.
+                <span className="font-bold text-emerald-300">£11,000</span> in
+                the first quarter alone.
               </p>
-
-              {/* Client Info */}
               <div className="flex items-center gap-4 mt-6">
                 <img
                   src="https://randomuser.me/api/portraits/men/32.jpg"
                   alt="James R."
-                  className="w-12 h-12 rounded-full border-2 border-red-500"
+                  className="w-12 h-12 rounded-full border-2 border-emerald-500"
                 />
                 <div>
                   <div className="font-bold">James R.</div>
@@ -1125,8 +968,6 @@ const HomePage = () => {
                 </div>
               </div>
             </div>
-
-            {/* Right Side: Group Image */}
             <div className="lg:w-1/2">
               <div className="relative">
                 <img
@@ -1134,49 +975,40 @@ const HomePage = () => {
                   alt="Team reviewing logistics dashboard"
                   className="rounded-xl shadow-2xl w-full h-auto object-cover"
                 />
-                {/* Optional Overlay Gradient for Text Readability */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent rounded-xl"></div>
               </div>
             </div>
           </div>
-
-          {/* Trusted By Bar */}
           <div className="mt-16 bg-black/80 rounded-xl p-6">
             <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
               <div className="text-white font-medium">Trusted by:</div>
               <div className="flex flex-wrap justify-center gap-8 items-center">
-                {/* Logos */}
-                <img
-                  src="https://upload.wikimedia.org/wikipedia/commons/4/4a/Amazon_logo.svg"
-                  alt="Amazon"
-                  className="h-8 w-auto grayscale hover:grayscale-0 transition-all duration-300 opacity-70 hover:opacity-100"
-                />
-                <img
-                  src="https://upload.wikimedia.org/wikipedia/commons/6/6c/Shopify_Logo.svg"
-                  alt="Shopify"
-                  className="h-8 w-auto grayscale hover:grayscale-0 transition-all duration-300 opacity-70 hover:opacity-100"
-                />
-                <img
-                  src="https://upload.wikimedia.org/wikipedia/commons/3/3e/Netflix_2015_logo.svg"
-                  alt="Netflix"
-                  className="h-8 w-auto grayscale hover:grayscale-0 transition-all duration-300 opacity-70 hover:opacity-100"
-                />
-                <img
-                  src="https://upload.wikimedia.org/wikipedia/commons/2/2d/Etsy_logo.svg"
-                  alt="Etsy"
-                  className="h-8 w-auto grayscale hover:grayscale-0 transition-all duration-300 opacity-70 hover:opacity-100"
-                />
+                {["Amazon", "Shopify", "Netflix", "Etsy"].map((brand, i) => (
+                  <img
+                    key={i}
+                    src={`https://upload.wikimedia.org/wikipedia/commons/${
+                      brand === "Amazon"
+                        ? "4/4a"
+                        : brand === "Shopify"
+                        ? "3/3e"
+                        : brand === "Netflix"
+                        ? "2/2d"
+                        : "2/2d"
+                    }/${brand}_logo.svg`}
+                    alt={brand}
+                    className="h-8 w-auto grayscale hover:grayscale-0 transition-all duration-300 opacity-70 hover:opacity-100"
+                  />
+                ))}
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Creating Content To Help Sellers - YouTube Section */}
+      {/* YouTube Section */}
       <section className="py-16 bg-white">
         <div className="container mx-auto px-4">
           <div className="flex flex-col lg:flex-row gap-12 items-start">
-            {/* Left Side: Video Gallery */}
             <div className="lg:w-1/2 space-y-6">
               <h2 className="text-3xl md:text-4xl font-bold text-gray-800">
                 Creating Content To Help Sellers
@@ -1186,8 +1018,6 @@ const HomePage = () => {
                 — straight from my 8+ years of experience helping sellers scale
                 globally.
               </p>
-
-              {/* Main Video Preview */}
               <div className="relative rounded-xl overflow-hidden shadow-lg border border-gray-200 group">
                 <img
                   src="https://via.placeholder.com/600x350?text=Ebrahim+on+YouTube"
@@ -1195,7 +1025,7 @@ const HomePage = () => {
                   className="w-full h-auto object-cover transition-transform duration-300 group-hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-black/30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                  <div className="w-16 h-16 bg-red-600 rounded-full flex items-center justify-center cursor-pointer">
+                  <div className="w-16 h-16 bg-emerald-600 rounded-full flex items-center justify-center cursor-pointer">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       viewBox="0 0 24 24"
@@ -1206,15 +1036,12 @@ const HomePage = () => {
                     </svg>
                   </div>
                 </div>
-                {/* Video Title Overlay */}
                 <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4">
                   <h3 className="text-white font-medium line-clamp-2">
                     From My Experience: Tips for Sourcing Before Visiting China
                   </h3>
                 </div>
               </div>
-
-              {/* Video Thumbnails Grid */}
               <div className="grid grid-cols-3 gap-4 mt-6">
                 {[
                   {
@@ -1229,9 +1056,9 @@ const HomePage = () => {
                     title: "Avoid These 5 Shipping Mistakes",
                     img: "https://via.placeholder.com/160x90?text=Video+3",
                   },
-                ].map((video, index) => (
+                ].map((video, i) => (
                   <div
-                    key={index}
+                    key={i}
                     className="relative rounded-lg overflow-hidden shadow-sm border border-gray-200 group"
                   >
                     <img
@@ -1240,7 +1067,7 @@ const HomePage = () => {
                       className="w-full h-24 object-cover transition-transform duration-300 group-hover:scale-105"
                     />
                     <div className="absolute inset-0 bg-black/30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                      <div className="w-10 h-10 bg-red-600 rounded-full flex items-center justify-center">
+                      <div className="w-10 h-10 bg-emerald-600 rounded-full flex items-center justify-center">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           viewBox="0 0 24 24"
@@ -1259,8 +1086,6 @@ const HomePage = () => {
                   </div>
                 ))}
               </div>
-
-              {/* Load More + Subscribe Buttons */}
               <div className="flex gap-4 mt-6">
                 <Button variant="outline" size="sm">
                   Load More...
@@ -1282,10 +1107,8 @@ const HomePage = () => {
                 </Button>
               </div>
             </div>
-
-            {/* Right Side: Text Content */}
             <div className="lg:w-1/2 space-y-6">
-              <span className="inline-block px-4 py-1 text-xs font-semibold bg-red-100 text-red-600 rounded-full uppercase tracking-wider mb-4">
+              <span className="inline-block px-4 py-1 text-xs font-semibold bg-emerald-100 text-emerald-700 rounded-full uppercase tracking-wider mb-4">
                 GET INSIDER TIPS
               </span>
               <h2 className="text-3xl md:text-4xl font-bold text-gray-800">
@@ -1301,13 +1124,11 @@ const HomePage = () => {
                 sourcing, logistics, and global trade — so you can grow your
                 business smarter, faster, and with less stress.
               </p>
-
-              {/* CTA Button */}
               <div className="mt-8">
                 <Button
                   variant="primary"
                   size="lg"
-                  className="bg-red-600 hover:bg-red-700"
+                  className="bg-emerald-600 hover:bg-emerald-700"
                 >
                   Visit My YouTube Channel
                 </Button>
@@ -1317,12 +1138,11 @@ const HomePage = () => {
         </div>
       </section>
 
-      {/* Smart Freight Insights & Seller Strategies - Blog Section */}
+      {/* Blog Section */}
       <section className="py-16 bg-gray-50">
         <div className="container mx-auto px-4">
-          {/* Header */}
           <div className="text-center max-w-3xl mx-auto mb-12">
-            <span className="inline-block px-4 py-1 text-xs font-semibold bg-red-600 text-white rounded-full uppercase tracking-wider mb-4">
+            <span className="inline-block px-4 py-1 text-xs font-semibold bg-emerald-600 text-white rounded-full uppercase tracking-wider mb-4">
               ARTICLES
             </span>
             <h2 className="text-3xl md:text-4xl font-bold text-gray-800">
@@ -1334,94 +1154,63 @@ const HomePage = () => {
               costly mistakes, and scale with confidence.
             </p>
           </div>
-
-          {/* Articles Grid */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {/* Article 1 */}
-            <div className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-shadow">
-              <img
-                src="https://images.unsplash.com/photo-1581092680537-4f2e34a656d1?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-                alt="In-House vs Outsourced Logistics"
-                className="w-full h-48 object-cover"
-              />
-              <div className="p-6">
-                <div className="flex items-center gap-2 text-sm text-gray-500 mb-2">
-                  <Calendar className="w-4 h-4" />
-                  <span>04 August 2025</span>
+            {[
+              {
+                img: "https://images.unsplash.com/photo-1581092680537-4f2e34a656d1?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                date: "04 August 2025",
+                title:
+                  "Should You Build an In-House Logistics Team or Outsource It?",
+                excerpt:
+                  "When it comes to freight management, businesses face a crucial decision...",
+              },
+              {
+                img: "https://images.unsplash.com/photo-1581092580537-4f2e34a656d1?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                date: "23 June 2023",
+                title: "The Important Aspect of Pre-Shipment Inspection",
+                excerpt:
+                  "Conducting an inspection prior to shipment ensures the quality...",
+              },
+              {
+                img: null,
+                date: "23 November 2021",
+                title: "5 Important Aspects of a Pre-Shipment Inspection",
+                excerpt:
+                  "Conducting an inspection prior to shipment ensures the quality...",
+              },
+            ].map((post, i) => (
+              <div
+                key={i}
+                className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-shadow"
+              >
+                {post.img && (
+                  <img
+                    src={post.img}
+                    alt={post.title}
+                    className="w-full h-48 object-cover"
+                  />
+                )}
+                <div className="p-6">
+                  <div className="flex items-center gap-2 text-sm text-gray-500 mb-2">
+                    <Calendar className="w-4 h-4" />
+                    <span>{post.date}</span>
+                  </div>
+                  <h3 className="text-xl font-bold text-gray-800 mb-2">
+                    {post.title}
+                  </h3>
+                  <p className="text-gray-600 mb-4 line-clamp-3">
+                    {post.excerpt}
+                  </p>
+                  <a
+                    href="#"
+                    className="text-emerald-600 hover:text-emerald-700 font-medium inline-flex items-center gap-1"
+                  >
+                    Read More →
+                  </a>
                 </div>
-                <h3 className="text-xl font-bold text-gray-800 mb-2">
-                  Should You Build an In-House Logistics Team or Outsource It?
-                </h3>
-                <p className="text-gray-600 mb-4 line-clamp-3">
-                  When it comes to freight management, businesses face a crucial
-                  decision: build an in-house logistics team or outsource it to
-                  a third-party provider. Here’s how I help clients choose
-                  wisely.
-                </p>
-                <a
-                  href="#"
-                  className="text-red-600 hover:text-red-700 font-medium inline-flex items-center gap-1"
-                >
-                  Read More →
-                </a>
               </div>
-            </div>
-
-            {/* Article 2 */}
-            <div className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-shadow">
-              <img
-                src="https://images.unsplash.com/photo-1581092580537-4f2e34a656d1?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-                alt="Pre-Shipment Inspection"
-                className="w-full h-48 object-cover"
-              />
-              <div className="p-6">
-                <div className="flex items-center gap-2 text-sm text-gray-500 mb-2">
-                  <Calendar className="w-4 h-4" />
-                  <span>23 June 2023</span>
-                </div>
-                <h3 className="text-xl font-bold text-gray-800 mb-2">
-                  The Important Aspect of Pre-Shipment Inspection
-                </h3>
-                <p className="text-gray-600 mb-4 line-clamp-3">
-                  Conducting an inspection prior to shipment ensures the quality
-                  of goods and products before they are dispatched. It is
-                  essential for customers and brand reputation.
-                </p>
-                <a
-                  href="#"
-                  className="text-red-600 hover:text-red-700 font-medium inline-flex items-center gap-1"
-                >
-                  Read More →
-                </a>
-              </div>
-            </div>
-
-            {/* Article 3 */}
-            <div className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-shadow">
-              <div className="p-6">
-                <div className="flex items-center gap-2 text-sm text-gray-500 mb-2">
-                  <Calendar className="w-4 h-4" />
-                  <span>23 November 2021</span>
-                </div>
-                <h3 className="text-xl font-bold text-gray-800 mb-2">
-                  5 Important Aspects of a Pre-Shipment Inspection
-                </h3>
-                <p className="text-gray-600 mb-4 line-clamp-3">
-                  Conducting an inspection prior to shipment ensures the quality
-                  of goods and products before they are dispatched. It is
-                  essential for customers and brand reputation.
-                </p>
-                <a
-                  href="#"
-                  className="text-red-600 hover:text-red-700 font-medium inline-flex items-center gap-1"
-                >
-                  Read More →
-                </a>
-              </div>
-            </div>
+            ))}
           </div>
-
-          {/* Recent Articles List (Sidebar Style) */}
           <div className="mt-12 pt-8 border-t border-gray-200">
             <h3 className="text-xl font-bold text-gray-800 mb-6">
               Recent Articles
@@ -1433,24 +1222,24 @@ const HomePage = () => {
                   title:
                     "Role of Inspection and Testing in Maintaining Quality",
                   excerpt:
-                    "In manufacturing and other industries, maintaining high-quality standards is crucial for customer satisfaction and brand reputation.",
+                    "In manufacturing and other industries, maintaining high-quality standards...",
                 },
                 {
                   date: "20 November 2021",
                   title:
                     "What Can Cause Professional Quality Inspectors to Miss QC Issues?",
                   excerpt:
-                    "Professional quality inspectors are responsible for ensuring that products meet the required standards. But even experts can miss critical issues.",
+                    "Professional quality inspectors are responsible for ensuring that products...",
                 },
                 {
                   date: "18 November 2021",
                   title: "How to Negotiate with Chinese Suppliers Like a Pro",
                   excerpt:
-                    "Negotiating with suppliers in China requires cultural awareness, preparation, and strategy. Here’s how I help clients get the best deals without compromising quality.",
+                    "Negotiating with suppliers in China requires cultural awareness...",
                 },
-              ].map((article, index) => (
+              ].map((article, i) => (
                 <div
-                  key={index}
+                  key={i}
                   className="border-b border-gray-200 pb-4 last:border-b-0"
                 >
                   <div className="flex items-center gap-2 text-sm text-gray-500 mb-1">
@@ -1465,7 +1254,7 @@ const HomePage = () => {
                   </p>
                   <a
                     href="#"
-                    className="text-red-600 hover:text-red-700 text-sm font-medium mt-2 inline-block"
+                    className="text-emerald-600 hover:text-emerald-700 text-sm font-medium mt-2 inline-block"
                   >
                     Read More →
                   </a>
@@ -1473,47 +1262,33 @@ const HomePage = () => {
               ))}
             </div>
           </div>
-
-          {/* Optional CTA */}
           <div className="text-center mt-12">
-            <Button
-              variant="outline"
-              size="lg"
-              onClick={() =>
-                window.scrollTo({
-                  top: document.getElementById("blog")?.offsetTop || 0,
-                  behavior: "smooth",
-                })
-              }
-            >
+            <Button variant="outline" size="lg">
               View All Articles
             </Button>
           </div>
         </div>
       </section>
 
-      {/* Get In Touch / Contact Section - Modern Dark Theme */}
-      <section className="py-20 bg-gray-900 text-white">
+      {/* Contact Section */}
+      <section className="py-20 bg-gray-900 text-white" id="contact">
         <div className="container mx-auto px-4">
           <div className="max-w-6xl mx-auto">
             <div className="flex flex-col lg:flex-row items-center gap-12 bg-white rounded-2xl overflow-hidden shadow-xl">
-              {/* Left Side: Form + Headline (Dark on Light) */}
               <div className="lg:w-1/2 p-8 md:p-12 bg-white text-gray-800">
-                <span className="inline-block px-4 py-1 text-xs font-semibold bg-red-100 text-red-700 rounded-full uppercase tracking-wider mb-4">
+                <span className="inline-block px-4 py-1 text-xs font-semibold bg-emerald-100 text-emerald-700 rounded-full uppercase tracking-wider mb-4">
                   GET IN TOUCH
                 </span>
                 <h2 className="text-3xl md:text-4xl font-bold leading-tight mb-4">
                   Freight Isn’t Just About Shipping.
                   <br />
-                  <span className="text-red-600">It’s About Growth.</span>
+                  <span className="text-emerald-600">It’s About Growth.</span>
                 </h2>
                 <p className="text-lg text-gray-600 mb-8">
                   Let’s scale together. Whether you’re sourcing your first
                   product or expanding globally — I’m here to help you grow
                   smarter, faster, and with less stress.
                 </p>
-
-                {/* Contact Form */}
                 <form className="space-y-6">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
@@ -1523,7 +1298,7 @@ const HomePage = () => {
                       <input
                         type="text"
                         placeholder="Ex. John"
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition"
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition"
                       />
                     </div>
                     <div>
@@ -1533,11 +1308,10 @@ const HomePage = () => {
                       <input
                         type="text"
                         placeholder="Ex. Lewis"
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition"
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition"
                       />
                     </div>
                   </div>
-
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                       <label className="block text-xs font-medium text-gray-500 mb-2">
@@ -1546,7 +1320,7 @@ const HomePage = () => {
                       <input
                         type="email"
                         placeholder="example@mail.com"
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition"
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition"
                       />
                     </div>
                     <div>
@@ -1556,11 +1330,10 @@ const HomePage = () => {
                       <input
                         type="tel"
                         placeholder="+8801750062927"
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition"
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition"
                       />
                     </div>
                   </div>
-
                   <div>
                     <label className="block text-xs font-medium text-gray-500 mb-2">
                       MESSAGE
@@ -1568,31 +1341,28 @@ const HomePage = () => {
                     <textarea
                       placeholder="Tell me about your project..."
                       rows={4}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition resize-none"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition resize-none"
                     ></textarea>
                   </div>
-
                   <div className="pt-2">
                     <Button
                       variant="primary"
                       size="lg"
-                      className="w-full bg-red-600 hover:bg-red-700 text-white"
+                      className="w-full bg-emerald-600 hover:bg-emerald-700 text-white"
                     >
                       Speak to Ebrahim Directly
                     </Button>
                   </div>
                 </form>
               </div>
-
-              {/* Right Side: Personal Photo */}
               <div className="lg:w-1/2 bg-gray-800 flex items-center justify-center p-8">
                 <div className="relative">
                   <img
                     src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
-                    alt="Ebrahim Kamal - Sourcing & Logistics Expert"
+                    alt="Ebrahim Kamal"
                     className="rounded-xl w-full max-w-sm h-auto object-cover shadow-lg border-4 border-white/20"
                   />
-                  <div className="absolute -bottom-4 -right-4 bg-red-600 text-white px-4 py-2 rounded-lg font-medium">
+                  <div className="absolute -bottom-4 -right-4 bg-emerald-600 text-white px-4 py-2 rounded-lg font-medium">
                     Based in Dhaka
                   </div>
                 </div>
@@ -1607,7 +1377,7 @@ const HomePage = () => {
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
             <div>
-              <h3 className="text-xl font-bold text-red-500 mb-4">
+              <h3 className="text-xl font-bold text-emerald-500 mb-4">
                 EBRAHIM KAMAL
               </h3>
               <p className="text-gray-400 mb-4">
@@ -1617,116 +1387,73 @@ const HomePage = () => {
               <div className="flex gap-4">
                 <a
                   href="#"
-                  className="text-gray-400 hover:text-red-500 transition-colors"
+                  className="text-gray-400 hover:text-emerald-500 transition-colors"
                 >
                   <Linkedin className="w-6 h-6" />
                 </a>
                 <a
                   href="#"
-                  className="text-gray-400 hover:text-red-500 transition-colors"
+                  className="text-gray-400 hover:text-emerald-500 transition-colors"
                 >
                   <Instagram className="w-6 h-6" />
                 </a>
               </div>
             </div>
-
             <div>
               <h4 className="text-lg font-bold text-white mb-4">Services</h4>
               <ul className="space-y-2">
-                <li>
-                  <a
-                    href="#"
-                    className="text-gray-400 hover:text-red-500 transition-colors"
-                  >
-                    Product Sourcing
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    className="text-gray-400 hover:text-red-500 transition-colors"
-                  >
-                    Quality Control
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    className="text-gray-400 hover:text-red-500 transition-colors"
-                  >
-                    Logistics
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    className="text-gray-400 hover:text-red-500 transition-colors"
-                  >
-                    Fulfillment
-                  </a>
-                </li>
+                {[
+                  "Product Sourcing",
+                  "Quality Control",
+                  "Logistics",
+                  "Fulfillment",
+                ].map((s, i) => (
+                  <li key={i}>
+                    <a
+                      href="#"
+                      className="text-gray-400 hover:text-emerald-500 transition-colors"
+                    >
+                      {s}
+                    </a>
+                  </li>
+                ))}
               </ul>
             </div>
-
             <div>
               <h4 className="text-lg font-bold text-white mb-4">Quick Links</h4>
               <ul className="space-y-2">
-                <li>
-                  <a
-                    href="#"
-                    className="text-gray-400 hover:text-red-500 transition-colors"
-                  >
-                    About Me
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    className="text-gray-400 hover:text-red-500 transition-colors"
-                  >
-                    Products
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    className="text-gray-400 hover:text-red-500 transition-colors"
-                  >
-                    Blog
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    className="text-gray-400 hover:text-red-500 transition-colors"
-                  >
-                    Contact
-                  </a>
-                </li>
+                {["About Me", "Products", "Blog", "Contact"].map((link, i) => (
+                  <li key={i}>
+                    <a
+                      href="#"
+                      className="text-gray-400 hover:text-emerald-500 transition-colors"
+                    >
+                      {link}
+                    </a>
+                  </li>
+                ))}
               </ul>
             </div>
-
             <div>
               <h4 className="text-lg font-bold text-white mb-4">
                 Contact Info
               </h4>
               <ul className="space-y-3">
                 <li className="flex items-start gap-3">
-                  <Phone className="w-5 h-5 text-red-500 mt-0.5" />
+                  <Phone className="w-5 h-5 text-emerald-500 mt-0.5" />
                   <span className="text-gray-400">+8801750062927</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <Mail className="w-5 h-5 text-red-500 mt-0.5" />
+                  <Mail className="w-5 h-5 text-emerald-500 mt-0.5" />
                   <span className="text-gray-400">thisisebrahim@gmail.com</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <MapPin className="w-5 h-5 text-red-500 mt-0.5" />
+                  <MapPin className="w-5 h-5 text-emerald-500 mt-0.5" />
                   <span className="text-gray-400">Dhaka, Bangladesh</span>
                 </li>
               </ul>
             </div>
           </div>
-
           <div className="pt-8 border-t border-gray-800 text-center text-gray-500 text-sm">
             <p>
               © {new Date().getFullYear()} Ebrahim Mohammad Kamal. All rights
@@ -1736,13 +1463,11 @@ const HomePage = () => {
         </div>
       </footer>
 
-      {/* Floating Chat Button */}
+      {/* Floating Button */}
       <div className="fixed bottom-6 right-6 z-50">
-        <button className="w-14 h-14 rounded-full bg-red-600 flex items-center justify-center shadow-lg hover:bg-red-700 transition-colors">
-          <div className="relative">
-            <Phone className="w-6 h-6 text-white" />
-            <div className="absolute top-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-gray-900"></div>
-          </div>
+        <button className="w-14 h-14 rounded-full bg-emerald-600 flex items-center justify-center shadow-lg hover:bg-emerald-700 transition-colors">
+          <Phone className="w-6 h-6 text-white" />
+          <div className="absolute top-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-gray-900"></div>
         </button>
       </div>
     </div>

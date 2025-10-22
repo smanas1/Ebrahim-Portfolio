@@ -182,30 +182,6 @@ const HomePage = () => {
     { label: "Contact", href: "#" },
   ];
 
-  const testimonials = [
-    {
-      name: "Sarah Johnson",
-      role: "E-commerce Entrepreneur",
-      content:
-        "Working with Ebrahim transformed my supply chain. His attention to detail and professionalism saved me thousands in shipping costs.",
-      rating: 5,
-    },
-    {
-      name: "Michael Chen",
-      role: "Product Designer",
-      content:
-        "The product photography service exceeded my expectations. The images helped increase my conversion rate by 30%.",
-      rating: 5,
-    },
-    {
-      name: "Emma Rodriguez",
-      role: "Amazon Seller",
-      content:
-        "Ebrahim's inspection services caught defects before they became costly returns. His expertise is invaluable.",
-      rating: 4,
-    },
-  ];
-
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 to-black text-white">
       {/* Top Header Bar */}

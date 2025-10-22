@@ -445,9 +445,12 @@ const HomePage = () => {
                 <div className="absolute -top-6 -left-6 w-full h-full bg-emerald-900/20 rounded-2xl -z-10"></div>
                 <div className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl p-1 border border-gray-700">
                   <div className="bg-gray-800 rounded-xl p-8 flex flex-col items-center">
-                    <div className="w-32 h-32 rounded-full bg-gradient-to-br from-emerald-700 to-emerald-900 mb-6 flex items-center justify-center">
-                      <div className="bg-gray-200 border-2 border-dashed rounded-xl w-24 h-24" />
-                    </div>
+                    <img
+                      className="w-32 h-32 rounded-full bg-gradient-to-br from-emerald-700 to-emerald-900 mb-6 flex items-center justify-center"
+                      src="https://res.cloudinary.com/dtyqscfja/image/upload/v1761153175/Ebrahim/DSC013sadasd41_y6f6qe.jpg"
+                      alt="Ebrahim Mohammad Kamal"
+                    />
+
                     <h3 className="text-xl font-bold text-white mb-2">
                       Ebrahim Mohammad Kamal
                     </h3>
@@ -488,7 +491,7 @@ const HomePage = () => {
               <div className="relative">
                 <div className="aspect-square rounded-2xl overflow-hidden border-4 border-emerald-500 shadow-2xl">
                   <img
-                    src="https://via.placeholder.com/600x600?text=Ebrahim+Kamal"
+                    src="https://res.cloudinary.com/dtyqscfja/image/upload/v1761153173/Ebrahim/Ibrahim_HD_edited_3_qcawtw.jpg"
                     alt="Ebrahim Kamal - Sourcing & Logistics Expert"
                     className="w-full h-full object-cover"
                   />
@@ -733,17 +736,17 @@ const HomePage = () => {
             {[
               {
                 title: "Product Sourcing",
-                img: "https://images.unsplash.com/photo-1581092580497-e0d23cbdf340?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+                img: "https://www.unleashedsoftware.com/media/scraper/pexels-pavel-danilyuk-7675016-1.jpg?rmode=max&width=855",
                 desc: "Helping you find reliable suppliers in China and source high-quality products at competitive prices — no guesswork, no middlemen.",
               },
               {
                 title: "Product Inspection",
-                img: "https://images.unsplash.com/photo-1581092680537-4f2e34a656d1?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+                img: "https://www.jonble.com/wp-content/uploads/2020/07/product-inspection-process.jpg",
                 desc: "Identifying and rectifying any potential issues in your products before they ship — helping you avoid costly returns and protect your brand.",
               },
               {
                 title: "Freight Forwarding",
-                img: "https://images.unsplash.com/photo-1581092580537-4f2e34a656d1?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+                img: "https://www.seaspace-int.com/wp-content/uploads/2017/12/Golden_Passenger_1.jpg",
                 desc: "Handling the coordination, documentation, and transportation of your goods from China to your doorstep — with real-time tracking and zero stress.",
               },
             ].map((service, i) => (
@@ -956,7 +959,7 @@ const HomePage = () => {
               </p>
               <div className="flex items-center gap-4 mt-6">
                 <img
-                  src="https://randomuser.me/api/portraits/men/32.jpg"
+                  src="https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&h=200&q=80"
                   alt="James R."
                   className="w-12 h-12 rounded-full border-2 border-emerald-500"
                 />
@@ -971,7 +974,7 @@ const HomePage = () => {
             <div className="lg:w-1/2">
               <div className="relative">
                 <img
-                  src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                  src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=500&q=80"
                   alt="Team reviewing logistics dashboard"
                   className="rounded-xl shadow-2xl w-full h-auto object-cover"
                 />
@@ -1020,7 +1023,7 @@ const HomePage = () => {
               </p>
               <div className="relative rounded-xl overflow-hidden shadow-lg border border-gray-200 group">
                 <img
-                  src="https://via.placeholder.com/600x350?text=Ebrahim+on+YouTube"
+                  src="https://images.unsplash.com/photo-1573164713988-8665fc963095?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=350&q=80"
                   alt="Ebrahim Kamal - Sourcing Tips Before Visiting China"
                   className="w-full h-auto object-cover transition-transform duration-300 group-hover:scale-105"
                 />
@@ -1358,7 +1361,7 @@ const HomePage = () => {
               <div className="lg:w-1/2 bg-gray-800 flex items-center justify-center p-8">
                 <div className="relative">
                   <img
-                    src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
+                    src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400&q=80"
                     alt="Ebrahim Kamal"
                     className="rounded-xl w-full max-w-sm h-auto object-cover shadow-lg border-4 border-white/20"
                   />

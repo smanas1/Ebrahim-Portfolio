@@ -22,6 +22,8 @@ import {
   Shield,
   Target,
   Calendar,
+  Youtube,
+  ChevronUp,
 } from "lucide-react";
 import { useState } from "react";
 
@@ -584,7 +586,7 @@ const HomePage = () => {
             </div>
             <div className="hidden lg:flex items-center justify-center">
               <div className="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center">
-                <ChevronDown className="w-5 h-5 text-gray-600 rotate-90" />
+                <ChevronUp className="w-5 h-5 text-gray-600 rotate-90" />
               </div>
             </div>
             <div className="flex flex-col items-center text-center w-full lg:w-1/3">
@@ -599,7 +601,7 @@ const HomePage = () => {
             </div>
             <div className="hidden lg:flex items-center justify-center">
               <div className="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center">
-                <ChevronDown className="w-5 h-5 text-gray-600 rotate-90" />
+                <ChevronUp className="w-5 h-5 text-gray-600 rotate-90" />
               </div>
             </div>
             <div className="flex flex-col items-center text-center w-full lg:w-1/3">
@@ -804,45 +806,63 @@ const HomePage = () => {
               together through long-term collaborations.
             </div>
           </div>
+
+          {/* Define partners with custom image URLs */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 items-center justify-items-center">
             {[
-              "Amazon_logo.svg",
-              "Alibaba_Logo.svg",
-              "DHL_Logo.svg",
-              "FedEx_Express_logo.svg",
-              "UPS_Logo.svg",
-              "Shopify_Logo.svg",
-              "Walmart_Logo.svg",
-              "Etsy_logo.svg",
-            ].map((logo, i) => (
+              {
+                name: "Amazon",
+                logoUrl:
+                  "https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg",
+              },
+              {
+                name: "Alibaba",
+                logoUrl:
+                  "https://cdn.worldvectorlogo.com/logos/brandbird-alibaba-logotype.svg",
+              },
+              {
+                name: "DHL",
+                logoUrl: "https://cdn.worldvectorlogo.com/logos/dhl-1.svg",
+              },
+              {
+                name: "FedEx",
+                logoUrl:
+                  "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/FedEx_Express.svg/373px-FedEx_Express.svg.png?20250905034300",
+              },
+              {
+                name: "UPS",
+                logoUrl:
+                  "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/United_Parcel_Service_logo_2014.svg/800px-United_Parcel_Service_logo_2014.svg.png",
+              },
+              {
+                name: "Shopify",
+                logoUrl:
+                  "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Shopify_logo_2018.svg/2560px-Shopify_logo_2018.svg.png",
+              },
+              {
+                name: "Walmart",
+                logoUrl:
+                  "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/Walmart_logo_%282008%29.svg/960px-Walmart_logo_%282008%29.svg.png?20250802041146",
+              },
+              {
+                name: "Etsy",
+                logoUrl:
+                  "https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/Etsy_logo.svg/1200px-Etsy_logo.svg.png",
+              },
+            ].map((partner, i) => (
               <div
                 key={i}
                 className="grayscale hover:grayscale-0 transition-all duration-300 opacity-70 hover:opacity-100"
               >
                 <img
-                  src={`https://upload.wikimedia.org/wikipedia/commons/${
-                    logo === "Amazon_logo.svg"
-                      ? "4/4a"
-                      : logo === "Alibaba_Logo.svg"
-                      ? "4/4b"
-                      : logo === "DHL_Logo.svg"
-                      ? "5/5f"
-                      : logo === "FedEx_Express_logo.svg"
-                      ? "2/29"
-                      : logo === "UPS_Logo.svg"
-                      ? "6/6c"
-                      : logo === "Shopify_Logo.svg"
-                      ? "3/3e"
-                      : logo === "Walmart_Logo.svg"
-                      ? "7/7a"
-                      : "2/2d"
-                  }/${logo}`}
-                  alt={logo.replace("_Logo.svg", "").replace(".svg", "")}
+                  src={partner.logoUrl}
+                  alt={partner.name}
                   className="h-12 w-auto object-contain"
                 />
               </div>
             ))}
           </div>
+
           <div className="mt-12 text-center">
             <p className="text-gray-500 text-sm">
               *Logos shown are for illustrative purposes. Ebrahim Kamal partners
@@ -983,24 +1003,37 @@ const HomePage = () => {
               </div>
             </div>
           </div>
-          <div className="mt-16 bg-black/80 rounded-xl p-6">
+          <div className="mt-16 bg-gradient-to-r from-gray-100 to-gray-200 rounded-xl p-6">
             <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
-              <div className="text-white font-medium">Trusted by:</div>
+              <div className="text-gray-800 font-medium">Trusted by:</div>
               <div className="flex flex-wrap justify-center gap-8 items-center">
-                {["Amazon", "Shopify", "Netflix", "Etsy"].map((brand, i) => (
+                {[
+                  {
+                    name: "Amazon",
+                    logoUrl:
+                      "https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg",
+                  },
+                  {
+                    name: "Shopify",
+                    logoUrl:
+                      "https://upload.wikimedia.org/wikipedia/commons/0/0e/Shopify_logo_2018.svg",
+                  },
+                  {
+                    name: "Netflix",
+                    logoUrl:
+                      "https://upload.wikimedia.org/wikipedia/commons/7/7a/Logonetflix.png",
+                  },
+                  {
+                    name: "Etsy",
+                    logoUrl:
+                      "https://upload.wikimedia.org/wikipedia/commons/8/89/Etsy_logo.svg",
+                  },
+                ].map((partner, i) => (
                   <img
                     key={i}
-                    src={`https://upload.wikimedia.org/wikipedia/commons/${
-                      brand === "Amazon"
-                        ? "4/4a"
-                        : brand === "Shopify"
-                        ? "3/3e"
-                        : brand === "Netflix"
-                        ? "2/2d"
-                        : "2/2d"
-                    }/${brand}_logo.svg`}
-                    alt={brand}
-                    className="h-8 w-auto grayscale hover:grayscale-0 transition-all duration-300 opacity-70 hover:opacity-100"
+                    src={partner.logoUrl}
+                    alt={partner.name}
+                    className="h-8 w-auto  hover:grayscale-0 transition-all duration-300  hover:opacity-100"
                   />
                 ))}
               </div>
@@ -1050,15 +1083,15 @@ const HomePage = () => {
                 {[
                   {
                     title: "Modern Sourcing Requires Smart Strategy",
-                    img: "https://via.placeholder.com/160x90?text=Video+1",
+                    img: "https://simfoni.com/wp-content/uploads/2022/02/What-is-Strategic-Sourcing.png.webp",
                   },
                   {
                     title: "How to Negotiate with Chinese Suppliers",
-                    img: "https://via.placeholder.com/160x90?text=Video+2",
+                    img: "https://s-media-cache-ak0.pinimg.com/originals/0b/f5/45/0bf5455e8f42611706b2fba8bb17ab21.jpg",
                   },
                   {
                     title: "Avoid These 5 Shipping Mistakes",
-                    img: "https://via.placeholder.com/160x90?text=Video+3",
+                    img: "https://media.licdn.com/dms/image/v2/D5612AQE-CM5qo691Ew/article-cover_image-shrink_720_1280/article-cover_image-shrink_720_1280/0/1680193177755?e=2147483647&v=beta&t=l0wBzgxr9Ta6XSsnIn_xo2vqZCsVvld4LALVMlopgDw",
                   },
                 ].map((video, i) => (
                   <div
@@ -1097,16 +1130,9 @@ const HomePage = () => {
                 <Button
                   variant="primary"
                   size="sm"
-                  className="bg-blue-600 hover:bg-blue-700"
+                  className="bg-blue-600 flex justify-between items-center hover:bg-blue-700"
                 >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
-                    className="w-5 h-5 mr-2"
-                  >
-                    <path d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm-1.72 6.97a6.717 6.717 0 0 1 2.607 10.37c-1.842 1.08-3.775 1.76-5.728 1.924-2.473.218-4.807-.946-6.446-3.146-.374-.526-.588-1.14-.605-1.783-.018-.643.156-1.283.504-1.835.057-.091.122-.177.194-.258.184-.203.392-.382.617-.526.225-.144.468-.258.722-.337.255-.079.52-.127.79-.143.27-.016.544-.002.814.042.27.045.534.12.789.223.255.103.501.233.733.387.233.154.45.332.648.531.198.199.376.416.53.648.154.232.284.478.387.733.103.255.178.519.223.789.044.27.058.544.042.814-.016.27-.064.535-.143.79-.079.254-.193.497-.337.722-.144.225-.323.433-.526.617-.081.072-.167.137-.258.194-.552.348-1.192.522-1.835.504-.643-.017-1.257-.231-1.783-.605-2.2-1.639-3.364-4.003-3.146-6.446.164-1.953.844-3.886 1.924-5.728Z" />
-                  </svg>
+                  <Youtube />
                   Subscribe
                 </Button>
               </div>
@@ -1161,7 +1187,7 @@ const HomePage = () => {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {[
               {
-                img: "https://images.unsplash.com/photo-1581092680537-4f2e34a656d1?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                img: "https://expressitdelivery.com/wp-content/uploads/2022/01/01-in-house-vs-outsourced-logistics.jpg",
                 date: "04 August 2025",
                 title:
                   "Should You Build an In-House Logistics Team or Outsource It?",
@@ -1169,14 +1195,14 @@ const HomePage = () => {
                   "When it comes to freight management, businesses face a crucial decision...",
               },
               {
-                img: "https://images.unsplash.com/photo-1581092580537-4f2e34a656d1?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                img: "https://www.icw.io/wp-content/uploads/2022/11/2-Pre-shipment-Inspection2_2-10.jpg",
                 date: "23 June 2023",
                 title: "The Important Aspect of Pre-Shipment Inspection",
                 excerpt:
                   "Conducting an inspection prior to shipment ensures the quality...",
               },
               {
-                img: null,
+                img: "https://d2lewffsa8rdxy.cloudfront.net/wp-content/uploads/2022/06/Steps-involved-in-pre-shipment-inspection-1024x576.jpg",
                 date: "23 November 2021",
                 title: "5 Important Aspects of a Pre-Shipment Inspection",
                 excerpt:
@@ -1362,12 +1388,12 @@ const HomePage = () => {
               <div className="lg:w-1/2 bg-gray-800 flex items-center justify-center p-8">
                 <div className="relative">
                   <img
-                    src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400&q=80"
+                    src="https://res.cloudinary.com/dtyqscfja/image/upload/v1761153159/Ebrahim/IMG_9765_lkkcjh.jpg"
                     alt="Ebrahim Kamal"
                     className="rounded-xl w-full max-w-sm h-auto object-cover shadow-lg border-4 border-white/20"
                   />
                   <div className="absolute -bottom-4 -right-4 bg-emerald-600 text-white px-4 py-2 rounded-lg font-medium">
-                    Based in Dhaka
+                    Based in Bangladesh
                   </div>
                 </div>
               </div>

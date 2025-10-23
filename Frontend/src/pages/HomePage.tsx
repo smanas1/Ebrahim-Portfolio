@@ -49,7 +49,7 @@ const Button = ({
   disabled = false,
 }: {
   children: React.ReactNode;
-  variant?: "primary" | "secondary" | "outline";
+  variant?: "primary" | "secondary" | "outline" | "red";
   size?: "sm" | "md" | "lg";
   className?: string;
   onClick?: () => void;
@@ -63,6 +63,7 @@ const Button = ({
     secondary: "bg-gray-800 hover:bg-gray-900 text-white focus:ring-gray-500",
     outline:
       "border-2 border-emerald-600 text-emerald-600 hover:bg-emerald-600 hover:text-white focus:ring-emerald-500",
+    red: "bg-red-600 hover:bg-red-700 text-white focus:ring-red-500 shadow-lg hover:shadow-xl",
   };
   const sizeClasses = {
     sm: "px-4 py-2 text-sm",
@@ -121,7 +122,6 @@ const Icon = ({
 const HomePage = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
-
   const navItems: NavItem[] = [
     { label: "Home", href: "#" },
     { label: "About", href: "#" },
@@ -349,7 +349,7 @@ const HomePage = () => {
                             >
                               <span>{service.label}</span>
                               {service.tag && (
-                                <span className="ml-2 text-xs bg-red-900 text-red-300 px-2 py-0.5 rounded">
+                                <span className="ml-2 text-xs bg-red-500 text-white px-2 py-0.5 rounded">
                                   {service.tag}
                                 </span>
                               )}
@@ -406,7 +406,8 @@ const HomePage = () => {
                 </div>
               </div>
               <div className="mt-8 flex flex-wrap gap-4">
-                <Button variant="primary" size="lg">
+                {/* 🔴 Primary CTA changed to red for emphasis */}
+                <Button variant="red" size="lg">
                   Book a Consultation
                 </Button>
                 <Button variant="outline" size="lg">
@@ -453,7 +454,6 @@ const HomePage = () => {
                       src="https://res.cloudinary.com/dtyqscfja/image/upload/v1761153175/Ebrahim/DSC013sadasd41_y6f6qe.jpg"
                       alt="Ebrahim Mohammad Kamal"
                     />
-
                     <h3 className="text-xl font-bold text-white mb-2">
                       Ebrahim Mohammad Kamal
                     </h3>
@@ -806,8 +806,6 @@ const HomePage = () => {
               together through long-term collaborations.
             </div>
           </div>
-
-          {/* Define partners with custom image URLs */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 items-center justify-items-center">
             {[
               {
@@ -862,7 +860,6 @@ const HomePage = () => {
               </div>
             ))}
           </div>
-
           <div className="mt-12 text-center">
             <p className="text-gray-500 text-sm">
               *Logos shown are for illustrative purposes. Ebrahim Kamal partners
@@ -1493,9 +1490,9 @@ const HomePage = () => {
         </div>
       </footer>
 
-      {/* Floating Button */}
+      {/* 🔴 Floating Call Button changed to red */}
       <div className="fixed bottom-6 right-6 z-50">
-        <button className="w-14 h-14 rounded-full bg-emerald-600 flex items-center justify-center shadow-lg hover:bg-emerald-700 transition-colors">
+        <button className="w-14 h-14 rounded-full bg-red-600 flex items-center justify-center shadow-lg hover:bg-red-700 transition-colors">
           <Phone className="w-6 h-6 text-white" />
           <div className="absolute top-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-gray-900"></div>
         </button>

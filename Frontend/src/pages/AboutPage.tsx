@@ -609,16 +609,16 @@ const AboutPage = () => {
       </section>
 
       {/* 3. Global Impact with Dark Background */}
-      <section className="py-20 bg-gradient-to-br from-gray-900 via-black to-gray-900 text-white">
-        <div className="container mx-auto px-6 max-w-6xl">
-          <div className="text-center mb-16">
-            <span className="inline-block bg-red-500/20 text-red-300 text-xs font-semibold px-3 py-1 rounded-full mb-3 border border-red-500/30">
+      <section className="py-12 sm:py-16 md:py-20 bg-gradient-to-br from-gray-900 via-black to-gray-900 text-white">
+        <div className="container mx-auto px-4 sm:px-6 max-w-6xl">
+          <div className="text-center mb-10 sm:mb-12 md:mb-16">
+            <span className="inline-block bg-red-500/20 text-red-300 text-xs font-semibold px-3 py-1 rounded-full mb-2 sm:mb-3 border border-red-500/30">
               GLOBAL IMPACT
             </span>
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4">
               Serving Clients Across Continents
             </h2>
-            <p className="text-gray-300 mt-4 max-w-2xl mx-auto">
+            <p className="text-gray-300 mt-3 sm:mt-4 max-w-2xl mx-auto text-sm sm:text-base">
               From North America to Europe, the Middle East to Oceania — I’ve
               helped brands navigate global supply chains with precision.
             </p>
@@ -626,23 +626,25 @@ const AboutPage = () => {
 
           <div className="flex flex-col items-center">
             <div className="relative w-full max-w-4xl mx-auto">
-              {/* Globe Container with Glow Effect */}
-              <div className="relative after:absolute h-[600px] after:inset-0 after:rounded-2xl after:shadow-[0_0_40px_rgba(0,255,128,0.3)] after:z-[-1]">
-                <World data={sampleArcs} globeConfig={globeConfig} />
+              {/* Globe Container with responsive height */}
+              <div className="relative after:absolute after:inset-0 after:rounded-2xl after:shadow-[0_0_40px_rgba(0,255,128,0.3)] after:z-[-1]">
+                <div className="h-[400px] sm:h-[500px] md:h-[600px]">
+                  <World data={sampleArcs} globeConfig={globeConfig} />
+                </div>
               </div>
 
-              {/* Client Country Tags */}
-              <div className="mt-8 grid grid-cols-2 md:grid-cols-4 gap-4">
+              {/* Client Country Tags — responsive grid */}
+              <div className="mt-6 sm:mt-8 grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
                 {globalPresence.slice(0, 4).map((item, i) => (
                   <motion.div
                     key={i}
-                    initial={{ opacity: 0, y: 20 }}
+                    initial={{ opacity: 0, y: 10 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    className="flex items-center gap-2 p-3 bg-gray-800/50 rounded-lg hover:bg-gray-700/50 transition-colors"
+                    className="flex items-center gap-1.5 sm:gap-2 p-2.5 sm:p-3 bg-gray-800/50 rounded-lg hover:bg-gray-700/50 transition-colors"
                   >
-                    <CheckCircle className="w-4 h-4 text-green-400" />
-                    <span className="text-sm text-gray-200">
+                    <CheckCircle className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-green-400 flex-shrink-0" />
+                    <span className="text-xs sm:text-sm text-gray-200 truncate">
                       {item.country}
                     </span>
                   </motion.div>

@@ -1,3 +1,7 @@
+/* eslint-disable no-var */
+/* eslint-disable react-refresh/only-export-components */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useEffect, useRef, useState } from "react";
 import { Color, Scene, Fog, PerspectiveCamera, Vector3 } from "three";
 import ThreeGlobe from "three-globe";
@@ -59,11 +63,12 @@ interface WorldProps {
   data: Position[];
 }
 
+// eslint-disable-next-line prefer-const
 let numbersOfRings = [0];
 
 export function Globe({ globeConfig, data }: WorldProps) {
   const globeRef = useRef<ThreeGlobe | null>(null);
-  const groupRef = useRef();
+  const groupRef = useRef(null);
   const [isInitialized, setIsInitialized] = useState(false);
 
   const defaultProps = {
@@ -119,6 +124,7 @@ export function Globe({ globeConfig, data }: WorldProps) {
     if (!globeRef.current || !isInitialized || !data) return;
 
     const arcs = data;
+    // eslint-disable-next-line prefer-const
     let points = [];
     for (let i = 0; i < arcs.length; i++) {
       const arc = arcs[i];

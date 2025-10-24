@@ -1,4 +1,4 @@
-import { Award, Check, ChevronUp, Zap, Target, Truck, Package, Camera, ShoppingCart, Globe, Users, Youtube, Phone, MapPin, Star, Calendar } from "lucide-react";
+import { Youtube } from "lucide-react";
 
 // Reusable Button Component
 const Button = ({
@@ -35,7 +35,9 @@ const Button = ({
     <button
       onClick={onClick}
       disabled={disabled}
-      className={`${baseClasses} ${variantClasses[variant]} ${sizeClasses[size]} ${className} ${disabled ? "opacity-50 cursor-not-allowed" : ""}`}
+      className={`${baseClasses} ${variantClasses[variant]} ${
+        sizeClasses[size]
+      } ${className} ${disabled ? "opacity-50 cursor-not-allowed" : ""}`}
     >
       {children}
     </button>
@@ -52,8 +54,8 @@ const YouTubeSection = () => {
               Creating Content To Help Sellers
             </h2>
             <p className="text-lg text-gray-600 mb-6">
-              I share real-world insights, sourcing hacks, and logistics tips
-              — straight from my 8+ years of experience helping sellers scale
+              I share real-world insights, sourcing hacks, and logistics tips —
+              straight from my 8+ years of experience helping sellers scale
               globally.
             </p>
             <div className="relative rounded-xl overflow-hidden shadow-lg border border-gray-200 group">

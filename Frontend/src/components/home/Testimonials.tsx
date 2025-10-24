@@ -1,5 +1,3 @@
-import { Award, Check, ChevronUp, Zap, Target, Truck, Package, Camera, ShoppingCart, Globe, Users, Youtube, Phone, MapPin, Star } from "lucide-react";
-
 const Testimonials = () => {
   return (
     <section className="py-16 bg-gradient-to-r from-gray-900 to-emerald-900 text-white">
@@ -11,9 +9,9 @@ const Testimonials = () => {
             </h2>
             <p className="text-lg opacity-90 leading-relaxed">
               We used to juggle 4 different freight vendors. Ebrahim took over
-              everything — sourcing, shipping, compliance — and saved us over 
-              <span className="font-bold text-emerald-300">£11,000</span> in
-              the first quarter alone.
+              everything — sourcing, shipping, compliance — and saved us over
+              <span className="font-bold text-emerald-300">£11,000</span> in the
+              first quarter alone.
             </p>
             <div className="flex items-center gap-4 mt-6">
               <img

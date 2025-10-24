@@ -1,4 +1,4 @@
-import { Award, Check, ChevronUp, Zap, Target, Truck } from "lucide-react";
+import { ChevronUp, Zap, Target, Truck } from "lucide-react";
 
 // Icon Component — Using Lucide React Icons
 const Icon = ({
@@ -18,48 +18,6 @@ const Icon = ({
   return <SelectedIcon className={className} />;
 };
 
-// Reusable Button Component
-const Button = ({
-  children,
-  variant = "primary",
-  size = "md",
-  className = "",
-  onClick,
-  disabled = false,
-}: {
-  children: React.ReactNode;
-  variant?: "primary" | "secondary" | "outline" | "red";
-  size?: "sm" | "md" | "lg";
-  className?: string;
-  onClick?: () => void;
-  disabled?: boolean;
-}) => {
-  const baseClasses =
-    "font-medium rounded transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2";
-  const variantClasses = {
-    primary:
-      "bg-emerald-600 hover:bg-emerald-700 text-white focus:ring-emerald-500 shadow-lg hover:shadow-xl",
-    secondary: "bg-gray-800 hover:bg-gray-900 text-white focus:ring-gray-500",
-    outline:
-      "border-2 border-emerald-600 text-emerald-600 hover:bg-emerald-600 hover:text-white focus:ring-emerald-500",
-    red: "bg-red-600 hover:bg-red-700 text-white focus:ring-red-500 shadow-lg hover:shadow-xl",
-  };
-  const sizeClasses = {
-    sm: "px-4 py-2 text-sm",
-    md: "px-6 py-3",
-    lg: "px-8 py-4 text-lg",
-  };
-  return (
-    <button
-      onClick={onClick}
-      disabled={disabled}
-      className={`${baseClasses} ${variantClasses[variant]} ${sizeClasses[size]} ${className} ${disabled ? "opacity-50 cursor-not-allowed" : ""}`}
-    >
-      {children}
-    </button>
-  );
-};
-
 const HowItWorks = () => {
   return (
     <section className="py-16 bg-gray-50">
@@ -72,9 +30,9 @@ const HowItWorks = () => {
             My Simple 3-Step Process
           </h2>
           <p className="text-lg text-gray-600">
-            At Ebrahim Kamal, I offer personalized, end-to-end logistics
-            support — no corporate jargon, no long contracts. Just clear steps
-            to get your products moving.
+            At Ebrahim Kamal, I offer personalized, end-to-end logistics support
+            — no corporate jargon, no long contracts. Just clear steps to get
+            your products moving.
           </p>
         </div>
         <div className="flex flex-col lg:flex-row items-center justify-between gap-8 mt-12">
@@ -99,8 +57,8 @@ const HowItWorks = () => {
             </div>
             <h3 className="text-xl font-bold text-gray-800 mb-2">Step 2</h3>
             <p className="text-gray-600">
-              I Build a Scalable Strategy — customized to your budget,
-              timeline, and business goals.
+              I Build a Scalable Strategy — customized to your budget, timeline,
+              and business goals.
             </p>
           </div>
           <div className="hidden lg:flex items-center justify-center">

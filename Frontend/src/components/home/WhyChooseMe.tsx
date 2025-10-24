@@ -1,4 +1,4 @@
-import { Award, Check, ChevronUp, Zap, Target, Truck } from "lucide-react";
+import { Check } from "lucide-react";
 
 // Reusable Button Component
 const Button = ({
@@ -35,7 +35,9 @@ const Button = ({
     <button
       onClick={onClick}
       disabled={disabled}
-      className={`${baseClasses} ${variantClasses[variant]} ${sizeClasses[size]} ${className} ${disabled ? "opacity-50 cursor-not-allowed" : ""}`}
+      className={`${baseClasses} ${variantClasses[variant]} ${
+        sizeClasses[size]
+      } ${className} ${disabled ? "opacity-50 cursor-not-allowed" : ""}`}
     >
       {children}
     </button>
@@ -52,9 +54,9 @@ const WhyChooseMe = () => {
               Why Choose <span className="text-emerald-600">Ebrahim Kamal</span>
             </h2>
             <p className="text-lg text-gray-600 mb-6">
-              I operate as your dedicated logistics partner — handling
-              sourcing, shipping, customs, and coordination with zero
-              overhead. No corporate fluff. Just results.
+              I operate as your dedicated logistics partner — handling sourcing,
+              shipping, customs, and coordination with zero overhead. No
+              corporate fluff. Just results.
             </p>
             <ul className="space-y-4">
               {[
@@ -74,8 +76,8 @@ const WhyChooseMe = () => {
             </ul>
             <div className="mt-6 p-4 bg-emerald-50 rounded-lg border-l-4 border-emerald-500">
               <p className="text-emerald-700 font-medium">
-                → What if you could eliminate freight headaches and cut costs
-                by 30%?
+                → What if you could eliminate freight headaches and cut costs by
+                30%?
               </p>
             </div>
             <div className="pt-4">
@@ -105,9 +107,7 @@ const WhyChooseMe = () => {
                     $18.50
                   </span>
                 </div>
-                <div className="text-xs text-gray-500 ml-1">
-                  Per unit cost
-                </div>
+                <div className="text-xs text-gray-500 ml-1">Per unit cost</div>
                 <div className="flex justify-between items-center pb-3 border-b border-gray-300">
                   <span className="text-red-600 font-medium">
                     After Ebrahim
@@ -116,9 +116,7 @@ const WhyChooseMe = () => {
                     $12.95
                   </span>
                 </div>
-                <div className="text-xs text-gray-500 ml-1">
-                  Per unit cost
-                </div>
+                <div className="text-xs text-gray-500 ml-1">Per unit cost</div>
                 <div className="bg-green-50 rounded-lg p-4 mt-4">
                   <div className="flex justify-between items-center">
                     <span className="text-green-700 font-medium">

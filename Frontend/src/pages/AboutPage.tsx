@@ -7,8 +7,6 @@ import {
   MapPin,
   User,
   Globe,
-  Star,
-  Award,
   Truck,
   Camera,
   Package,
@@ -406,8 +404,45 @@ const AboutPage = () => {
       arcAlt: 0.3,
       color: colors[Math.floor(Math.random() * (colors.length - 1))],
     },
-  ];
 
+    // === BANGLADESH ARCS (NEW) ===
+    {
+      order: 15,
+      startLat: 23.685, // Bangladesh
+      startLng: 90.3563,
+      endLat: 51.5072, // London
+      endLng: -0.1276,
+      arcAlt: 0.4,
+      color: colors[Math.floor(Math.random() * (colors.length - 1))],
+    },
+    {
+      order: 15,
+      startLat: 23.685, // Bangladesh
+      startLng: 90.3563,
+      endLat: 40.7128, // New York
+      endLng: -74.006,
+      arcAlt: 0.6,
+      color: colors[Math.floor(Math.random() * (colors.length - 1))],
+    },
+    {
+      order: 15,
+      startLat: 23.685, // Bangladesh
+      startLng: 90.3563,
+      endLat: 31.2304, // Shanghai
+      endLng: 121.4737,
+      arcAlt: 0.3,
+      color: colors[Math.floor(Math.random() * (colors.length - 1))],
+    },
+    {
+      order: 15,
+      startLat: 23.685, // Bangladesh
+      startLng: 90.3563,
+      endLat: 25.276987, // Dubai
+      endLng: 55.296249,
+      arcAlt: 0.2,
+      color: colors[Math.floor(Math.random() * (colors.length - 1))],
+    },
+  ];
   const services = [
     {
       name: "Product Sourcing",
@@ -557,7 +592,7 @@ const AboutPage = () => {
             >
               <div className="bg-white p-1 rounded-2xl shadow-xl">
                 <img
-                  src="https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+                  src="https://res.cloudinary.com/dtyqscfja/image/upload/v1761153174/Ebrahim/IMG_9764_fmyyuo.jpg"
                   alt="Ebrahim Mohammad Kamal"
                   className="w-full rounded-2xl object-cover aspect-square"
                 />
@@ -573,35 +608,44 @@ const AboutPage = () => {
         </div>
       </section>
 
-      {/* 3. Global Reach with World Map */}
-      <section className="py-20 bg-white">
+      {/* 3. Global Impact with Dark Background */}
+      <section className="py-20 bg-gradient-to-br from-gray-900 via-black to-gray-900 text-white">
         <div className="container mx-auto px-6 max-w-6xl">
           <div className="text-center mb-16">
-            <span className="inline-block bg-red-100 text-red-800 text-xs font-semibold px-3 py-1 rounded-full mb-3">
+            <span className="inline-block bg-red-500/20 text-red-300 text-xs font-semibold px-3 py-1 rounded-full mb-3 border border-red-500/30">
               GLOBAL IMPACT
             </span>
-            <h2 className="text-3xl font-bold text-gray-900">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">
               Serving Clients Across Continents
             </h2>
-            <p className="text-gray-600 mt-4 max-w-2xl mx-auto">
+            <p className="text-gray-300 mt-4 max-w-2xl mx-auto">
               From North America to Europe, the Middle East to Oceania — I’ve
               helped brands navigate global supply chains with precision.
             </p>
           </div>
 
-          {/* Simplified World Map (SVG) */}
           <div className="flex flex-col items-center">
             <div className="relative w-full max-w-4xl mx-auto">
-              <World data={sampleArcs} globeConfig={globeConfig} />
+              {/* Globe Container with Glow Effect */}
+              <div className="relative after:absolute h-[600px] after:inset-0 after:rounded-2xl after:shadow-[0_0_40px_rgba(0,255,128,0.3)] after:z-[-1]">
+                <World data={sampleArcs} globeConfig={globeConfig} />
+              </div>
 
+              {/* Client Country Tags */}
               <div className="mt-8 grid grid-cols-2 md:grid-cols-4 gap-4">
                 {globalPresence.slice(0, 4).map((item, i) => (
-                  <div key={i} className="flex items-center gap-2">
-                    <CheckCircle className="w-4 h-4 text-green-600" />
-                    <span className="text-sm text-gray-700">
+                  <motion.div
+                    key={i}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    className="flex items-center gap-2 p-3 bg-gray-800/50 rounded-lg hover:bg-gray-700/50 transition-colors"
+                  >
+                    <CheckCircle className="w-4 h-4 text-green-400" />
+                    <span className="text-sm text-gray-200">
                       {item.country}
                     </span>
-                  </div>
+                  </motion.div>
                 ))}
               </div>
             </div>
@@ -737,7 +781,7 @@ const AboutPage = () => {
           <div className="mt-8 flex justify-center gap-6 text-gray-400">
             <div className="flex items-center gap-2">
               <MapPin className="w-4 h-4" />
-              Dhaka, Bangladesh
+              Rajshahi, Bangladesh
             </div>
           </div>
         </div>

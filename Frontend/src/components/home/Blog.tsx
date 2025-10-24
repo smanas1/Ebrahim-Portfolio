@@ -1,4 +1,4 @@
-import { Award, Check, ChevronUp, Zap, Target, Truck, Package, Camera, ShoppingCart, Globe, Users, Youtube, Phone, MapPin, Star, Calendar } from "lucide-react";
+import { Calendar } from "lucide-react";
 
 // Reusable Button Component
 const Button = ({
@@ -35,7 +35,9 @@ const Button = ({
     <button
       onClick={onClick}
       disabled={disabled}
-      className={`${baseClasses} ${variantClasses[variant]} ${sizeClasses[size]} ${className} ${disabled ? "opacity-50 cursor-not-allowed" : ""}`}
+      className={`${baseClasses} ${variantClasses[variant]} ${
+        sizeClasses[size]
+      } ${className} ${disabled ? "opacity-50 cursor-not-allowed" : ""}`}
     >
       {children}
     </button>
@@ -124,8 +126,7 @@ const Blog = () => {
             {[
               {
                 date: "21 November 2021",
-                title:
-                  "Role of Inspection and Testing in Maintaining Quality",
+                title: "Role of Inspection and Testing in Maintaining Quality",
                 excerpt:
                   "In manufacturing and other industries, maintaining high-quality standards...",
               },

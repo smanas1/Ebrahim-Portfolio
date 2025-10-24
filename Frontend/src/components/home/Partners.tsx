@@ -1,5 +1,3 @@
-import { Award, Check, ChevronUp, Zap, Target, Truck, Package, Camera, ShoppingCart, Globe, Users, Youtube } from "lucide-react";
-
 const Partners = () => {
   return (
     <section className="py-16 bg-gray-50 border-t border-b border-gray-200">
@@ -14,14 +12,14 @@ const Partners = () => {
             </h2>
             <p className="text-lg text-gray-600 mt-4 max-w-2xl">
               I leverage my expertise and global network to deliver seamless
-              logistics solutions — made possible through trusted
-              relationships with leading platforms and service providers.
+              logistics solutions — made possible through trusted relationships
+              with leading platforms and service providers.
             </p>
           </div>
           <div className="md:w-1/3 text-gray-600 text-sm leading-relaxed">
             I use my experience and global reach to drive economic prosperity
-            for my clients — and I’m proud of the impact we’ve created
-            together through long-term collaborations.
+            for my clients — and I’m proud of the impact we’ve created together
+            through long-term collaborations.
           </div>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 items-center justify-items-center">

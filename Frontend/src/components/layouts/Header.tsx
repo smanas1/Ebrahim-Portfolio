@@ -9,6 +9,7 @@ import {
   X,
 } from "lucide-react";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 interface NavItem {
   label: string;
@@ -71,8 +72,8 @@ const Header = () => {
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
 
   const navItems: NavItem[] = [
-    { label: "Home", href: "#" },
-    { label: "About", href: "#" },
+    { label: "Home", href: "/" },
+    { label: "About Me", href: "/about" },
     {
       label: "Services",
       dropdown: true,
@@ -178,12 +179,12 @@ const Header = () => {
                       <ChevronDown className="w-4 h-4 text-gray-500 group-hover:text-emerald-400 transition-colors" />
                     </div>
                   ) : (
-                    <a
-                      href={item.href}
+                    <Link
+                      to={item.href || "#"}
                       className="text-gray-300 hover:text-emerald-400 font-medium transition-colors"
                     >
                       {item.label}
-                    </a>
+                    </Link>
                   )}
                 </div>
               ))}
@@ -216,14 +217,14 @@ const Header = () => {
           <div className="md:hidden bg-gray-800 py-4 px-4">
             <div className="flex flex-col space-y-3">
               {navItems.map((item, index) => (
-                <a
+                <Link
                   key={index}
-                  href={item.href}
+                  to={item.href || "#"}
                   className="text-gray-300 hover:text-emerald-400 py-2 px-4 rounded hover:bg-gray-700 transition-colors"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   {item.label}
-                </a>
+                </Link>
               ))}
               <div className="pt-4 flex gap-3">
                 <Button variant="outline" size="sm" className="w-full">

@@ -1,0 +1,786 @@
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  ArrowRight,
+  Phone,
+  Mail,
+  MapPin,
+  User,
+  Globe,
+  Star,
+  Award,
+  Truck,
+  Camera,
+  Package,
+  Shield,
+  Target,
+  MessageSquare,
+  Send,
+  CheckCircle,
+} from "lucide-react";
+import { World } from "@/components/ui/globe";
+
+const AboutPage = () => {
+  const [isChatOpen, setIsChatOpen] = useState(false);
+  const globeConfig = {
+    pointSize: 4,
+    globeColor: "#062056",
+    showAtmosphere: true,
+    atmosphereColor: "#FFFFFF",
+    atmosphereAltitude: 0.1,
+    emissive: "#062056",
+    emissiveIntensity: 0.1,
+    shininess: 0.9,
+    polygonColor: "rgba(255,255,255,0.7)",
+    ambientLight: "#38bdf8",
+    directionalLeftLight: "#ffffff",
+    directionalTopLight: "#ffffff",
+    pointLight: "#ffffff",
+    arcTime: 1000,
+    arcLength: 0.9,
+    rings: 1,
+    maxRings: 3,
+    initialPosition: { lat: 22.3193, lng: 114.1694 },
+    autoRotate: true,
+    autoRotateSpeed: 0.5,
+  };
+  const colors = ["#06b6d4", "#3b82f6", "#6366f1"];
+  const sampleArcs = [
+    {
+      order: 1,
+      startLat: -19.885592,
+      startLng: -43.951191,
+      endLat: -22.9068,
+      endLng: -43.1729,
+      arcAlt: 0.1,
+      color: colors[Math.floor(Math.random() * (colors.length - 1))],
+    },
+    {
+      order: 1,
+      startLat: 28.6139,
+      startLng: 77.209,
+      endLat: 3.139,
+      endLng: 101.6869,
+      arcAlt: 0.2,
+      color: colors[Math.floor(Math.random() * (colors.length - 1))],
+    },
+    {
+      order: 1,
+      startLat: -19.885592,
+      startLng: -43.951191,
+      endLat: -1.303396,
+      endLng: 36.852443,
+      arcAlt: 0.5,
+      color: colors[Math.floor(Math.random() * (colors.length - 1))],
+    },
+    {
+      order: 2,
+      startLat: 1.3521,
+      startLng: 103.8198,
+      endLat: 35.6762,
+      endLng: 139.6503,
+      arcAlt: 0.2,
+      color: colors[Math.floor(Math.random() * (colors.length - 1))],
+    },
+    {
+      order: 2,
+      startLat: 51.5072,
+      startLng: -0.1276,
+      endLat: 3.139,
+      endLng: 101.6869,
+      arcAlt: 0.3,
+      color: colors[Math.floor(Math.random() * (colors.length - 1))],
+    },
+    {
+      order: 2,
+      startLat: -15.785493,
+      startLng: -47.909029,
+      endLat: 36.162809,
+      endLng: -115.119411,
+      arcAlt: 0.3,
+      color: colors[Math.floor(Math.random() * (colors.length - 1))],
+    },
+    {
+      order: 3,
+      startLat: -33.8688,
+      startLng: 151.2093,
+      endLat: 22.3193,
+      endLng: 114.1694,
+      arcAlt: 0.3,
+      color: colors[Math.floor(Math.random() * (colors.length - 1))],
+    },
+    {
+      order: 3,
+      startLat: 21.3099,
+      startLng: -157.8581,
+      endLat: 40.7128,
+      endLng: -74.006,
+      arcAlt: 0.3,
+      color: colors[Math.floor(Math.random() * (colors.length - 1))],
+    },
+    {
+      order: 3,
+      startLat: -6.2088,
+      startLng: 106.8456,
+      endLat: 51.5072,
+      endLng: -0.1276,
+      arcAlt: 0.3,
+      color: colors[Math.floor(Math.random() * (colors.length - 1))],
+    },
+    {
+      order: 4,
+      startLat: 11.986597,
+      startLng: 8.571831,
+      endLat: -15.595412,
+      endLng: -56.05918,
+      arcAlt: 0.5,
+      color: colors[Math.floor(Math.random() * (colors.length - 1))],
+    },
+    {
+      order: 4,
+      startLat: -34.6037,
+      startLng: -58.3816,
+      endLat: 22.3193,
+      endLng: 114.1694,
+      arcAlt: 0.7,
+      color: colors[Math.floor(Math.random() * (colors.length - 1))],
+    },
+    {
+      order: 4,
+      startLat: 51.5072,
+      startLng: -0.1276,
+      endLat: 48.8566,
+      endLng: -2.3522,
+      arcAlt: 0.1,
+      color: colors[Math.floor(Math.random() * (colors.length - 1))],
+    },
+    {
+      order: 5,
+      startLat: 14.5995,
+      startLng: 120.9842,
+      endLat: 51.5072,
+      endLng: -0.1276,
+      arcAlt: 0.3,
+      color: colors[Math.floor(Math.random() * (colors.length - 1))],
+    },
+    {
+      order: 5,
+      startLat: 1.3521,
+      startLng: 103.8198,
+      endLat: -33.8688,
+      endLng: 151.2093,
+      arcAlt: 0.2,
+      color: colors[Math.floor(Math.random() * (colors.length - 1))],
+    },
+    {
+      order: 5,
+      startLat: 34.0522,
+      startLng: -118.2437,
+      endLat: 48.8566,
+      endLng: -2.3522,
+      arcAlt: 0.2,
+      color: colors[Math.floor(Math.random() * (colors.length - 1))],
+    },
+    {
+      order: 6,
+      startLat: -15.432563,
+      startLng: 28.315853,
+      endLat: 1.094136,
+      endLng: -63.34546,
+      arcAlt: 0.7,
+      color: colors[Math.floor(Math.random() * (colors.length - 1))],
+    },
+    {
+      order: 6,
+      startLat: 37.5665,
+      startLng: 126.978,
+      endLat: 35.6762,
+      endLng: 139.6503,
+      arcAlt: 0.1,
+      color: colors[Math.floor(Math.random() * (colors.length - 1))],
+    },
+    {
+      order: 6,
+      startLat: 22.3193,
+      startLng: 114.1694,
+      endLat: 51.5072,
+      endLng: -0.1276,
+      arcAlt: 0.3,
+      color: colors[Math.floor(Math.random() * (colors.length - 1))],
+    },
+    {
+      order: 7,
+      startLat: -19.885592,
+      startLng: -43.951191,
+      endLat: -15.595412,
+      endLng: -56.05918,
+      arcAlt: 0.1,
+      color: colors[Math.floor(Math.random() * (colors.length - 1))],
+    },
+    {
+      order: 7,
+      startLat: 48.8566,
+      startLng: -2.3522,
+      endLat: 52.52,
+      endLng: 13.405,
+      arcAlt: 0.1,
+      color: colors[Math.floor(Math.random() * (colors.length - 1))],
+    },
+    {
+      order: 7,
+      startLat: 52.52,
+      startLng: 13.405,
+      endLat: 34.0522,
+      endLng: -118.2437,
+      arcAlt: 0.2,
+      color: colors[Math.floor(Math.random() * (colors.length - 1))],
+    },
+    {
+      order: 8,
+      startLat: -8.833221,
+      startLng: 13.264837,
+      endLat: -33.936138,
+      endLng: 18.436529,
+      arcAlt: 0.2,
+      color: colors[Math.floor(Math.random() * (colors.length - 1))],
+    },
+    {
+      order: 8,
+      startLat: 49.2827,
+      startLng: -123.1207,
+      endLat: 52.3676,
+      endLng: 4.9041,
+      arcAlt: 0.2,
+      color: colors[Math.floor(Math.random() * (colors.length - 1))],
+    },
+    {
+      order: 8,
+      startLat: 1.3521,
+      startLng: 103.8198,
+      endLat: 40.7128,
+      endLng: -74.006,
+      arcAlt: 0.5,
+      color: colors[Math.floor(Math.random() * (colors.length - 1))],
+    },
+    {
+      order: 9,
+      startLat: 51.5072,
+      startLng: -0.1276,
+      endLat: 34.0522,
+      endLng: -118.2437,
+      arcAlt: 0.2,
+      color: colors[Math.floor(Math.random() * (colors.length - 1))],
+    },
+    {
+      order: 9,
+      startLat: 22.3193,
+      startLng: 114.1694,
+      endLat: -22.9068,
+      endLng: -43.1729,
+      arcAlt: 0.7,
+      color: colors[Math.floor(Math.random() * (colors.length - 1))],
+    },
+    {
+      order: 9,
+      startLat: 1.3521,
+      startLng: 103.8198,
+      endLat: -34.6037,
+      endLng: -58.3816,
+      arcAlt: 0.5,
+      color: colors[Math.floor(Math.random() * (colors.length - 1))],
+    },
+    {
+      order: 10,
+      startLat: -22.9068,
+      startLng: -43.1729,
+      endLat: 28.6139,
+      endLng: 77.209,
+      arcAlt: 0.7,
+      color: colors[Math.floor(Math.random() * (colors.length - 1))],
+    },
+    {
+      order: 10,
+      startLat: 34.0522,
+      startLng: -118.2437,
+      endLat: 31.2304,
+      endLng: 121.4737,
+      arcAlt: 0.3,
+      color: colors[Math.floor(Math.random() * (colors.length - 1))],
+    },
+    {
+      order: 10,
+      startLat: -6.2088,
+      startLng: 106.8456,
+      endLat: 52.3676,
+      endLng: 4.9041,
+      arcAlt: 0.3,
+      color: colors[Math.floor(Math.random() * (colors.length - 1))],
+    },
+    {
+      order: 11,
+      startLat: 41.9028,
+      startLng: 12.4964,
+      endLat: 34.0522,
+      endLng: -118.2437,
+      arcAlt: 0.2,
+      color: colors[Math.floor(Math.random() * (colors.length - 1))],
+    },
+    {
+      order: 11,
+      startLat: -6.2088,
+      startLng: 106.8456,
+      endLat: 31.2304,
+      endLng: 121.4737,
+      arcAlt: 0.2,
+      color: colors[Math.floor(Math.random() * (colors.length - 1))],
+    },
+    {
+      order: 11,
+      startLat: 22.3193,
+      startLng: 114.1694,
+      endLat: 1.3521,
+      endLng: 103.8198,
+      arcAlt: 0.2,
+      color: colors[Math.floor(Math.random() * (colors.length - 1))],
+    },
+    {
+      order: 12,
+      startLat: 34.0522,
+      startLng: -118.2437,
+      endLat: 37.7749,
+      endLng: -122.4194,
+      arcAlt: 0.1,
+      color: colors[Math.floor(Math.random() * (colors.length - 1))],
+    },
+    {
+      order: 12,
+      startLat: 35.6762,
+      startLng: 139.6503,
+      endLat: 22.3193,
+      endLng: 114.1694,
+      arcAlt: 0.2,
+      color: colors[Math.floor(Math.random() * (colors.length - 1))],
+    },
+    {
+      order: 12,
+      startLat: 22.3193,
+      startLng: 114.1694,
+      endLat: 34.0522,
+      endLng: -118.2437,
+      arcAlt: 0.3,
+      color: colors[Math.floor(Math.random() * (colors.length - 1))],
+    },
+    {
+      order: 13,
+      startLat: 52.52,
+      startLng: 13.405,
+      endLat: 22.3193,
+      endLng: 114.1694,
+      arcAlt: 0.3,
+      color: colors[Math.floor(Math.random() * (colors.length - 1))],
+    },
+    {
+      order: 13,
+      startLat: 11.986597,
+      startLng: 8.571831,
+      endLat: 35.6762,
+      endLng: 139.6503,
+      arcAlt: 0.3,
+      color: colors[Math.floor(Math.random() * (colors.length - 1))],
+    },
+    {
+      order: 13,
+      startLat: -22.9068,
+      startLng: -43.1729,
+      endLat: -34.6037,
+      endLng: -58.3816,
+      arcAlt: 0.1,
+      color: colors[Math.floor(Math.random() * (colors.length - 1))],
+    },
+    {
+      order: 14,
+      startLat: -33.936138,
+      startLng: 18.436529,
+      endLat: 21.395643,
+      endLng: 39.883798,
+      arcAlt: 0.3,
+      color: colors[Math.floor(Math.random() * (colors.length - 1))],
+    },
+  ];
+
+  const services = [
+    {
+      name: "Product Sourcing",
+      icon: <Target />,
+      desc: "Ethical, cost-effective supplier matching",
+    },
+    {
+      name: "Quality Control",
+      icon: <Shield />,
+      desc: "Rigorous pre-shipment inspections",
+    },
+    {
+      name: "Freight Forwarding",
+      icon: <Truck />,
+      desc: "Door-to-door global logistics",
+    },
+    {
+      name: "Product Photography",
+      icon: <Camera />,
+      desc: "E-commerce-ready visuals",
+    },
+    {
+      name: "Sample Management",
+      icon: <Package />,
+      desc: "Consolidation & evaluation",
+    },
+    {
+      name: "End-to-End Fulfillment",
+      icon: <Globe />,
+      desc: "From factory to customer",
+    },
+  ];
+
+  const achievements = [
+    { value: "50+", label: "Global Clients" },
+    { value: "8+", label: "Years Experience" },
+    { value: "100%", label: "On-Time Delivery" },
+    { value: "200+", label: "Products Sourced" },
+  ];
+
+  const testimonials = [
+    {
+      name: "Sarah T.",
+      role: "Amazon FBA Seller, USA",
+      text: "Ebrahim saved my business during a supplier crisis. His QC caught a defect before shipment — that alone saved me $15K in returns.",
+    },
+    {
+      name: "James L.",
+      role: "E-commerce Brand Owner, UK",
+      text: "From sourcing to delivery, everything was seamless. He’s now my go-to logistics partner for all product lines.",
+    },
+    {
+      name: "Aisha R.",
+      role: "Startup Founder, UAE",
+      text: "As a first-time importer, I was lost. Ebrahim guided me step-by-step with patience and expertise.",
+    },
+  ];
+
+  // Countries where you've served clients (for map visualization)
+  const globalPresence = [
+    { country: "USA", clients: 18 },
+    { country: "UK", clients: 9 },
+    { country: "Germany", clients: 7 },
+    { country: "Australia", clients: 5 },
+    { country: "UAE", clients: 4 },
+    { country: "Canada", clients: 3 },
+    { country: "France", clients: 2 },
+    { country: "Singapore", clients: 2 },
+  ];
+
+  return (
+    <div className="min-h-screen bg-white">
+      {/* 1. Hero */}
+      <section className="relative h-[70vh] bg-gradient-to-br from-green-900 to-red-800 text-white overflow-hidden">
+        <div className="absolute inset-0 bg-black/30"></div>
+        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1581092580497-e0d23cbdf1dc?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80')] bg-cover bg-center opacity-15"></div>
+        <div className="relative container mx-auto px-6 flex flex-col justify-center h-full max-w-4xl">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7 }}
+            className="space-y-6"
+          >
+            <div className="inline-block bg-white/20 backdrop-blur-sm px-4 py-1 rounded-full text-sm font-medium">
+              Sourcing & Logistics Expert
+            </div>
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
+              Hi, I'm{" "}
+              <span className="text-green-300">Ebrahim Mohammad Kamal</span>
+            </h1>
+            <p className="text-lg md:text-xl max-w-2xl opacity-90">
+              I help global e-commerce brands source smarter, ship faster, and
+              scale with confidence — from Dhaka to the world.
+            </p>
+            <motion.button
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.98 }}
+              className="mt-4 inline-flex items-center gap-2 bg-white text-red-700 font-semibold px-6 py-3 rounded-lg"
+            >
+              Let’s Work Together
+              <ArrowRight className="w-4 h-4" />
+            </motion.button>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* 2. Personal Journey */}
+      <section className="py-20 bg-gray-50">
+        <div className="container mx-auto px-6 max-w-6xl">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              className="space-y-6"
+            >
+              <div>
+                <span className="inline-block bg-green-100 text-green-800 text-xs font-semibold px-3 py-1 rounded-full mb-3">
+                  MY JOURNEY
+                </span>
+                <h2 className="text-3xl font-bold text-gray-900">
+                  From Frustration to Trusted Partner
+                </h2>
+              </div>
+              <p className="text-gray-700 leading-relaxed">
+                Over 8 years ago, I faced the same sourcing nightmares many of
+                you do today: delayed shipments, hidden defects, unreliable
+                suppliers, and communication breakdowns across time zones.
+              </p>
+              <p className="text-gray-700 leading-relaxed">
+                That frustration became my mission. Today, I’ve partnered with
+                50+ global clients — from Amazon FBA sellers to enterprise
+                brands — to build transparent, resilient supply chains that just{" "}
+                <em>work</em>.
+              </p>
+              <p className="text-gray-700 leading-relaxed font-medium">
+                I don’t just manage logistics. I protect your reputation, your
+                margins, and your peace of mind.
+              </p>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              className="relative"
+            >
+              <div className="bg-white p-1 rounded-2xl shadow-xl">
+                <img
+                  src="https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+                  alt="Ebrahim Mohammad Kamal"
+                  className="w-full rounded-2xl object-cover aspect-square"
+                />
+              </div>
+              <div className="absolute -bottom-6 -right-6 bg-red-600 text-white px-5 py-3 rounded-lg shadow-lg">
+                <div className="font-bold text-lg">8+ Years</div>
+                <div className="text-sm opacity-90">
+                  In Sourcing & Logistics
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* 3. Global Reach with World Map */}
+      <section className="py-20 bg-white">
+        <div className="container mx-auto px-6 max-w-6xl">
+          <div className="text-center mb-16">
+            <span className="inline-block bg-red-100 text-red-800 text-xs font-semibold px-3 py-1 rounded-full mb-3">
+              GLOBAL IMPACT
+            </span>
+            <h2 className="text-3xl font-bold text-gray-900">
+              Serving Clients Across Continents
+            </h2>
+            <p className="text-gray-600 mt-4 max-w-2xl mx-auto">
+              From North America to Europe, the Middle East to Oceania — I’ve
+              helped brands navigate global supply chains with precision.
+            </p>
+          </div>
+
+          {/* Simplified World Map (SVG) */}
+          <div className="flex flex-col items-center">
+            <div className="relative w-full max-w-4xl mx-auto">
+              <World data={sampleArcs} globeConfig={globeConfig} />
+
+              <div className="mt-8 grid grid-cols-2 md:grid-cols-4 gap-4">
+                {globalPresence.slice(0, 4).map((item, i) => (
+                  <div key={i} className="flex items-center gap-2">
+                    <CheckCircle className="w-4 h-4 text-green-600" />
+                    <span className="text-sm text-gray-700">
+                      {item.country}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 4. Services */}
+      <section className="py-20 bg-gray-50">
+        <div className="container mx-auto px-6 max-w-6xl">
+          <div className="text-center mb-16">
+            <span className="inline-block bg-green-100 text-green-800 text-xs font-semibold px-3 py-1 rounded-full mb-3">
+              MY EXPERTISE
+            </span>
+            <h2 className="text-3xl font-bold text-gray-900">
+              End-to-End Supply Chain Solutions
+            </h2>
+            <p className="text-gray-600 mt-4 max-w-2xl mx-auto">
+              I offer hands-on, white-glove support at every stage — because
+              your success depends on details.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {services.map((service, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1 }}
+                className="group p-6 bg-white rounded-2xl border border-gray-200 hover:border-green-400 transition-all shadow-sm hover:shadow-md"
+              >
+                <div className="w-12 h-12 rounded-xl bg-green-50 flex items-center justify-center text-green-600 mb-4 group-hover:bg-green-100 transition-colors">
+                  {service.icon}
+                </div>
+                <h3 className="font-semibold text-lg text-gray-900 mb-2">
+                  {service.name}
+                </h3>
+                <p className="text-gray-600 text-sm">{service.desc}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 5. Stats & Achievements */}
+      <section className="py-16 bg-gradient-to-r from-green-50 to-red-50">
+        <div className="container mx-auto px-6 max-w-5xl">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+            {achievements.map((stat, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                className="p-6"
+              >
+                <div className="text-3xl md:text-4xl font-bold text-gray-900 mb-1">
+                  {stat.value}
+                </div>
+                <div className="text-gray-600 text-sm">{stat.label}</div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 6. Testimonials */}
+      <section className="py-20 bg-white">
+        <div className="container mx-auto px-6 max-w-5xl">
+          <div className="text-center mb-16">
+            <span className="inline-block bg-red-100 text-red-800 text-xs font-semibold px-3 py-1 rounded-full mb-3">
+              CLIENT LOVE
+            </span>
+            <h2 className="text-3xl font-bold text-gray-900">
+              Trusted by Global Brands
+            </h2>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            {testimonials.map((t, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                className="bg-gray-50 p-6 rounded-2xl"
+              >
+                <div className="text-yellow-400 mb-3">★★★★★</div>
+                <p className="text-gray-700 text-sm mb-4 italic">"{t.text}"</p>
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center">
+                    <User className="w-5 h-5 text-green-600" />
+                  </div>
+                  <div>
+                    <div className="font-medium text-gray-900">{t.name}</div>
+                    <div className="text-xs text-gray-500">{t.role}</div>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 7. CTA + Contact */}
+      <section className="py-20 bg-gray-900 text-white">
+        <div className="container mx-auto px-6 text-center max-w-3xl">
+          <h2 className="text-3xl md:text-4xl font-bold mb-6">
+            Ready to Simplify Your Supply Chain?
+          </h2>
+          <p className="text-gray-300 mb-8">
+            Let’s connect. I respond personally to every inquiry within 24
+            hours.
+          </p>
+          <div className="flex flex-col sm:flex-row justify-center gap-4">
+            <a
+              href="mailto:thisisebrahim@gmail.com"
+              className="inline-flex items-center justify-center gap-2 bg-red-600 hover:bg-red-700 px-6 py-3 rounded-lg font-medium transition-colors"
+            >
+              <Mail className="w-5 h-5" />
+              Email Me
+            </a>
+            <a
+              href="tel:+8801750062927"
+              className="inline-flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 px-6 py-3 rounded-lg font-medium transition-colors"
+            >
+              <Phone className="w-5 h-5" />
+              Call Now
+            </a>
+          </div>
+          <div className="mt-8 flex justify-center gap-6 text-gray-400">
+            <div className="flex items-center gap-2">
+              <MapPin className="w-4 h-4" />
+              Dhaka, Bangladesh
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Floating Chat */}
+      <div className="fixed bottom-6 right-6 z-50">
+        <AnimatePresence>
+          {isChatOpen && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 20 }}
+              className="mb-4 bg-white text-gray-800 rounded-2xl shadow-xl p-4 w-80"
+            >
+              <p className="text-sm">
+                Hi! I’m Ebrahim. Leave your email or WhatsApp, and I’ll get back
+                to you shortly.
+              </p>
+              <div className="mt-3 flex gap-2">
+                <input
+                  type="text"
+                  placeholder="Your email or number"
+                  className="flex-1 text-sm px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+                />
+                <button className="bg-green-600 text-white p-2 rounded-lg">
+                  <Send className="w-4 h-4" />
+                </button>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          onClick={() => setIsChatOpen(!isChatOpen)}
+          className="bg-green-600 text-white p-4 rounded-full shadow-lg"
+        >
+          <MessageSquare className="w-6 h-6" />
+        </motion.button>
+      </div>
+    </div>
+  );
+};
+
+export default AboutPage;

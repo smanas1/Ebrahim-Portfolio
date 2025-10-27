@@ -1,8 +1,8 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import type { RootState } from './store';
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import type { RootState } from "./store";
 
 // Define the base URL for your backend API
-const BASE_URL = 'http://localhost:5000/api'; // Adjust this to match your backend server URL
+const BASE_URL = import.meta.env.VITE_BASE_URL; // Adjust this to match your backend server URL
 
 // Define custom types for your data
 export interface Product {
@@ -69,68 +69,74 @@ export interface CreateBlogRequest {
 
 // Define the API slice
 export const apiSlice = createApi({
-  reducerPath: 'api',
-  baseQuery: fetchBaseQuery({ 
+  reducerPath: "api",
+  baseQuery: fetchBaseQuery({
     baseUrl: BASE_URL,
     prepareHeaders: (headers, { getState }) => {
       // Get the token from the Redux store
       const token = (getState() as RootState).auth.token;
-      
+
       // If we have a token, set it in the headers
       if (token) {
-        headers.set('authorization', `Bearer ${token}`);
+        headers.set("authorization", `Bearer ${token}`);
       }
-      
+
       return headers;
     },
   }),
-  tagTypes: ['Product', 'Blog', 'User'],
+  tagTypes: ["Product", "Blog", "User"],
   endpoints: (builder) => ({
     // Product endpoints
     getAllProducts: builder.query<Product[], void>({
-      query: () => '/product/all-products',
-      providesTags: ['Product'],
+      query: () => "/product/all-products",
+      providesTags: ["Product"],
     }),
-    
+
     // Blog endpoints
     getAllBlogs: builder.query<Blog[], void>({
-      query: () => '/blog/all-blogs',
-      providesTags: ['Blog'],
+      query: () => "/blog/all-blogs",
+      providesTags: ["Blog"],
     }),
     createBlog: builder.mutation<Blog, CreateBlogRequest>({
       query: (newBlog) => ({
-        url: '/blog/create',
-        method: 'POST',
+        url: "/blog/create",
+        method: "POST",
         body: newBlog,
       }),
-      invalidatesTags: ['Blog'],
+      invalidatesTags: ["Blog"],
     }),
-    
+
     // User endpoints
-    registerUser: builder.mutation<RegisterResponse, Omit<User, '_id' | 'createdAt' | 'updatedAt'> & { password: string }>({
+    registerUser: builder.mutation<
+      RegisterResponse,
+      Omit<User, "_id" | "createdAt" | "updatedAt"> & { password: string }
+    >({
       query: (userData) => ({
-        url: '/user/register',
-        method: 'POST',
+        url: "/user/register",
+        method: "POST",
         body: userData,
       }),
-      invalidatesTags: ['User'],
+      invalidatesTags: ["User"],
     }),
-    loginUser: builder.mutation<LoginResponse, { email: string; password: string }>({
+    loginUser: builder.mutation<
+      LoginResponse,
+      { email: string; password: string }
+    >({
       query: (credentials) => ({
-        url: '/user/login',
-        method: 'POST',
+        url: "/user/login",
+        method: "POST",
         body: credentials,
       }),
-      invalidatesTags: ['User'],
+      invalidatesTags: ["User"],
     }),
   }),
 });
 
 // Export the auto-generated hooks
-export const { 
-  useGetAllProductsQuery, 
-  useGetAllBlogsQuery, 
-  useCreateBlogMutation, 
-  useRegisterUserMutation, 
-  useLoginUserMutation 
+export const {
+  useGetAllProductsQuery,
+  useGetAllBlogsQuery,
+  useCreateBlogMutation,
+  useRegisterUserMutation,
+  useLoginUserMutation,
 } = apiSlice;

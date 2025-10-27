@@ -118,7 +118,7 @@ const Header = () => {
         },
       ],
     },
-    { label: "Products", href: "#" },
+    { label: "Products", href: "/products" },
     { label: "Blog", href: "#" },
   ];
 

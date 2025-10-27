@@ -28,6 +28,8 @@ import {
   X,
   ChevronLeft,
   ChevronRight,
+  Filter,
+  XCircle,
 } from "lucide-react";
 
 interface ProductFilters {
@@ -35,6 +37,11 @@ interface ProductFilters {
   minMoq: string;
   maxPrice: string;
   search: string;
+  minSampleCost: string;
+  maxSampleCost: string;
+  minShipToUsa: string;
+  maxShipToUsa: string;
+  shipToUsaAvailable: "yes" | "no" | "";
 }
 
 interface Product {
@@ -62,10 +69,16 @@ const ProductPage: React.FC = () => {
     minMoq: "",
     maxPrice: "",
     search: "",
+    minSampleCost: "",
+    maxSampleCost: "",
+    minShipToUsa: "",
+    maxShipToUsa: "",
+    shipToUsaAvailable: "",
   });
   const [selectedProducts, setSelectedProducts] = useState<string[]>([]);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [showAdvancedFilters, setShowAdvancedFilters] = useState(false);
 
   const categories = useMemo(() => {
     const uniqueCategories = Array.from(
@@ -73,6 +86,18 @@ const ProductPage: React.FC = () => {
     );
     return uniqueCategories.filter((cat) => cat && cat.trim() !== "");
   }, [products]);
+
+  const parsePrice = (priceStr: string): number => {
+    if (!priceStr) return 0;
+    const num = parseFloat(priceStr.replace(/[^0-9.-]+/g, ""));
+    return isNaN(num) ? 0 : num;
+  };
+
+  const parseMoq = (moqStr: string): number => {
+    if (!moqStr) return 0;
+    const num = parseInt(moqStr.replace(/[^0-9]/g, ""), 10);
+    return isNaN(num) ? 0 : num;
+  };
 
   const filteredProducts = useMemo(() => {
     return products.filter((product) => {
@@ -88,20 +113,52 @@ const ProductPage: React.FC = () => {
         categoryFilter === "all" ||
         product.category === categoryFilter;
 
-      const minMoqValue = parseInt(filters.minMoq) || 0;
-      const productMoq = parseInt(product.moq) || 0;
+      // Fixed MOQ filter
+      const minMoqValue = filters.minMoq ? parseMoq(filters.minMoq) : 0;
+      const productMoq = parseMoq(product.moq);
       const matchesMoq = productMoq >= minMoqValue;
 
-      const costOfGoods = product.costOfGoods || "0";
-      const price =
-        parseFloat(costOfGoods.replace(/[^0-9.-]+/g, "")) || Infinity;
-      const maxPrice =
-        parseFloat(
-          (filters.maxPrice || "Infinity").replace(/[^0-9.-]+/g, "")
-        ) || Infinity;
-      const matchesPrice = price <= maxPrice;
+      const productPrice = parsePrice(product.costOfGoods || "0");
+      const maxPrice = filters.maxPrice
+        ? parsePrice(filters.maxPrice)
+        : Infinity;
+      const matchesPrice = productPrice <= maxPrice;
 
-      return matchesSearch && matchesCategory && matchesMoq && matchesPrice;
+      const minSample = filters.minSampleCost
+        ? parsePrice(filters.minSampleCost)
+        : 0;
+      const maxSample = filters.maxSampleCost
+        ? parsePrice(filters.maxSampleCost)
+        : Infinity;
+      const productSample = parsePrice(product.sampleCost || "0");
+      const matchesSampleCost =
+        productSample >= minSample && productSample <= maxSample;
+
+      // Ship to USA price filter
+      const minShip = filters.minShipToUsa
+        ? parsePrice(filters.minShipToUsa)
+        : 0;
+      const maxShip = filters.maxShipToUsa
+        ? parsePrice(filters.maxShipToUsa)
+        : Infinity;
+      const productShip = parsePrice(product.shipToUsa || "0");
+      const matchesShipPrice = productShip >= minShip && productShip <= maxShip;
+
+      // Ship availability filter
+      const matchesShipAvailability =
+        !filters.shipToUsaAvailable ||
+        (filters.shipToUsaAvailable === "yes" && productShip > 0) ||
+        (filters.shipToUsaAvailable === "no" && productShip === 0);
+
+      return (
+        matchesSearch &&
+        matchesCategory &&
+        matchesMoq &&
+        matchesPrice &&
+        matchesSampleCost &&
+        matchesShipPrice &&
+        matchesShipAvailability
+      );
     });
   }, [products, filters]);
 
@@ -136,6 +193,69 @@ const ProductPage: React.FC = () => {
         prev === 0 ? selectedProduct.pictures.length - 1 : prev - 1
       );
     }
+  };
+
+  const resetFilters = () => {
+    setFilters({
+      category: "",
+      minMoq: "",
+      maxPrice: "",
+      search: "",
+      minSampleCost: "",
+      maxSampleCost: "",
+      minShipToUsa: "",
+      maxShipToUsa: "",
+      shipToUsaAvailable: "",
+    });
+  };
+
+  // Lazy loading image component
+  const LazyImage = ({
+    src,
+    alt,
+    className,
+    placeholder = "/placeholder.jpg",
+  }: {
+    src: string;
+    alt: string;
+    className?: string;
+    placeholder?: string;
+  }) => {
+    const [imgSrc, setImgSrc] = useState(placeholder);
+    const [isLoaded, setIsLoaded] = useState(false);
+
+    const onLoad = () => {
+      setIsLoaded(true);
+    };
+
+    const onError = () => {
+      setImgSrc(placeholder);
+      setIsLoaded(true);
+    };
+
+    React.useEffect(() => {
+      const img = new Image();
+      img.src = src;
+      img.onload = onLoad;
+      img.onerror = onError;
+
+      const timer = setTimeout(() => {
+        setImgSrc(src);
+      }, 100);
+
+      return () => clearTimeout(timer);
+    }, [src]);
+
+    return (
+      <img
+        src={imgSrc}
+        alt={alt}
+        className={`${className} ${
+          isLoaded ? "opacity-100" : "opacity-0"
+        } transition-opacity duration-300`}
+        loading="lazy"
+      />
+    );
   };
 
   if (isLoading) {
@@ -190,7 +310,20 @@ const ProductPage: React.FC = () => {
         {/* Filters */}
         <div className="mb-10">
           <Card className="p-5 bg-white border border-green-100 shadow-sm">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="font-semibold text-gray-800">Filters</h2>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setShowAdvancedFilters(!showAdvancedFilters)}
+                className="text-green-600 hover:bg-green-50"
+              >
+                <Filter className="h-4 w-4 mr-2" />
+                {showAdvancedFilters ? "Hide Advanced" : "Show Advanced"}
+              </Button>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
               <div>
                 <label className="block text-xs font-medium text-gray-700 mb-1">
                   Search
@@ -248,8 +381,9 @@ const ProductPage: React.FC = () => {
                 </label>
                 <Input
                   type="number"
-                  placeholder="e.g. 10"
-                  value={filters.maxPrice?.replace(/[^0-9]/g, "")}
+                  step="0.01"
+                  placeholder="e.g. 10.99"
+                  value={filters.maxPrice}
                   onChange={(e) =>
                     handleFilterChange("maxPrice", e.target.value)
                   }
@@ -257,6 +391,184 @@ const ProductPage: React.FC = () => {
                 />
               </div>
             </div>
+
+            {showAdvancedFilters && (
+              <div className="border-t border-gray-200 pt-4 mt-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                  <div>
+                    <label className="block text-xs font-medium text-gray-700 mb-1">
+                      Sample Cost Range ($)
+                    </label>
+                    <div className="flex gap-2">
+                      <Input
+                        type="number"
+                        step="0.01"
+                        placeholder="Min"
+                        value={filters.minSampleCost}
+                        onChange={(e) =>
+                          handleFilterChange("minSampleCost", e.target.value)
+                        }
+                        className="text-sm border-green-200 focus:ring-green-500 focus:border-green-500"
+                      />
+                      <Input
+                        type="number"
+                        step="0.01"
+                        placeholder="Max"
+                        value={filters.maxSampleCost}
+                        onChange={(e) =>
+                          handleFilterChange("maxSampleCost", e.target.value)
+                        }
+                        className="text-sm border-green-200 focus:ring-green-500 focus:border-green-500"
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-xs font-medium text-gray-700 mb-1">
+                      Ship to USA Price Range ($)
+                    </label>
+                    <div className="flex gap-2">
+                      <Input
+                        type="number"
+                        step="0.01"
+                        placeholder="Min"
+                        value={filters.minShipToUsa}
+                        onChange={(e) =>
+                          handleFilterChange("minShipToUsa", e.target.value)
+                        }
+                        className="text-sm border-green-200 focus:ring-green-500 focus:border-green-500"
+                      />
+                      <Input
+                        type="number"
+                        step="0.01"
+                        placeholder="Max"
+                        value={filters.maxShipToUsa}
+                        onChange={(e) =>
+                          handleFilterChange("maxShipToUsa", e.target.value)
+                        }
+                        className="text-sm border-green-200 focus:ring-green-500 focus:border-green-500"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-xs font-medium text-gray-700 mb-1">
+                      Ships to USA
+                    </label>
+                    <Select
+                      value={filters.shipToUsaAvailable}
+                      onValueChange={(v) =>
+                        handleFilterChange(
+                          "shipToUsaAvailable",
+                          v as "yes" | "no" | ""
+                        )
+                      }
+                    >
+                      <SelectTrigger className="text-sm border-green-200 focus:ring-green-500 focus:border-green-500">
+                        <SelectValue placeholder="Any" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="yes">Yes</SelectItem>
+                        <SelectItem value="no">No</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {(filters.minSampleCost ||
+              filters.maxSampleCost ||
+              filters.minShipToUsa ||
+              filters.maxShipToUsa ||
+              filters.shipToUsaAvailable) && (
+              <div className="mt-4 pt-4 border-t border-gray-200">
+                <div className="flex flex-wrap gap-2">
+                  {filters.minSampleCost && (
+                    <Badge
+                      variant="secondary"
+                      className="bg-blue-100 text-blue-800"
+                    >
+                      Min Sample: ${filters.minSampleCost}
+                      <button
+                        onClick={() => handleFilterChange("minSampleCost", "")}
+                        className="ml-1 hover:bg-blue-200 rounded-full"
+                      >
+                        <XCircle className="h-3 w-3" />
+                      </button>
+                    </Badge>
+                  )}
+                  {filters.maxSampleCost && (
+                    <Badge
+                      variant="secondary"
+                      className="bg-blue-100 text-blue-800"
+                    >
+                      Max Sample: ${filters.maxSampleCost}
+                      <button
+                        onClick={() => handleFilterChange("maxSampleCost", "")}
+                        className="ml-1 hover:bg-blue-200 rounded-full"
+                      >
+                        <XCircle className="h-3 w-3" />
+                      </button>
+                    </Badge>
+                  )}
+                  {filters.minShipToUsa && (
+                    <Badge
+                      variant="secondary"
+                      className="bg-purple-100 text-purple-800"
+                    >
+                      Min Ship: ${filters.minShipToUsa}
+                      <button
+                        onClick={() => handleFilterChange("minShipToUsa", "")}
+                        className="ml-1 hover:bg-purple-200 rounded-full"
+                      >
+                        <XCircle className="h-3 w-3" />
+                      </button>
+                    </Badge>
+                  )}
+                  {filters.maxShipToUsa && (
+                    <Badge
+                      variant="secondary"
+                      className="bg-purple-100 text-purple-800"
+                    >
+                      Max Ship: ${filters.maxShipToUsa}
+                      <button
+                        onClick={() => handleFilterChange("maxShipToUsa", "")}
+                        className="ml-1 hover:bg-purple-200 rounded-full"
+                      >
+                        <XCircle className="h-3 w-3" />
+                      </button>
+                    </Badge>
+                  )}
+                  {filters.shipToUsaAvailable && (
+                    <Badge
+                      variant="secondary"
+                      className="bg-green-100 text-green-800"
+                    >
+                      Ships to USA:{" "}
+                      {filters.shipToUsaAvailable === "yes" ? "Yes" : "No"}
+                      <button
+                        onClick={() =>
+                          handleFilterChange("shipToUsaAvailable", "")
+                        }
+                        className="ml-1 hover:bg-green-200 rounded-full"
+                      >
+                        <XCircle className="h-3 w-3" />
+                      </button>
+                    </Badge>
+                  )}
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={resetFilters}
+                    className="text-red-600 hover:bg-red-50 h-7 px-2"
+                  >
+                    Clear All
+                  </Button>
+                </div>
+              </div>
+            )}
           </Card>
         </div>
 
@@ -272,10 +584,10 @@ const ProductPage: React.FC = () => {
                     : ""
                 } flex flex-col h-full`}
               >
-                {/* Compact image container */}
+                {/* Compact image container with lazy loading */}
                 <div className="relative h-40 overflow-hidden bg-gray-50">
                   {product.pictures?.[0] ? (
-                    <img
+                    <LazyImage
                       src={product.pictures[0].trim()}
                       alt={product.productName}
                       className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
@@ -354,7 +666,7 @@ const ProductPage: React.FC = () => {
                           {selectedProduct?.pictures &&
                           selectedProduct.pictures.length > 0 ? (
                             <div className="relative">
-                              <img
+                              <LazyImage
                                 src={
                                   selectedProduct.pictures[
                                     currentImageIndex
@@ -578,14 +890,7 @@ const ProductPage: React.FC = () => {
             <Button
               variant="outline"
               className="border-green-300 text-green-700 hover:bg-green-50"
-              onClick={() =>
-                setFilters({
-                  category: "",
-                  minMoq: "",
-                  maxPrice: "",
-                  search: "",
-                })
-              }
+              onClick={resetFilters}
             >
               Reset Filters
             </Button>

@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect, useCallback } from "react";
 import { useGetAllProductsQuery } from "../store/api";
 import {
   Card,
@@ -26,8 +26,6 @@ import {
   Truck,
   ImageIcon,
   X,
-  ChevronLeft,
-  ChevronRight,
   Filter,
   XCircle,
 } from "lucide-react";
@@ -54,6 +52,8 @@ interface Product {
   costOfGoods: string;
   sampleCost: string;
   shipToUsa: string;
+  brandName?: string;
+  asin?: string;
   material?: string;
   dimensions?: string;
   weight?: string;
@@ -113,7 +113,6 @@ const ProductPage: React.FC = () => {
         categoryFilter === "all" ||
         product.category === categoryFilter;
 
-      // Fixed MOQ filter
       const minMoqValue = filters.minMoq ? parseMoq(filters.minMoq) : 0;
       const productMoq = parseMoq(product.moq);
       const matchesMoq = productMoq >= minMoqValue;
@@ -134,7 +133,6 @@ const ProductPage: React.FC = () => {
       const matchesSampleCost =
         productSample >= minSample && productSample <= maxSample;
 
-      // Ship to USA price filter
       const minShip = filters.minShipToUsa
         ? parsePrice(filters.minShipToUsa)
         : 0;
@@ -144,7 +142,6 @@ const ProductPage: React.FC = () => {
       const productShip = parsePrice(product.shipToUsa || "0");
       const matchesShipPrice = productShip >= minShip && productShip <= maxShip;
 
-      // Ship availability filter
       const matchesShipAvailability =
         !filters.shipToUsaAvailable ||
         (filters.shipToUsaAvailable === "yes" && productShip > 0) ||
@@ -179,22 +176,6 @@ const ProductPage: React.FC = () => {
     setCurrentImageIndex(0);
   };
 
-  const handleNextImage = () => {
-    if (selectedProduct?.pictures) {
-      setCurrentImageIndex((prev) =>
-        prev === selectedProduct.pictures.length - 1 ? 0 : prev + 1
-      );
-    }
-  };
-
-  const handlePrevImage = () => {
-    if (selectedProduct?.pictures) {
-      setCurrentImageIndex((prev) =>
-        prev === 0 ? selectedProduct.pictures.length - 1 : prev - 1
-      );
-    }
-  };
-
   const resetFilters = () => {
     setFilters({
       category: "",
@@ -224,27 +205,18 @@ const ProductPage: React.FC = () => {
     const [imgSrc, setImgSrc] = useState(placeholder);
     const [isLoaded, setIsLoaded] = useState(false);
 
-    const onLoad = () => {
-      setIsLoaded(true);
-    };
-
-    const onError = () => {
-      setImgSrc(placeholder);
-      setIsLoaded(true);
-    };
-
-    React.useEffect(() => {
+    useEffect(() => {
       const img = new Image();
       img.src = src;
-      img.onload = onLoad;
-      img.onerror = onError;
-
-      const timer = setTimeout(() => {
+      img.onload = () => {
         setImgSrc(src);
-      }, 100);
-
-      return () => clearTimeout(timer);
-    }, [src]);
+        setIsLoaded(true);
+      };
+      img.onerror = () => {
+        setImgSrc(placeholder);
+        setIsLoaded(true);
+      };
+    }, [src, placeholder]);
 
     return (
       <img
@@ -257,6 +229,31 @@ const ProductPage: React.FC = () => {
       />
     );
   };
+
+  // Handle keyboard navigation when dialog is open
+  const handleKeyDown = useCallback(
+    (e: KeyboardEvent) => {
+      if (!selectedProduct?.pictures || selectedProduct.pictures.length <= 1)
+        return;
+      if (e.key === "ArrowLeft") {
+        setCurrentImageIndex((prev) =>
+          prev === 0 ? selectedProduct.pictures.length - 1 : prev - 1
+        );
+      } else if (e.key === "ArrowRight") {
+        setCurrentImageIndex((prev) =>
+          prev === selectedProduct.pictures.length - 1 ? 0 : prev + 1
+        );
+      }
+    },
+    [selectedProduct]
+  );
+
+  useEffect(() => {
+    if (selectedProduct) {
+      window.addEventListener("keydown", handleKeyDown);
+      return () => window.removeEventListener("keydown", handleKeyDown);
+    }
+  }, [selectedProduct, handleKeyDown]);
 
   if (isLoading) {
     return (
@@ -584,7 +581,6 @@ const ProductPage: React.FC = () => {
                     : ""
                 } flex flex-col h-full`}
               >
-                {/* Compact image container with lazy loading */}
                 <div className="relative h-40 overflow-hidden bg-gray-50">
                   {product.pictures?.[0] ? (
                     <LazyImage
@@ -659,68 +655,129 @@ const ProductPage: React.FC = () => {
                         View
                       </Button>
                     </DialogTrigger>
-                    <DialogContent className="max-w-6xl max-h-[90vh] overflow-auto p-0">
-                      <div className="flex flex-col md:flex-row">
-                        {/* Image Gallery */}
-                        <div className="md:w-1/2 p-6 border-r border-gray-200 bg-gray-50">
+                    <DialogContent className="max-w-4xl max-h-[90vh] overflow-hidden p-0">
+                      <div className="flex flex-col md:flex-row h-full">
+                        {/* ✨ ENHANCED IMAGE GALLERY */}
+                        <div className="md:w-2/5 p-6 bg-gray-50 flex flex-col items-center">
                           {selectedProduct?.pictures &&
-                          selectedProduct.pictures.length > 0 ? (
-                            <div className="relative">
-                              <LazyImage
-                                src={
-                                  selectedProduct.pictures[
-                                    currentImageIndex
-                                  ]?.trim() || "/placeholder.jpg"
-                                }
-                                alt={selectedProduct.productName}
-                                className="w-full h-80 object-contain rounded-lg bg-white p-2"
-                              />
-                              {selectedProduct.pictures.length > 1 && (
-                                <>
+                            selectedProduct.pictures.length > 0 && (
+                              <div
+                                className="relative w-full max-w-[400px] h-[400px] flex items-center justify-center mb-4 rounded-xl bg-white shadow-sm border border-gray-200 overflow-hidden group focus:outline-none"
+                                tabIndex={0}
+                                role="region"
+                                aria-label={`Product image ${
+                                  currentImageIndex + 1
+                                } of ${selectedProduct.pictures.length}`}
+                              >
+                                {/* Main Image */}
+                                <LazyImage
+                                  src={
+                                    selectedProduct.pictures[
+                                      currentImageIndex
+                                    ]?.trim() || "/placeholder.jpg"
+                                  }
+                                  alt={`${selectedProduct.productName} - view ${
+                                    currentImageIndex + 1
+                                  }`}
+                                  className="w-full h-full object-contain p-4"
+                                />
+
+                                {/* Navigation Arrows */}
+                                {selectedProduct.pictures.length > 1 && (
+                                  <>
+                                    <button
+                                      className="absolute left-3 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white rounded-full p-2 shadow-md opacity-0 group-hover:opacity-100 transition-opacity z-10"
+                                      onClick={() =>
+                                        setCurrentImageIndex((prev) =>
+                                          prev === 0
+                                            ? selectedProduct.pictures.length -
+                                              1
+                                            : prev - 1
+                                        )
+                                      }
+                                      aria-label="Previous image"
+                                    >
+                                      <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        className="h-5 w-5 text-gray-800"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        stroke="currentColor"
+                                      >
+                                        <path
+                                          strokeLinecap="round"
+                                          strokeLinejoin="round"
+                                          strokeWidth={2}
+                                          d="M15 19l-7-7 7-7"
+                                        />
+                                      </svg>
+                                    </button>
+                                    <button
+                                      className="absolute right-3 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white rounded-full p-2 shadow-md opacity-0 group-hover:opacity-100 transition-opacity z-10"
+                                      onClick={() =>
+                                        setCurrentImageIndex((prev) =>
+                                          prev ===
+                                          selectedProduct.pictures.length - 1
+                                            ? 0
+                                            : prev + 1
+                                        )
+                                      }
+                                      aria-label="Next image"
+                                    >
+                                      <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        className="h-5 w-5 text-gray-800"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        stroke="currentColor"
+                                      >
+                                        <path
+                                          strokeLinecap="round"
+                                          strokeLinejoin="round"
+                                          strokeWidth={2}
+                                          d="M9 5l7 7-7 7"
+                                        />
+                                      </svg>
+                                    </button>
+                                  </>
+                                )}
+                              </div>
+                            )}
+
+                          {/* Thumbnails */}
+                          {selectedProduct?.pictures &&
+                            selectedProduct.pictures.length > 1 && (
+                              <div className="w-full max-w-[400px] overflow-x-auto flex gap-2 py-2 scrollbar-hide">
+                                {selectedProduct.pictures.map((pic, idx) => (
                                   <button
-                                    onClick={handlePrevImage}
-                                    className="absolute left-3 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white rounded-full p-2 shadow-md"
+                                    key={idx}
+                                    onClick={() => setCurrentImageIndex(idx)}
+                                    className={`flex-shrink-0 w-16 h-16 rounded-lg overflow-hidden border-2 transition-all duration-200 ${
+                                      currentImageIndex === idx
+                                        ? "border-green-500 ring-2 ring-green-200"
+                                        : "border-gray-200 hover:border-gray-300"
+                                    }`}
+                                    aria-label={`Go to image ${idx + 1}`}
                                   >
-                                    <ChevronLeft className="h-5 w-5 text-green-700" />
+                                    <img
+                                      src={pic.trim() || "/placeholder.jpg"}
+                                      alt={`Thumbnail ${idx + 1}`}
+                                      className="w-full h-full object-cover"
+                                      loading="lazy"
+                                    />
                                   </button>
-                                  <button
-                                    onClick={handleNextImage}
-                                    className="absolute right-3 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white rounded-full p-2 shadow-md"
-                                  >
-                                    <ChevronRight className="h-5 w-5 text-green-700" />
-                                  </button>
-                                  <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-1.5">
-                                    {selectedProduct.pictures.map((_, idx) => (
-                                      <button
-                                        key={idx}
-                                        onClick={() =>
-                                          setCurrentImageIndex(idx)
-                                        }
-                                        className={`w-2.5 h-2.5 rounded-full ${
-                                          currentImageIndex === idx
-                                            ? "bg-green-600"
-                                            : "bg-gray-300"
-                                        }`}
-                                      />
-                                    ))}
-                                  </div>
-                                </>
-                              )}
-                            </div>
-                          ) : (
-                            <div className="w-full h-80 flex items-center justify-center bg-white rounded-lg">
-                              <ImageIcon className="h-16 w-16 text-gray-300" />
-                            </div>
-                          )}
+                                ))}
+                              </div>
+                            )}
                         </div>
 
                         {/* Details */}
-                        <div className="md:w-1/2 p-6 overflow-y-auto max-h-[calc(90vh-3rem)]">
+                        <div className="md:w-3/5 p-6 overflow-y-auto max-h-[90vh]">
                           <div className="mb-5">
                             <h2 className="text-2xl font-bold text-gray-900">
                               {selectedProduct?.productName}
                             </h2>
-                            <Badge className="mt-2 bg-green-100 text-green-800 border-green-200">
+                            <Badge className="mt-2 bg-green-100 uppercase text-green-800 border-green-200">
                               {selectedProduct?.category || "General"}
                             </Badge>
                           </div>
@@ -729,84 +786,67 @@ const ProductPage: React.FC = () => {
                             {selectedProduct?.productDetails}
                           </p>
 
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                            <div className="bg-green-50 p-4 rounded-lg border border-green-100">
-                              <h3 className="font-semibold text-green-800 mb-2 flex items-center">
-                                <DollarSign className="h-4 w-4 mr-1" /> Pricing
-                              </h3>
-                              <div className="space-y-2 text-sm">
-                                <div className="flex justify-between">
-                                  <span className="text-gray-600">MOQ</span>
-                                  <span className="font-medium">
-                                    {selectedProduct?.moq} units
-                                  </span>
-                                </div>
-                                <div className="flex justify-between">
-                                  <span className="text-gray-600">
-                                    Unit Cost
-                                  </span>
-                                  <span className="font-medium text-green-600">
-                                    {selectedProduct?.costOfGoods}
-                                  </span>
-                                </div>
-                                <div className="flex justify-between">
-                                  <span className="text-gray-600">
-                                    Sample Cost
-                                  </span>
-                                  <span className="font-medium">
-                                    {selectedProduct?.sampleCost}
-                                  </span>
-                                </div>
-                                <div className="flex justify-between">
-                                  <span className="text-gray-600">
-                                    Ship to USA
-                                  </span>
-                                  <span className="font-medium text-red-600">
-                                    {selectedProduct?.shipToUsa}
-                                  </span>
-                                </div>
+                          {/* Pricing */}
+                          <div className="bg-green-50 p-4 rounded-lg border border-green-100 mb-6">
+                            <h3 className="font-semibold text-green-800 mb-2 flex items-center">
+                              <DollarSign className="h-4 w-4 mr-1" /> Pricing
+                            </h3>
+                            <div className="space-y-2 text-sm">
+                              <div className="flex justify-between">
+                                <span className="text-gray-600">MOQ</span>
+                                <span className="font-medium">
+                                  {selectedProduct?.moq || "N/A"} units
+                                </span>
                               </div>
-                            </div>
-
-                            <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
-                              <h3 className="font-semibold text-gray-800 mb-2">
-                                Specifications
-                              </h3>
-                              <div className="space-y-2 text-sm">
-                                {[
-                                  {
-                                    label: "Material",
-                                    value: selectedProduct?.material,
-                                  },
-                                  {
-                                    label: "Dimensions",
-                                    value: selectedProduct?.dimensions,
-                                  },
-                                  {
-                                    label: "Weight",
-                                    value: selectedProduct?.weight,
-                                  },
-                                  {
-                                    label: "Color",
-                                    value: selectedProduct?.color,
-                                  },
-                                ].map(({ label, value }) => (
-                                  <div
-                                    key={label}
-                                    className="flex justify-between"
-                                  >
-                                    <span className="text-gray-600">
-                                      {label}
-                                    </span>
-                                    <span className="font-medium">
-                                      {value || "N/A"}
-                                    </span>
-                                  </div>
-                                ))}
+                              <div className="flex justify-between">
+                                <span className="text-gray-600">Unit Cost</span>
+                                <span className="font-medium text-green-600">
+                                  {selectedProduct?.costOfGoods || "$0.00"}
+                                </span>
+                              </div>
+                              <div className="flex justify-between">
+                                <span className="text-gray-600">
+                                  Sample Cost
+                                </span>
+                                <span className="font-medium">
+                                  {selectedProduct?.sampleCost || "$0.00"}
+                                </span>
+                              </div>
+                              <div className="flex justify-between">
+                                <span className="text-gray-600">
+                                  Ship to USA
+                                </span>
+                                <span className="font-medium text-red-600">
+                                  {selectedProduct?.shipToUsa || "$0.00"}
+                                </span>
                               </div>
                             </div>
                           </div>
 
+                          {/* Product Info: Brand & ASIN */}
+                          <div className="bg-blue-50 p-4 rounded-lg border border-blue-100 mb-6">
+                            <h3 className="font-semibold text-blue-800 mb-2">
+                              Product Info
+                            </h3>
+                            <div className="space-y-2 text-sm">
+                              <div className="flex justify-between">
+                                <span className="text-gray-600">
+                                  Brand Name
+                                </span>
+                                <span className="font-medium">
+                                  {selectedProduct?.brandName || "N/A"}
+                                </span>
+                              </div>
+                              <div className="flex justify-between">
+                                <span className="text-gray-600">ASIN</span>
+                                <span className="font-medium font-mono">
+                                  {selectedProduct?.asin || "N/A"}
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* Certifications */}
                           {(selectedProduct?.certifications?.length || 0) >
                             0 && (
                             <div className="mb-6">
@@ -814,7 +854,7 @@ const ProductPage: React.FC = () => {
                                 Certifications
                               </h3>
                               <div className="flex flex-wrap gap-2">
-                                {selectedProduct.certifications?.map(
+                                {selectedProduct?.certifications?.map(
                                   (cert, i) => (
                                     <Badge
                                       key={i}
@@ -829,20 +869,21 @@ const ProductPage: React.FC = () => {
                             </div>
                           )}
 
+                          {/* Features */}
                           {(selectedProduct?.features?.length || 0) > 0 && (
                             <div className="mb-6">
                               <h3 className="font-semibold text-gray-800 mb-2">
                                 Features
                               </h3>
                               <ul className="list-disc pl-5 space-y-1 text-gray-700">
-                                {selectedProduct.features?.map((f, i) => (
+                                {selectedProduct?.features?.map((f, i) => (
                                   <li key={i}>{f}</li>
                                 ))}
                               </ul>
                             </div>
                           )}
 
-                          <div className="flex gap-3 pt-2">
+                          <div className="flex flex-col sm:flex-row gap-3 pt-4">
                             <Button className="flex-1 bg-green-600 hover:bg-green-700 text-white">
                               <ShoppingCart className="h-4 w-4 mr-2" />
                               Add to Quote

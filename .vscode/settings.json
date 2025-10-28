@@ -8,7 +8,7 @@
         },
         {
           "name": "client",
-          "commands": ["cd frontend", "npm run dev"]
+          "commands": ["cd frontend", "pnpm dev"]
         }
       ]
     }

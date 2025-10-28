@@ -4,7 +4,7 @@ import { apiSlice } from './api';
 // Define the Auth state type
 interface AuthState {
   user: any | null;
-  token: string | null;
+  token: string | null,
   isAuthenticated: boolean;
 }
 

@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import ThemeToggle from "../ThemeToggle";
 
 interface NavItem {
   label: string;
@@ -119,7 +120,7 @@ const Header = () => {
       ],
     },
     { label: "Products", href: "/products" },
-    { label: "Blog", href: "#" },
+    { label: "Blog", href: "/blogs" },
   ];
 
   return (
@@ -189,6 +190,7 @@ const Header = () => {
                 </div>
               ))}
               <div className="flex gap-3">
+                <ThemeToggle />
                 <Button variant="outline" size="sm">
                   Contact
                 </Button>
@@ -226,14 +228,15 @@ const Header = () => {
                   {item.label}
                 </Link>
               ))}
-              <div className="pt-4 flex gap-3">
+              <div className="pt-4 flex flex-col sm:flex-row gap-3">
+                <ThemeToggle />
                 <Button variant="outline" size="sm" className="w-full">
                   Contact
                 </Button>
                 <Button variant="primary" size="sm" className="w-full">
                   Hire Me
                 </Button>
-              </div>
+                </div>
             </div>
           </div>
         )}

@@ -68,6 +68,42 @@ export interface CreateBlogRequest {
 }
 
 // Define the API slice
+export interface CreateProductRequest {
+  productName: string;
+  category: string;
+  brandName?: string;
+  moq: string;
+  productDetails: string;
+  productPicture?: File;
+  productPictures?: File[];
+}
+
+export interface UpdateProductRequest {
+  _id: string;
+  productName?: string;
+  category?: string;
+  brandName?: string;
+  moq?: string;
+  productDetails?: string;
+  productPicture?: File;
+  productPictures?: File[];
+}
+
+// Define a type for multipart form data
+export type CreateProductFormData = FormData;
+export type UpdateProductFormData = FormData;
+
+export interface UpdateBlogRequest {
+  _id: string;
+  title?: string;
+  content?: string;
+  author?: string;
+  coverImage?: string;
+  tags?: string[];
+  category?: string;
+  isPublished?: boolean;
+}
+
 export const apiSlice = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
@@ -91,6 +127,61 @@ export const apiSlice = createApi({
       query: () => "/product/all-products",
       providesTags: ["Product"],
     }),
+    createProduct: builder.mutation<Product, CreateProductRequest | FormData>({
+      query: (newProduct) => {
+        // Check if newProduct is FormData
+        if (newProduct instanceof FormData) {
+          return {
+            url: "/product/create",
+            method: "POST",
+            body: newProduct,
+            headers: {},
+          };
+        } else {
+          return {
+            url: "/product/create",
+            method: "POST",
+            body: newProduct,
+          };
+        }
+      },
+      invalidatesTags: ["Product"],
+    }),
+    updateProduct: builder.mutation<Product, UpdateProductRequest | FormData>({
+      query: (productData) => {
+        // Check if productData is FormData
+        if (productData instanceof FormData) {
+          const _id = productData.get('_id') as string;
+          // Remove _id from FormData since it's part of the URL
+          const formData = new FormData();
+          for (const [key, value] of productData.entries()) {
+            if (key !== '_id') {
+              formData.append(key, value);
+            }
+          }
+          return {
+            url: `/product/${_id}`,
+            method: "PATCH",
+            body: formData,
+            headers: {},
+          };
+        } else {
+          return {
+            url: `/product/${productData._id}`,
+            method: "PATCH",
+            body: productData,
+          };
+        }
+      },
+      invalidatesTags: ["Product"],
+    }),
+    deleteProduct: builder.mutation<{ success: boolean }, string>({
+      query: (id) => ({
+        url: `/product/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Product"],
+    }),
 
     // Blog endpoints
     getAllBlogs: builder.query<Blog[], void>({
@@ -102,6 +193,21 @@ export const apiSlice = createApi({
         url: "/blog/create",
         method: "POST",
         body: newBlog,
+      }),
+      invalidatesTags: ["Blog"],
+    }),
+    updateBlog: builder.mutation<Blog, UpdateBlogRequest>({
+      query: ({ _id, ...patch }) => ({
+        url: `/blog/${_id}`,
+        method: "PATCH",
+        body: patch,
+      }),
+      invalidatesTags: ["Blog"],
+    }),
+    deleteBlog: builder.mutation<{ success: boolean }, string>({
+      query: (id) => ({
+        url: `/blog/${id}`,
+        method: "DELETE",
       }),
       invalidatesTags: ["Blog"],
     }),
@@ -136,7 +242,12 @@ export const apiSlice = createApi({
 export const {
   useGetAllProductsQuery,
   useGetAllBlogsQuery,
+  useCreateProductMutation,
+  useUpdateProductMutation,
+  useDeleteProductMutation,
   useCreateBlogMutation,
+  useUpdateBlogMutation,
+  useDeleteBlogMutation,
   useRegisterUserMutation,
   useLoginUserMutation,
 } = apiSlice;

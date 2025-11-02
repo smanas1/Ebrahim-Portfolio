@@ -1,0 +1,379 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import React, { useState, useMemo } from "react";
+import { Eye, Edit, Trash2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useNavigate } from "react-router-dom";
+import {
+  useGetAllBlogsQuery,
+  useGetAllProductsQuery,
+  useDeleteProductMutation,
+  useDeleteBlogMutation,
+  useGetProductByIdQuery,
+} from "@/store/api";
+
+interface ProductFilters {
+  category: string;
+  minMoq: string;
+  maxPrice: string;
+  search: string;
+  minSampleCost: string;
+  maxSampleCost: string;
+  minShipToUsa: string;
+  maxShipToUsa: string;
+  shipToUsaAvailable: "yes" | "no" | "";
+  brandName: string;
+  dateAdded: string;
+}
+
+const OverviewPage: React.FC = () => {
+  const navigate = useNavigate();
+  const [showViewProductModal, setShowViewProductModal] = useState(false);
+  const [viewingProductId, setViewingProductId] = useState<string | null>(null);
+  
+  const {
+    data: products = [],
+    isLoading: productsLoading,
+    isError: productsError,
+  } = useGetAllProductsQuery();
+  const {
+    data: blogs = [],
+    isLoading: blogsLoading,
+    isError: blogsError,
+  } = useGetAllBlogsQuery();
+  const [deleteProduct] = useDeleteProductMutation();
+  const [deleteBlog] = useDeleteBlogMutation();
+
+  const {
+    data: viewingProduct,
+    isLoading: viewingProductLoading,
+    isError: viewingProductError,
+  } = useGetProductByIdQuery(viewingProductId || "", {
+    skip: !viewingProductId,
+  });
+
+  const handleViewProduct = (id: string) => {
+    setViewingProductId(id);
+    setShowViewProductModal(true);
+  };
+
+  const handleDeleteProduct = async (id: string) => {
+    if (window.confirm("Are you sure you want to delete this product?")) {
+      try {
+        await deleteProduct(id).unwrap();
+      } catch (err) {
+        console.error("Failed to delete product:", err);
+      }
+    }
+  };
+
+  const handleDeleteBlog = async (id: string) => {
+    if (window.confirm("Are you sure you want to delete this blog?")) {
+      try {
+        await deleteBlog(id).unwrap();
+      } catch (err) {
+        console.error("Failed to delete blog:", err);
+      }
+    }
+  };
+
+  if (productsLoading || blogsLoading) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        Loading...
+      </div>
+    );
+  }
+
+  if (productsError || blogsError) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        Error loading data
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-6">
+      <h2 className="text-2xl font-bold">Dashboard Overview</h2>
+
+      {/* Stats Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <Card className="shadow-md hover:shadow-lg transition-shadow">
+          <CardHeader className="flex flex-row items-center justify-between pb-2">
+            <CardTitle className="text-sm font-medium">
+              Total Products
+            </CardTitle>
+            <div className="p-2 rounded-full bg-blue-100 text-blue-600">
+              <svg
+                className="h-4 w-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
+                ></path>
+              </svg>
+            </div>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{products.length}</div>
+            <p className="text-xs text-green-500">
+              +2.5% from last month
+            </p>
+          </CardContent>
+        </Card>
+
+        <Card className="shadow-md hover:shadow-lg transition-shadow">
+          <CardHeader className="flex flex-row items-center justify-between pb-2">
+            <CardTitle className="text-sm font-medium">
+              Total Blogs
+            </CardTitle>
+            <div className="p-2 rounded-full bg-green-100 text-green-600">
+              <svg
+                className="h-4 w-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"
+                ></path>
+              </svg>
+            </div>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{blogs.length}</div>
+            <p className="text-xs text-green-500">
+              +5.2% from last month
+            </p>
+          </CardContent>
+        </Card>
+
+        <Card className="shadow-md hover:shadow-lg transition-shadow">
+          <CardHeader className="flex flex-row items-center justify-between pb-2">
+            <CardTitle className="text-sm font-medium">
+              Total Users
+            </CardTitle>
+            <div className="p-2 rounded-full bg-purple-100 text-purple-600">
+              <svg
+                className="h-4 w-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
+                ></path>
+              </svg>
+            </div>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">124</div>
+            <p className="text-xs text-green-500">
+              +1.8% from last month
+            </p>
+          </CardContent>
+        </Card>
+
+        <Card className="shadow-md hover:shadow-lg transition-shadow">
+          <CardHeader className="flex flex-row items-center justify-between pb-2">
+            <CardTitle className="text-sm font-medium">
+              Revenue
+            </CardTitle>
+            <div className="p-2 rounded-full bg-amber-100 text-amber-600">
+              <svg
+                className="h-4 w-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                ></path>
+              </svg>
+            </div>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">$3,240</div>
+            <p className="text-xs text-green-500">
+              +3.1% from last month
+            </p>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Recent Products and Blogs */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <Card className="shadow-md">
+          <CardHeader>
+            <CardTitle>Recent Products</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="overflow-x-auto">
+              <table className="min-w-full divide-y divide-gray-200">
+                <thead className="bg-gray-50">
+                  <tr>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Product
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Category
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      MOQ
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Actions
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className="bg-white divide-y divide-gray-200">
+                  {products.slice(0, 5).map((product) => (
+                    <tr key={product._id}>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="text-sm font-medium text-gray-900">
+                          {product.productName}
+                        </div>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="text-sm text-gray-500">
+                          {product.category}
+                        </div>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="text-sm text-gray-500">
+                          {product.moq}
+                        </div>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        <div className="flex space-x-2">
+                          <Button 
+                            variant="ghost" 
+                            size="icon"
+                            onClick={() => navigate('/dashboard/products')}
+                          >
+                            <Eye className="h-4 w-4" />
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={() => navigate('/dashboard/products')}
+                          >
+                            <Edit className="h-4 w-4" />
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={() => handleDeleteProduct(product._id)}
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className="shadow-md">
+          <CardHeader>
+            <CardTitle>Recent Blogs</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="overflow-x-auto">
+              <table className="min-w-full divide-y divide-gray-200">
+                <thead className="bg-gray-50">
+                  <tr>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Title
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Author
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Status
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Actions
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className="bg-white divide-y divide-gray-200">
+                  {blogs.slice(0, 5).map((blog) => (
+                    <tr key={blog._id}>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="text-sm font-medium text-gray-900">
+                          {blog.title}
+                        </div>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="text-sm text-gray-500">
+                          {blog.author}
+                        </div>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <span
+                          className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                            blog.isPublished
+                              ? "bg-green-100 text-green-800"
+                              : "bg-yellow-100 text-yellow-800"
+                          }`}
+                        >
+                          {blog.isPublished ? "Published" : "Draft"}
+                        </span>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        <div className="flex space-x-2">
+                          <Button variant="ghost" size="icon">
+                            <Eye className="h-4 w-4" />
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={() => navigate('/dashboard/blogs')}
+                          >
+                            <Edit className="h-4 w-4" />
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={() => handleDeleteBlog(blog._id)}
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    </div>
+  );
+};
+
+export default OverviewPage;

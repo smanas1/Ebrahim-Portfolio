@@ -129,7 +129,6 @@ export const apiSlice = createApi({
     }),
     createProduct: builder.mutation<Product, CreateProductRequest | FormData>({
       query: (newProduct) => {
-        // Check if newProduct is FormData
         if (newProduct instanceof FormData) {
           return {
             url: "/product/create",
@@ -151,23 +150,23 @@ export const apiSlice = createApi({
       query: (productData) => {
         // Check if productData is FormData
         if (productData instanceof FormData) {
-          const _id = productData.get('_id') as string;
+          const _id = productData.get("_id") as string;
           // Remove _id from FormData since it's part of the URL
           const formData = new FormData();
           for (const [key, value] of productData.entries()) {
-            if (key !== '_id') {
+            if (key !== "_id") {
               formData.append(key, value);
             }
           }
           return {
-            url: `/product/${_id}`,
+            url: `/product/update/${_id}`,
             method: "PATCH",
             body: formData,
             headers: {},
           };
         } else {
           return {
-            url: `/product/${productData._id}`,
+            url: `/product/update/${productData._id}`,
             method: "PATCH",
             body: productData,
           };
@@ -175,9 +174,13 @@ export const apiSlice = createApi({
       },
       invalidatesTags: ["Product"],
     }),
+    getProductById: builder.query<Product, string>({
+      query: (id) => `/product/get/${id}`,
+      providesTags: (result, error, id) => [{ type: "Product", id }],
+    }),
     deleteProduct: builder.mutation<{ success: boolean }, string>({
       query: (id) => ({
-        url: `/product/${id}`,
+        url: `/product/delete/${id}`,
         method: "DELETE",
       }),
       invalidatesTags: ["Product"],
@@ -245,6 +248,7 @@ export const {
   useCreateProductMutation,
   useUpdateProductMutation,
   useDeleteProductMutation,
+  useGetProductByIdQuery,
   useCreateBlogMutation,
   useUpdateBlogMutation,
   useDeleteBlogMutation,

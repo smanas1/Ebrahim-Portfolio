@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import {
   BarChart3,
   ShoppingCart,
@@ -13,6 +13,7 @@ import {
   Eye,
   Edit,
   Trash2,
+  Filter,
 } from "lucide-react";
 
 import {
@@ -24,23 +25,54 @@ import {
   useDeleteProductMutation,
   useUpdateBlogMutation,
   useDeleteBlogMutation,
+  useGetProductByIdQuery,
 } from "@/store/api";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import SidebarFilterComponent from "@/components/product/SidebarFilterComponent";
+
+interface ProductFilters {
+  category: string;
+  minMoq: string;
+  maxPrice: string;
+  search: string;
+  minSampleCost: string;
+  maxSampleCost: string;
+  minShipToUsa: string;
+  maxShipToUsa: string;
+  shipToUsaAvailable: "yes" | "no" | "";
+  brandName: string;
+  dateAdded: string;
+}
 
 const DashboardPage = () => {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [activeTab, setActiveTab] = useState("overview");
   const [showProductModal, setShowProductModal] = useState(false);
   const [showBlogModal, setShowBlogModal] = useState(false);
+  const [showViewProductModal, setShowViewProductModal] = useState(false);
   const [editingProduct, setEditingProduct] = useState<any>(null);
   const [editingBlog, setEditingBlog] = useState<any>(null);
+  const [viewingProductId, setViewingProductId] = useState<string | null>(null);
   const [, setImagePreview] = useState<string | null>(null);
   const [multipleImagePreviews, setMultipleImagePreviews] = useState<string[]>(
     []
   );
   const [isProductLoading, setIsProductLoading] = useState(false);
+  const [productFilters, setProductFilters] = useState<ProductFilters>({
+    category: "",
+    minMoq: "",
+    maxPrice: "",
+    search: "",
+    minSampleCost: "",
+    maxSampleCost: "",
+    minShipToUsa: "",
+    maxShipToUsa: "",
+    shipToUsaAvailable: "",
+    brandName: "",
+    dateAdded: "",
+  });
 
   // Using the API to get products and blogs
   const {
@@ -55,14 +87,177 @@ const DashboardPage = () => {
     isError: blogsError,
     error: blogsApiError,
   } = useGetAllBlogsQuery();
+
+  // Filter products based on filters
+  const filteredProducts = useMemo(() => {
+    if (!products) return [];
+
+    return products.filter((product) => {
+      // Search filter
+      if (productFilters.search) {
+        const searchTerm = productFilters.search.toLowerCase();
+        const matchesSearch =
+          product.productName?.toLowerCase().includes(searchTerm) ||
+          product.productDetails?.toLowerCase().includes(searchTerm) ||
+          product.category?.toLowerCase().includes(searchTerm);
+        if (!matchesSearch) return false;
+      }
+
+      // Category filter
+      if (
+        productFilters.category &&
+        productFilters.category !== product.category
+      ) {
+        return false;
+      }
+
+      // Brand filter
+      if (
+        productFilters.brandName &&
+        productFilters.brandName !== product.brandName
+      ) {
+        return false;
+      }
+
+      // MOQ filter
+      if (productFilters.minMoq) {
+        const minMoqValue = parseInt(productFilters.minMoq, 10);
+        const productMoq = parseInt(product.moq, 10) || 0;
+        if (productMoq < minMoqValue) return false;
+      }
+
+      // Price filter
+      if (productFilters.maxPrice) {
+        const maxPriceValue = parseFloat(productFilters.maxPrice);
+        const productPrice = parseFloat(product.costOfGoods || "0");
+        if (productPrice > maxPriceValue) return false;
+      }
+
+      // Sample cost filter
+      if (productFilters.minSampleCost) {
+        const minSampleValue = parseFloat(productFilters.minSampleCost);
+        const productSample = parseFloat(product.sampleCost || "0");
+        if (productSample < minSampleValue) return false;
+      }
+      if (productFilters.maxSampleCost) {
+        const maxSampleValue = parseFloat(productFilters.maxSampleCost);
+        const productSample = parseFloat(product.sampleCost || "0");
+        if (productSample > maxSampleValue) return false;
+      }
+
+      // Ship to USA filter
+      if (productFilters.minShipToUsa) {
+        const minShipValue = parseFloat(productFilters.minShipToUsa);
+        const productShip = parseFloat(product.shipToUsa || "0");
+        if (productShip < minShipValue) return false;
+      }
+      if (productFilters.maxShipToUsa) {
+        const maxShipValue = parseFloat(productFilters.maxShipToUsa);
+        const productShip = parseFloat(product.shipToUsa || "0");
+        if (productShip > maxShipValue) return false;
+      }
+
+      // Ship to USA availability filter
+      if (productFilters.shipToUsaAvailable) {
+        const productShip = parseFloat(product.shipToUsa || "0");
+        if (productFilters.shipToUsaAvailable === "yes" && productShip <= 0) {
+          return false;
+        }
+        if (productFilters.shipToUsaAvailable === "no" && productShip > 0) {
+          return false;
+        }
+      }
+
+      // Date added filter
+      if (productFilters.dateAdded) {
+        const filterDate = new Date(productFilters.dateAdded);
+        const productDate = new Date(product.createdAt);
+        // Compare dates without time component, handling null/undefined dates
+        if (
+          product.createdAt &&
+          (productDate.getDate() !== filterDate.getDate() ||
+            productDate.getMonth() !== filterDate.getMonth() ||
+            productDate.getFullYear() !== filterDate.getFullYear())
+        ) {
+          return false;
+        }
+      }
+
+      return true;
+    });
+  }, [products, productFilters]);
+
+  // Extract unique categories and brands for filters
+  const uniqueCategories = useMemo(() => {
+    if (!products) return [];
+    const unique = Array.from(
+      new Set(
+        products
+          .map((p) => p.category)
+          .filter((cat) => cat && cat.trim() !== "")
+      )
+    );
+    return unique;
+  }, [products]);
+
+  const uniqueBrands = useMemo(() => {
+    if (!products) return [];
+    const unique = Array.from(
+      new Set(
+        products
+          .map((p) => p.brandName)
+          .filter((brand) => brand && brand.trim() !== "")
+      )
+    );
+    return unique;
+  }, [products]);
   const [createBlog] = useCreateBlogMutation();
   const [createProduct] = useCreateProductMutation();
   const [updateProduct] = useUpdateProductMutation();
   const [deleteProduct] = useDeleteProductMutation();
   const [updateBlog] = useUpdateBlogMutation();
   const [deleteBlog] = useDeleteBlogMutation();
+  const {
+    data: viewingProduct,
+    isLoading: viewingProductLoading,
+    isError: viewingProductError,
+  } = useGetProductByIdQuery(viewingProductId || "", {
+    skip: !viewingProductId,
+  });
 
   const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
+
+  const handleViewProduct = (id: string) => {
+    setViewingProductId(id);
+    setShowViewProductModal(true);
+  };
+
+  const handleProductFilterChange = (
+    key: keyof ProductFilters,
+    value: string | "yes" | "no" | ""
+  ) => {
+    setProductFilters((prev) => ({ ...prev, [key]: value }));
+  };
+
+  const handleProductClearFilter = (key: keyof ProductFilters) => {
+    setProductFilters((prev) => ({ ...prev, [key]: "" }));
+  };
+
+  const handleProductResetFilters = () => {
+    setProductFilters({
+      category: "",
+      minMoq: "",
+      maxPrice: "",
+      search: "",
+      minSampleCost: "",
+      maxSampleCost: "",
+      minShipToUsa: "",
+      maxShipToUsa: "",
+      shipToUsaAvailable: "",
+      brandName: "",
+      dateAdded: "",
+    });
+  };
 
   // Handle image preview when user selects an image
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -402,46 +597,6 @@ const DashboardPage = () => {
 
       {/* Main Content */}
       <div className="flex-1 flex flex-col overflow-hidden">
-        {/* Header */}
-        <header className="bg-white shadow-sm z-20">
-          <div className="flex items-center justify-between p-4">
-            <div className="flex items-center">
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={toggleSidebar}
-                className="mr-2 md:hidden"
-              >
-                <Menu className="h-5 w-5" />
-              </Button>
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-                <Input
-                  type="text"
-                  placeholder="Search..."
-                  className="pl-10 w-64"
-                />
-              </div>
-            </div>
-
-            <div className="flex items-center space-x-4">
-              <Button variant="ghost" size="icon">
-                <div className="relative">
-                  <div className="absolute -top-1 -right-1 bg-red-500 text-white rounded-full w-4 h-4 text-xs flex items-center justify-center">
-                    3
-                  </div>
-                </div>
-              </Button>
-              <div className="flex items-center">
-                <div className="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-white">
-                  <span>JD</span>
-                </div>
-                <span className="ml-2 hidden md:block">John Doe</span>
-              </div>
-            </div>
-          </div>
-        </header>
-
         {/* Content Area */}
         <main className="flex-1 overflow-y-auto p-4 bg-gray-50 md:p-6">
           {activeTab === "overview" && (
@@ -564,7 +719,11 @@ const DashboardPage = () => {
                               </td>
                               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                 <div className="flex space-x-2">
-                                  <Button variant="ghost" size="icon">
+                                  <Button
+                                    variant="ghost"
+                                    size="icon"
+                                    onClick={() => handleViewProduct(product._id)}
+                                  >
                                     <Eye className="h-4 w-4" />
                                   </Button>
                                   <Button
@@ -688,91 +847,118 @@ const DashboardPage = () => {
                 </Button>
               </div>
 
-              <Card className="shadow-md">
-                <CardContent className="p-6">
-                  <div className="overflow-x-auto">
-                    <table className="min-w-full divide-y divide-gray-200">
-                      <thead className="bg-gray-50">
-                        <tr>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Product
-                          </th>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Category
-                          </th>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Brand
-                          </th>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            MOQ
-                          </th>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Date
-                          </th>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Actions
-                          </th>
-                        </tr>
-                      </thead>
-                      <tbody className="bg-white divide-y divide-gray-200">
-                        {products.map((product) => (
-                          <tr key={product._id}>
-                            <td className="px-6 py-4 whitespace-nowrap">
-                              <div className="text-sm font-medium text-gray-900">
-                                {product.productName}
-                              </div>
-                            </td>
-                            <td className="px-6 py-4 whitespace-nowrap">
-                              <div className="text-sm text-gray-500">
-                                {product.category}
-                              </div>
-                            </td>
-                            <td className="px-6 py-4 whitespace-nowrap">
-                              <div className="text-sm text-gray-500">
-                                {product.brandName || "-"}
-                              </div>
-                            </td>
-                            <td className="px-6 py-4 whitespace-nowrap">
-                              <div className="text-sm text-gray-500">
-                                {product.moq}
-                              </div>
-                            </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                              {new Date(product.createdAt).toLocaleDateString()}
-                            </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                              <div className="flex space-x-2">
-                                <Button variant="ghost" size="icon">
-                                  <Eye className="h-4 w-4" />
-                                </Button>
-                                <Button
-                                  variant="ghost"
-                                  size="icon"
-                                  onClick={() => {
-                                    setEditingProduct(product);
-                                    setShowProductModal(true);
-                                  }}
-                                >
-                                  <Edit className="h-4 w-4" />
-                                </Button>
-                                <Button
-                                  variant="ghost"
-                                  size="icon"
-                                  onClick={() =>
-                                    handleDeleteProduct(product._id)
-                                  }
-                                >
-                                  <Trash2 className="h-4 w-4" />
-                                </Button>
-                              </div>
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                </CardContent>
-              </Card>
+              <div className="flex flex-col lg:flex-row gap-6">
+                {/* Filters Sidebar */}
+                <div className="w-full lg:w-80 flex-shrink-0">
+                  <SidebarFilterComponent
+                    filters={productFilters}
+                    categories={uniqueCategories}
+                    brands={uniqueBrands}
+                    onFilterChange={handleProductFilterChange}
+                    onClearFilter={handleProductClearFilter}
+                    onResetFilters={handleProductResetFilters}
+                  />
+                </div>
+
+                {/* Products Table */}
+                <div className="flex-1 lg:w-3/4">
+                  <Card className="shadow-md">
+                    <CardContent className="p-6">
+                      <div className="text-sm text-gray-600 mb-2">
+                        Showing {filteredProducts.length} of {products.length}{" "}
+                        products
+                      </div>
+                      <div className="overflow-x-auto">
+                        <table className="min-w-full divide-y divide-gray-200">
+                          <thead className="bg-gray-50">
+                            <tr>
+                              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Product
+                              </th>
+                              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Category
+                              </th>
+                              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Brand
+                              </th>
+                              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                MOQ
+                              </th>
+                              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Date
+                              </th>
+                              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Actions
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody className="bg-white divide-y divide-gray-200">
+                            {filteredProducts.map((product) => (
+                              <tr key={product._id}>
+                                <td className="px-6 py-4 whitespace-nowrap">
+                                  <div className="text-sm font-medium text-gray-900">
+                                    {product.productName}
+                                  </div>
+                                </td>
+                                <td className="px-6 py-4 whitespace-nowrap">
+                                  <div className="text-sm text-gray-500">
+                                    {product.category}
+                                  </div>
+                                </td>
+                                <td className="px-6 py-4 whitespace-nowrap">
+                                  <div className="text-sm text-gray-500">
+                                    {product.brandName || "-"}
+                                  </div>
+                                </td>
+                                <td className="px-6 py-4 whitespace-nowrap">
+                                  <div className="text-sm text-gray-500">
+                                    {product.moq}
+                                  </div>
+                                </td>
+                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                  {new Date(
+                                    product.createdAt
+                                  ).toLocaleDateString()}
+                                </td>
+                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                  <div className="flex space-x-2">
+                                    <Button
+                                      variant="ghost"
+                                      size="icon"
+                                      onClick={() => handleViewProduct(product._id)}
+                                    >
+                                      <Eye className="h-4 w-4" />
+                                    </Button>
+                                    <Button
+                                      variant="ghost"
+                                      size="icon"
+                                      onClick={() => {
+                                        setEditingProduct(product);
+                                        setShowProductModal(true);
+                                      }}
+                                    >
+                                      <Edit className="h-4 w-4" />
+                                    </Button>
+                                    <Button
+                                      variant="ghost"
+                                      size="icon"
+                                      onClick={() =>
+                                        handleDeleteProduct(product._id)
+                                      }
+                                    >
+                                      <Trash2 className="h-4 w-4" />
+                                    </Button>
+                                  </div>
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+              </div>
             </div>
           )}
 
@@ -1209,6 +1395,135 @@ const DashboardPage = () => {
                     </Button>
                   </div>
                 </form>
+              </div>
+            </div>
+          )}
+
+          {/* View Product Modal */}
+          {showViewProductModal && (
+            <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+              <div className="bg-white rounded-lg p-6 w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+                <div className="flex justify-between items-center mb-4">
+                  <h3 className="text-lg font-semibold text-gray-900">
+                    Product Details
+                  </h3>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => {
+                      setShowViewProductModal(false);
+                      setViewingProductId(null);
+                    }}
+                    className="text-gray-500 hover:text-gray-700"
+                  >
+                    <X className="h-5 w-5" />
+                  </Button>
+                </div>
+                
+                {viewingProductLoading && (
+                  <div className="flex items-center justify-center h-32">
+                    <div className="text-center">
+                      <div className="h-8 w-8 border-t-2 border-r-2 border-blue-500 rounded-full animate-spin mx-auto"></div>
+                      <p className="mt-2 text-gray-600">Loading product...</p>
+                    </div>
+                  </div>
+                )}
+                
+                {viewingProductError && (
+                  <div className="text-red-500 text-center py-8">
+                    <p>Error loading product details.</p>
+                  </div>
+                )}
+                
+                {viewingProduct && !viewingProductLoading && !viewingProductError && (
+                  <div className="space-y-6">
+                    {/* Product Images */}
+                    {viewingProduct.pictures && viewingProduct.pictures.length > 0 && (
+                      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                        {viewingProduct.pictures.map((picture: string, index: number) => (
+                          <div key={index} className="rounded-lg overflow-hidden border">
+                            <img
+                              src={picture}
+                              alt={`Product ${index + 1}`}
+                              className="w-full h-48 object-contain"
+                            />
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                    
+                    {/* Product Information */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div className="space-y-4">
+                        <div>
+                          <h4 className="text-sm font-medium text-gray-500">Product Name</h4>
+                          <p className="text-lg font-semibold">{viewingProduct.productName}</p>
+                        </div>
+                        
+                        <div>
+                          <h4 className="text-sm font-medium text-gray-500">Category</h4>
+                          <p className="text-gray-900">{viewingProduct.category}</p>
+                        </div>
+                        
+                        <div>
+                          <h4 className="text-sm font-medium text-gray-500">Brand Name</h4>
+                          <p className="text-gray-900">{viewingProduct.brandName || "-"}</p>
+                        </div>
+                        
+                        <div>
+                          <h4 className="text-sm font-medium text-gray-500">MOQ</h4>
+                          <p className="text-gray-900">{viewingProduct.moq}</p>
+                        </div>
+                      </div>
+                      
+                      <div className="space-y-4">
+                        <div>
+                          <h4 className="text-sm font-medium text-gray-500">Cost of Goods</h4>
+                          <p className="text-gray-900">${viewingProduct.costOfGoods}</p>
+                        </div>
+                        
+                        <div>
+                          <h4 className="text-sm font-medium text-gray-500">Sample Cost</h4>
+                          <p className="text-gray-900">${viewingProduct.sampleCost}</p>
+                        </div>
+                        
+                        <div>
+                          <h4 className="text-sm font-medium text-gray-500">Ship to USA</h4>
+                          <p className="text-gray-900">${viewingProduct.shipToUsa}</p>
+                        </div>
+                        
+                        <div>
+                          <h4 className="text-sm font-medium text-gray-500">Date Added</h4>
+                          <p className="text-gray-900">
+                            {new Date(viewingProduct.createdAt).toLocaleDateString()}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    {/* Product Details */}
+                    <div>
+                      <h4 className="text-sm font-medium text-gray-500 mb-2">Product Details</h4>
+                      <div className="bg-gray-50 p-4 rounded-lg">
+                        <p className="text-gray-900 whitespace-pre-line">{viewingProduct.productDetails}</p>
+                      </div>
+                    </div>
+                  </div>
+                )}
+                
+                <div className="flex justify-end pt-6">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => {
+                      setShowViewProductModal(false);
+                      setViewingProductId(null);
+                    }}
+                    className="px-4 py-2"
+                  >
+                    Close
+                  </Button>
+                </div>
               </div>
             </div>
           )}

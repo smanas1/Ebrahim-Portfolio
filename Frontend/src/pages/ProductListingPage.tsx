@@ -126,21 +126,21 @@ const ProductListingPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       {/* Top Controls Bar */}
-      <div className="bg-white border-b border-gray-200">
+      <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
         <div className="container mx-auto px-4 py-3">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             {/* Breadcrumb */}
-            <div className="flex items-center text-sm text-gray-600">
+            <div className="flex items-center text-sm text-gray-600 dark:text-gray-300">
               <span
-                className="cursor-pointer hover:text-gray-900"
+                className="cursor-pointer hover:text-gray-900 dark:hover:text-gray-100"
                 onClick={() => navigate("/")}
               >
                 Home
               </span>
-              <ChevronRight className="h-4 w-4 mx-1" />
-              <span className="text-gray-900 font-medium">
+              <ChevronRight className="h-4 w-4 mx-1 dark:text-gray-400" />
+              <span className="text-gray-900 dark:text-white font-medium">
                 {category ? getReadableCategory(category) : "ALL PRODUCTS"}
               </span>
             </div>
@@ -156,8 +156,8 @@ const ProductListingPage: React.FC = () => {
                     className={clsx(
                       "p-1.5 rounded",
                       gridColumns === cols
-                        ? "bg-blue-100 text-blue-600"
-                        : "text-gray-600 hover:bg-gray-100"
+                        ? "bg-blue-100 text-blue-600 dark:bg-blue-900/50 dark:text-blue-300"
+                        : "text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700"
                     )}
                     aria-label={`${cols} column grid view`}
                   >
@@ -170,7 +170,7 @@ const ProductListingPage: React.FC = () => {
 
               {/* Filters button for mobile */}
               <button
-                className="md:hidden p-2 rounded border border-gray-300"
+                className="md:hidden p-2 rounded border border-gray-300 dark:border-gray-600 dark:text-gray-300"
                 onClick={() => setShowFilters(!showFilters)}
               >
                 <Filter className="h-5 w-5" />
@@ -185,20 +185,20 @@ const ProductListingPage: React.FC = () => {
           {/* Filters Sidebar - Hidden on mobile unless showFilters is true */}
           <div
             className={clsx(
-              "bg-white rounded-lg shadow p-4 md:w-64 md:pr-6 transition-all duration-300",
+              "bg-white dark:bg-gray-800 rounded-lg shadow p-4 md:w-64 md:pr-6 transition-all duration-300 border border-gray-200 dark:border-gray-700",
               showFilters
-                ? "block absolute inset-0 z-40 md:relative md:z-auto"
+                ? "block absolute inset-0 z-40 md:relative md:z-auto bg-white dark:bg-gray-800"
                 : "hidden md:block"
             )}
           >
             {/* Mobile header with close button */}
-            <div className="md:hidden flex justify-between items-center mb-4 pb-2 border-b">
-              <h2 className="text-lg font-semibold">Filters</h2>
+            <div className="md:hidden flex justify-between items-center mb-4 pb-2 border-b border-gray-200 dark:border-gray-700">
+              <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Filters</h2>
               <button
                 onClick={() => setShowFilters(false)}
-                className="p-1 rounded-full hover:bg-gray-100"
+                className="p-1 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700"
               >
-                <X className="h-5 w-5" />
+                <X className="h-5 w-5 text-gray-600 dark:text-gray-300" />
               </button>
             </div>
 
@@ -211,12 +211,12 @@ const ProductListingPage: React.FC = () => {
                 priceRange[1] < 100) && (
                 <div className="mb-4">
                   <div className="flex justify-between items-center mb-2">
-                    <h3 className="text-sm font-medium text-gray-900">
+                    <h3 className="text-sm font-medium text-gray-900 dark:text-gray-200">
                       Active Filters
                     </h3>
                     <button
                       onClick={resetFilters}
-                      className="text-xs text-blue-600 hover:text-blue-800"
+                      className="text-xs text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
                     >
                       Clear all
                     </button>
@@ -225,34 +225,34 @@ const ProductListingPage: React.FC = () => {
                     {selectedCategories.map((cat) => (
                       <span
                         key={cat}
-                        className="inline-flex items-center px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full"
+                        className="inline-flex items-center px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full dark:bg-blue-900/50 dark:text-blue-200"
                       >
                         {getReadableCategory(cat)}
                         <button
                           onClick={() => handleCategoryChange(cat)}
-                          className="ml-1 text-blue-600 hover:text-blue-900"
+                          className="ml-1 text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300"
                         >
                           ×
                         </button>
                       </span>
                     ))}
                     {(moqRange[0] > 0 || moqRange[1] < 2000) && (
-                      <span className="inline-flex items-center px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">
+                      <span className="inline-flex items-center px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full dark:bg-blue-900/50 dark:text-blue-200">
                         MOQ: {moqRange[0]}-{moqRange[1]}
                         <button
                           onClick={() => setMoqRange([0, 2000])}
-                          className="ml-1 text-blue-600 hover:text-blue-900"
+                          className="ml-1 text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300"
                         >
                           ×
                         </button>
                       </span>
                     )}
                     {(priceRange[0] > 0 || priceRange[1] < 100) && (
-                      <span className="inline-flex items-center px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">
+                      <span className="inline-flex items-center px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full dark:bg-blue-900/50 dark:text-blue-200">
                         Price: ${priceRange[0]}-${priceRange[1]}
                         <button
                           onClick={() => setPriceRange([0, 100])}
-                          className="ml-1 text-blue-600 hover:text-blue-900"
+                          className="ml-1 text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300"
                         >
                           ×
                         </button>
@@ -381,8 +381,8 @@ const ProductListingPage: React.FC = () => {
             {isLoading && (
               <div className="flex items-center justify-center h-72">
                 <div className="text-center">
-                  <div className="inline-block animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
-                  <p className="mt-4 text-gray-600">Loading products...</p>
+                  <div className="inline-block animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500 dark:border-blue-400"></div>
+                  <p className="mt-4 text-gray-600 dark:text-gray-300">Loading products...</p>
                 </div>
               </div>
             )}
@@ -390,7 +390,7 @@ const ProductListingPage: React.FC = () => {
             {isError && (
               <div className="flex items-center justify-center h-64">
                 <div className="text-center">
-                  <p className="text-red-500">
+                  <p className="text-red-500 dark:text-red-400">
                     Error loading products. Please try again later.
                   </p>
                 </div>
@@ -402,7 +402,7 @@ const ProductListingPage: React.FC = () => {
                 {filteredProducts.length > 0 ? (
                   <>
                     {/* Results count */}
-                    <div className="mb-4 text-sm text-gray-600">
+                    <div className="mb-4 text-sm text-gray-600 dark:text-gray-300">
                       Showing {filteredProducts.length} products
                     </div>
 
@@ -430,10 +430,10 @@ const ProductListingPage: React.FC = () => {
                   </>
                 ) : (
                   <div className="flex flex-col items-center justify-center py-12">
-                    <h3 className="text-xl font-medium text-gray-900 mb-2">
+                    <h3 className="text-xl font-medium text-gray-900 dark:text-white mb-2">
                       No products found
                     </h3>
-                    <p className="text-gray-600 mb-2 text-center">
+                    <p className="text-gray-600 dark:text-gray-300 mb-2 text-center">
                       {category
                         ? `There are no products in the "${getReadableCategory(
                             category
@@ -444,7 +444,7 @@ const ProductListingPage: React.FC = () => {
                     {category && (
                       <button
                         onClick={() => navigate("/products")}
-                        className="mt-2 text-blue-600 hover:text-blue-800 text-sm"
+                        className="mt-2 text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 text-sm"
                       >
                         View all products
                       </button>
@@ -457,7 +457,7 @@ const ProductListingPage: React.FC = () => {
                       priceRange[1] < 100) && (
                       <button
                         onClick={resetFilters}
-                        className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+                        className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800"
                       >
                         Reset All Filters
                       </button>

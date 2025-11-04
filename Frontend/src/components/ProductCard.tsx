@@ -35,13 +35,13 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onClick }) => {
     <motion.div
       whileHover
       className={clsx(
-        'bg-white rounded-2xl overflow-hidden border border-gray-100 group',
+        'bg-card rounded-2xl overflow-hidden border border-border group',
         'transition-all duration-500 ease-in-out shadow-sm hover:shadow-xl',
         'flex flex-col h-full'
       )}
     >
       {/* Image container with gradient overlay */}
-      <div className="relative aspect-square w-full overflow-hidden bg-gradient-to-br from-gray-50 to-gray-100">
+      <div className="relative aspect-square w-full overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-700">
         <ImageSlider
           images={product.pictures || ['https://placehold.co/300x300?text=No+Image']}
           alt={product.productName}
@@ -50,7 +50,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onClick }) => {
         
         {/* Category badge with better styling */}
         <div className="absolute top-3 left-3">
-          <Badge className="bg-white/90 backdrop-blur text-gray-800 text-xs font-medium px-3 py-1 shadow-lg">
+          <Badge className="bg-white/90 dark:bg-gray-800/90 backdrop-blur text-gray-800 dark:text-gray-200 text-xs font-medium px-3 py-1 shadow-lg">
             {product.category ? 
               (categoryMap[product.category] || product.category)
                 .replace(/([a-z])([A-Z])/g, "$1 $2")
@@ -63,10 +63,10 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onClick }) => {
       {/* Content area */}
       <div className="flex flex-col flex-1 p-4">
         <CardHeader className="p-0 pb-2">
-          <CardTitle className="text-lg font-bold text-gray-900 line-clamp-1 group-hover:text-green-600 transition-colors">
+          <CardTitle className="text-lg font-bold text-foreground line-clamp-1 group-hover:text-green-600 dark:group-hover:text-green-400 transition-colors">
             {product.productName}
           </CardTitle>
-          <p className="text-sm text-gray-600 line-clamp-2 mt-1">
+          <p className="text-sm text-muted-foreground line-clamp-2 mt-1">
             {product.productDetails}
           </p>
         </CardHeader>
@@ -75,20 +75,20 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onClick }) => {
           <div className="space-y-3">
             {/* Pricing info with better visual hierarchy */}
             <div className="grid grid-cols-2 gap-3">
-              <div className="flex items-center bg-green-50 rounded-lg p-2">
-                <DollarSign className="h-4 w-4 text-green-600 mr-1 flex-shrink-0" />
+              <div className="flex items-center bg-green-50 dark:bg-green-950/30 rounded-lg p-2">
+                <DollarSign className="h-4 w-4 text-green-600 dark:text-green-400 mr-1 flex-shrink-0" />
                 <div className="min-w-0">
-                  <p className="text-xs text-gray-500 truncate">Cost</p>
-                  <p className="text-sm font-semibold text-green-700 truncate">
+                  <p className="text-xs text-muted-foreground truncate">Cost</p>
+                  <p className="text-sm font-semibold text-green-700 dark:text-green-300 truncate">
                     {formatCurrency(product.costOfGoods)}
                   </p>
                 </div>
               </div>
-              <div className="flex items-center bg-blue-50 rounded-lg p-2">
-                <Truck className="h-4 w-4 text-blue-600 mr-1 flex-shrink-0" />
+              <div className="flex items-center bg-blue-50 dark:bg-blue-950/30 rounded-lg p-2">
+                <Truck className="h-4 w-4 text-blue-600 dark:text-blue-400 mr-1 flex-shrink-0" />
                 <div className="min-w-0">
-                  <p className="text-xs text-gray-500 truncate">Ship</p>
-                  <p className="text-sm font-semibold text-blue-700 truncate">
+                  <p className="text-xs text-muted-foreground truncate">Ship</p>
+                  <p className="text-sm font-semibold text-blue-700 dark:text-blue-300 truncate">
                     {formatCurrency(product.shipToUsa)}
                   </p>
                 </div>
@@ -97,20 +97,20 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onClick }) => {
             
             {/* MOQ and Sample with better layout */}
             <div className="grid grid-cols-2 gap-3">
-              <div className="flex items-center bg-yellow-50 rounded-lg p-2">
-                <Star className="h-4 w-4 text-yellow-600 mr-1 flex-shrink-0" />
+              <div className="flex items-center bg-yellow-50 dark:bg-yellow-950/30 rounded-lg p-2">
+                <Star className="h-4 w-4 text-yellow-600 dark:text-yellow-400 mr-1 flex-shrink-0" />
                 <div className="min-w-0">
-                  <p className="text-xs text-gray-500 truncate">MOQ</p>
-                  <p className="text-sm font-semibold text-yellow-700 truncate">
+                  <p className="text-xs text-muted-foreground truncate">MOQ</p>
+                  <p className="text-sm font-semibold text-yellow-700 dark:text-yellow-300 truncate">
                     {product.moq || "N/A"}
                   </p>
                 </div>
               </div>
-              <div className="flex items-center bg-purple-50 rounded-lg p-2">
-                <Package className="h-4 w-4 text-purple-600 mr-1 flex-shrink-0" />
+              <div className="flex items-center bg-purple-50 dark:bg-purple-950/30 rounded-lg p-2">
+                <Package className="h-4 w-4 text-purple-600 dark:text-purple-400 mr-1 flex-shrink-0" />
                 <div className="min-w-0">
-                  <p className="text-xs text-gray-500 truncate">Sample</p>
-                  <p className="text-sm font-semibold text-purple-700 truncate">
+                  <p className="text-xs text-muted-foreground truncate">Sample</p>
+                  <p className="text-sm font-semibold text-purple-700 dark:text-purple-300 truncate">
                     {formatCurrency(product.sampleCost)}
                   </p>
                 </div>
@@ -121,7 +121,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onClick }) => {
         
         <CardFooter className="p-0 pt-2">
           <Button
-            className="w-full bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 py-3 rounded-lg text-white font-medium shadow-md hover:shadow-lg transition-all"
+            className="w-full bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 py-3 rounded-lg text-white font-medium shadow-md hover:shadow-lg transition-all dark:from-green-600 dark:hover:from-green-700 dark:to-emerald-700 dark:hover:to-emerald-800"
             onClick={(e) => {
               e.stopPropagation();
               if (onClick) onClick();

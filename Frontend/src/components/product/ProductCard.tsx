@@ -96,13 +96,13 @@ const ProductCard: React.FC<ProductCardProps> = ({
             className={`w-full ${getImageHeightClass()}`}
           />
         ) : (
-          <div className={`w-full ${getImageHeightClass()} flex items-center justify-center bg-gray-50`}>
-            <ImageIcon className="h-12 w-12 text-gray-300" />
+          <div className={`w-full ${getImageHeightClass()} flex items-center justify-center bg-gray-50 dark:bg-gray-800`}>
+            <ImageIcon className="h-12 w-12 text-gray-300 dark:text-gray-500" />
           </div>
         )}
         
         {/* Category Badge */}
-        <Badge className="absolute top-3 left-3 bg-white/90 backdrop-blur text-gray-800 text-xs font-medium px-2 py-1 shadow">
+        <Badge className="absolute top-3 left-3 bg-white/90 dark:bg-gray-800/90 backdrop-blur text-gray-800 dark:text-gray-200 text-xs font-medium px-2 py-1 shadow">
           {product.category ? 
             (categoryMap[product.category] || product.category)
               .replace(/([a-z])([A-Z])/g, "$1 $2")
@@ -114,14 +114,14 @@ const ProductCard: React.FC<ProductCardProps> = ({
         <Button
           size="icon"
           variant="outline"
-          className="absolute top-3 right-3 h-8 w-8 rounded-full bg-white/80 backdrop-blur p-1 shadow-md opacity-0 group-hover:opacity-100 transition-opacity"
+          className="absolute top-3 right-3 h-8 w-8 rounded-full bg-white/80 dark:bg-gray-800/80 backdrop-blur p-1 shadow-md opacity-0 group-hover:opacity-100 transition-opacity"
           onClick={(e) => {
             e.stopPropagation();
             onToggleSelection(product._id);
           }}
         >
           <Heart 
-            className={`h-4 w-4 ${isSelected ? 'fill-red-500 text-red-500' : 'text-gray-500'}`} 
+            className={`h-4 w-4 ${isSelected ? 'fill-red-500 text-red-500' : 'text-gray-500 dark:text-gray-400'}`} 
           />
         </Button>
       </div>

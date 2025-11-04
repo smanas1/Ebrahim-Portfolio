@@ -9,6 +9,7 @@ import ProductsPage from "../pages/ProductsPage";
 import BlogsPage from "../pages/BlogsPage";
 import UsersPage from "../pages/UsersPage";
 import SettingsPage from "../pages/SettingsPage";
+import ProductListingPage from "../pages/ProductListingPage";
 import MainLayout from "../components/layouts/MainLayout";
 import AboutPage from "../pages/AboutPage";
 
@@ -18,7 +19,9 @@ const AppRoutes = () => {
       <Route path="/" element={<MainLayout />}>
         <Route index element={<HomePage />} />
         <Route path="/about" element={<AboutPage />} />
-        <Route path="/products" element={<ProductPage />} />
+        <Route path="/product" element={<ProductPage />} />
+        <Route path="/products" element={<ProductListingPage />} />
+        <Route path="/products/:category" element={<ProductListingPage />} />
         <Route path="/blogs" element={<BlogPage />} />
         <Route path="/auth" element={<AuthPage />} />
         <Route path="/dashboard/*" element={<DashboardPage />}>

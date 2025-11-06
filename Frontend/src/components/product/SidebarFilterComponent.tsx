@@ -15,6 +15,7 @@ import { Filter, XCircle, X } from "lucide-react";
 interface ProductFilters {
   category: string;
   minMoq: string;
+  minPrice: string;
   maxPrice: string;
   search: string;
   minSampleCost: string;
@@ -50,9 +51,9 @@ const SidebarFilterComponent: React.FC<SidebarFilterComponentProps> = ({
   };
 
   return (
-    <Card className="p-5 bg-white border border-gray-200 shadow-lg h-full bg-gradient-to-b from-gray-50 to-white rounded-xl">
-      <div className="flex justify-between items-center mb-6 pb-3 border-b border-gray-200">
-        <h2 className="font-bold text-gray-900 text-xl tracking-tight">Filters</h2>
+    <Card className="p-5 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-lg h-full bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800 rounded-xl">
+      <div className="flex justify-between items-center mb-6 pb-3 border-b border-gray-200 dark:border-gray-700">
+        <h2 className="font-bold text-gray-900 dark:text-white text-xl tracking-tight">Filters</h2>
         <Button
           variant="outline"
           size="sm"
@@ -65,36 +66,36 @@ const SidebarFilterComponent: React.FC<SidebarFilterComponentProps> = ({
 
       <div className="space-y-6">
         <div className="space-y-2">
-          <label className="block text-xs font-semibold text-gray-600 uppercase tracking-wider">
+          <label className="block text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider">
             Search
           </label>
           <Input
             placeholder="Search products..."
             value={filters.search}
             onChange={(e) => onFilterChange("search", e.target.value)}
-            className="text-sm border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 rounded-lg h-10 transition-all duration-200"
+            className="text-sm border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 rounded-lg h-10 transition-all duration-200"
           />
         </div>
 
         <div className="space-y-2">
-          <label className="block text-xs font-semibold text-gray-600 uppercase tracking-wider">
+          <label className="block text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider">
             Category
           </label>
           <Select
             value={filters.category}
             onValueChange={(v) => onFilterChange("category", v)}
           >
-            <SelectTrigger className="text-sm border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 rounded-lg h-10 transition-all duration-200">
+            <SelectTrigger className="text-sm border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 rounded-lg h-10 transition-all duration-200">
               <SelectValue placeholder="All Categories" />
             </SelectTrigger>
-            <SelectContent className="rounded-xl border border-gray-200 shadow-lg max-h-60">
+            <SelectContent className="rounded-xl border border-gray-200 dark:border-gray-700 shadow-lg max-h-60 dark:bg-gray-800">
               {categories.map((cat) => {
                 const formattedCat = formatCategory(cat);
                 return (
                   <SelectItem 
                     key={cat} 
                     value={cat}
-                    className="hover:bg-blue-50 rounded-md my-1 transition-colors duration-150"
+                    className="hover:bg-blue-50 dark:hover:bg-gray-700 rounded-md my-1 transition-colors duration-150 dark:text-white"
                   >
                     {formattedCat}
                   </SelectItem>
@@ -105,22 +106,22 @@ const SidebarFilterComponent: React.FC<SidebarFilterComponentProps> = ({
         </div>
 
         <div className="space-y-2">
-          <label className="block text-xs font-semibold text-gray-600 uppercase tracking-wider">
+          <label className="block text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider">
             Brand
           </label>
           <Select
             value={filters.brandName}
             onValueChange={(v) => onFilterChange("brandName", v)}
           >
-            <SelectTrigger className="text-sm border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 rounded-lg h-10 transition-all duration-200">
+            <SelectTrigger className="text-sm border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 rounded-lg h-10 transition-all duration-200">
               <SelectValue placeholder="All Brands" />
             </SelectTrigger>
-            <SelectContent className="rounded-xl border border-gray-200 shadow-lg max-h-60">
+            <SelectContent className="rounded-xl border border-gray-200 dark:border-gray-700 shadow-lg max-h-60 dark:bg-gray-800">
               {brands.map((brand) => (
                 <SelectItem 
                   key={brand} 
                   value={brand}
-                  className="hover:bg-blue-50 rounded-md my-1 transition-colors duration-150"
+                  className="hover:bg-blue-50 dark:hover:bg-gray-700 rounded-md my-1 transition-colors duration-150 dark:text-white"
                 >
                   {brand}
                 </SelectItem>
@@ -130,7 +131,7 @@ const SidebarFilterComponent: React.FC<SidebarFilterComponentProps> = ({
         </div>
 
         <div className="space-y-2">
-          <label className="block text-xs font-semibold text-gray-600 uppercase tracking-wider">
+          <label className="block text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider">
             Min MOQ
           </label>
           <Input
@@ -138,26 +139,40 @@ const SidebarFilterComponent: React.FC<SidebarFilterComponentProps> = ({
             placeholder="1000"
             value={filters.minMoq}
             onChange={(e) => onFilterChange("minMoq", e.target.value)}
-            className="text-sm border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 rounded-lg h-10 transition-all duration-200"
+            className="text-sm border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 rounded-lg h-10 transition-all duration-200"
           />
         </div>
 
         <div className="space-y-2">
-          <label className="block text-xs font-semibold text-gray-600 uppercase tracking-wider">
-            Max Price ($)
+          <label className="block text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider">
+            Price Range ($)
           </label>
-          <Input
-            type="number"
-            step="0.01"
-            placeholder="10.99"
-            value={filters.maxPrice}
-            onChange={(e) => onFilterChange("maxPrice", e.target.value)}
-            className="text-sm border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 rounded-lg h-10 transition-all duration-200"
-          />
+          <div className="grid grid-cols-2 gap-3">
+            <Input
+              type="number"
+              step="0.01"
+              placeholder="Min"
+              value={filters.minPrice}
+              onChange={(e) =>
+                onFilterChange("minPrice", e.target.value)
+              }
+              className="text-sm border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 rounded-lg h-10 transition-all duration-200"
+            />
+            <Input
+              type="number"
+              step="0.01"
+              placeholder="Max"
+              value={filters.maxPrice}
+              onChange={(e) =>
+                onFilterChange("maxPrice", e.target.value)
+              }
+              className="text-sm border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 rounded-lg h-10 transition-all duration-200"
+            />
+          </div>
         </div>
 
         <div className="space-y-2">
-          <label className="block text-xs font-semibold text-gray-600 uppercase tracking-wider">
+          <label className="block text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider">
             Sample Cost Range ($)
           </label>
           <div className="grid grid-cols-2 gap-3">
@@ -169,7 +184,7 @@ const SidebarFilterComponent: React.FC<SidebarFilterComponentProps> = ({
               onChange={(e) =>
                 onFilterChange("minSampleCost", e.target.value)
               }
-              className="text-sm border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 rounded-lg h-10 transition-all duration-200"
+              className="text-sm border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 rounded-lg h-10 transition-all duration-200"
             />
             <Input
               type="number"
@@ -179,13 +194,13 @@ const SidebarFilterComponent: React.FC<SidebarFilterComponentProps> = ({
               onChange={(e) =>
                 onFilterChange("maxSampleCost", e.target.value)
               }
-              className="text-sm border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 rounded-lg h-10 transition-all duration-200"
+              className="text-sm border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 rounded-lg h-10 transition-all duration-200"
             />
           </div>
         </div>
 
         <div className="space-y-2">
-          <label className="block text-xs font-semibold text-gray-600 uppercase tracking-wider">
+          <label className="block text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider">
             Ship to USA Price Range ($)
           </label>
           <div className="grid grid-cols-2 gap-3">
@@ -197,7 +212,7 @@ const SidebarFilterComponent: React.FC<SidebarFilterComponentProps> = ({
               onChange={(e) =>
                 onFilterChange("minShipToUsa", e.target.value)
               }
-              className="text-sm border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 rounded-lg h-10 transition-all duration-200"
+              className="text-sm border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 rounded-lg h-10 transition-all duration-200"
             />
             <Input
               type="number"
@@ -207,13 +222,13 @@ const SidebarFilterComponent: React.FC<SidebarFilterComponentProps> = ({
               onChange={(e) =>
                 onFilterChange("maxShipToUsa", e.target.value)
               }
-              className="text-sm border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 rounded-lg h-10 transition-all duration-200"
+              className="text-sm border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 rounded-lg h-10 transition-all duration-200"
             />
           </div>
         </div>
 
         <div className="space-y-2">
-          <label className="block text-xs font-semibold text-gray-600 uppercase tracking-wider">
+          <label className="block text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider">
             Ships to USA
           </label>
           <Select
@@ -222,19 +237,19 @@ const SidebarFilterComponent: React.FC<SidebarFilterComponentProps> = ({
               onFilterChange("shipToUsaAvailable", v as "yes" | "no" | "")
             }
           >
-            <SelectTrigger className="text-sm border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 rounded-lg h-10 transition-all duration-200">
+            <SelectTrigger className="text-sm border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 rounded-lg h-10 transition-all duration-200">
               <SelectValue placeholder="Any" />
             </SelectTrigger>
-            <SelectContent className="rounded-xl border border-gray-200 shadow-lg max-h-60">
+            <SelectContent className="rounded-xl border border-gray-200 dark:border-gray-700 shadow-lg max-h-60 dark:bg-gray-800">
               <SelectItem 
                 value="yes"
-                className="hover:bg-blue-50 rounded-md my-1 transition-colors duration-150"
+                className="hover:bg-blue-50 dark:hover:bg-gray-700 rounded-md my-1 transition-colors duration-150 dark:text-white"
               >
                 Yes
               </SelectItem>
               <SelectItem 
                 value="no"
-                className="hover:bg-blue-50 rounded-md my-1 transition-colors duration-150"
+                className="hover:bg-blue-50 dark:hover:bg-gray-700 rounded-md my-1 transition-colors duration-150 dark:text-white"
               >
                 No
               </SelectItem>
@@ -243,14 +258,14 @@ const SidebarFilterComponent: React.FC<SidebarFilterComponentProps> = ({
         </div>
 
         <div className="space-y-2">
-          <label className="block text-xs font-semibold text-gray-600 uppercase tracking-wider">
+          <label className="block text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider">
             Date Added
           </label>
           <Input
             type="date"
             value={filters.dateAdded}
             onChange={(e) => onFilterChange("dateAdded", e.target.value)}
-            className="text-sm border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 rounded-lg h-10 transition-all duration-200"
+            className="text-sm border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 rounded-lg h-10 transition-all duration-200"
           />
         </div>
       </div>
@@ -260,6 +275,7 @@ const SidebarFilterComponent: React.FC<SidebarFilterComponentProps> = ({
         filters.category ||
         filters.brandName ||
         filters.minMoq ||
+        filters.minPrice ||
         filters.maxPrice ||
         filters.minSampleCost ||
         filters.maxSampleCost ||
@@ -267,8 +283,8 @@ const SidebarFilterComponent: React.FC<SidebarFilterComponentProps> = ({
         filters.maxShipToUsa ||
         filters.shipToUsaAvailable ||
         filters.dateAdded) && (
-        <div className="mt-6 pt-4 border-t border-gray-200">
-          <h3 className="text-xs font-semibold text-gray-600 uppercase tracking-wider mb-3">Active Filters</h3>
+        <div className="mt-6 pt-4 border-t border-gray-200 dark:border-gray-700">
+          <h3 className="text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider mb-3">Active Filters</h3>
           <div className="flex flex-wrap gap-2">
             {filters.search && (
               <Badge variant="secondary" className="bg-blue-100 text-blue-800 hover:bg-blue-200 rounded-full px-3 py-1 text-xs font-medium transition-all duration-200">
@@ -314,11 +330,11 @@ const SidebarFilterComponent: React.FC<SidebarFilterComponentProps> = ({
                 </button>
               </Badge>
             )}
-            {filters.maxPrice && (
+            {(filters.minPrice || filters.maxPrice) && (
               <Badge variant="secondary" className="bg-yellow-100 text-yellow-800 hover:bg-yellow-200 rounded-full px-3 py-1 text-xs font-medium transition-all duration-200">
-                Max Price: ${filters.maxPrice}
+                Price: ${filters.minPrice || '0'}-${filters.maxPrice || '∞'}
                 <button
-                  onClick={() => onClearFilter("maxPrice")}
+                  onClick={() => { onClearFilter("minPrice"); onClearFilter("maxPrice"); }}
                   className="ml-1 rounded-full hover:bg-yellow-300 transition-colors duration-200 p-0.5"
                 >
                   <XCircle className="h-3 w-3" />

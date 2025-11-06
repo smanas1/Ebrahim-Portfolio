@@ -11,12 +11,13 @@ import {
   useDeleteProductMutation,
   useGetProductByIdQuery,
 } from "@/store/api";
-import { Eye, Edit, Trash2, Plus, X } from "lucide-react";
+import { Eye, Edit, Trash2, Plus, X, Grid2X2, Grid3X3, LayoutGrid } from "lucide-react";
 import SidebarFilterComponent from "@/components/product/SidebarFilterComponent";
 
 interface ProductFilters {
   category: string;
   minMoq: string;
+  minPrice: string;
   maxPrice: string;
   search: string;
   minSampleCost: string;
@@ -39,9 +40,11 @@ const ProductsPage: React.FC = () => {
     []
   );
   const [isProductLoading, setIsProductLoading] = useState(false);
+  const [gridColumns, setGridColumns] = useState<number>(3);
   const [productFilters, setProductFilters] = useState<ProductFilters>({
     category: "",
     minMoq: "",
+    minPrice: "",
     maxPrice: "",
     search: "",
     minSampleCost: "",
@@ -111,9 +114,13 @@ const ProductsPage: React.FC = () => {
       }
 
       // Price filter
+      const productPrice = parseFloat(product.costOfGoods || "0");
+      if (productFilters.minPrice) {
+        const minPriceValue = parseFloat(productFilters.minPrice);
+        if (productPrice < minPriceValue) return false;
+      }
       if (productFilters.maxPrice) {
         const maxPriceValue = parseFloat(productFilters.maxPrice);
-        const productPrice = parseFloat(product.costOfGoods || "0");
         if (productPrice > maxPriceValue) return false;
       }
 
@@ -216,6 +223,7 @@ const ProductsPage: React.FC = () => {
     setProductFilters({
       category: "",
       minMoq: "",
+      minPrice: "",
       maxPrice: "",
       search: "",
       minSampleCost: "",
@@ -431,103 +439,132 @@ const ProductsPage: React.FC = () => {
           />
         </div>
 
-        {/* Products Table */}
-        <div className="flex-1 lg:w-3/4">
-          <Card className="shadow-md">
-            <CardContent className="p-6">
-              <div className="text-sm text-gray-600 mb-2">
-                Showing {filteredProducts.length} of {products.length} products
-              </div>
-              <div className="overflow-x-auto">
-                <table className="min-w-full divide-y divide-gray-200">
-                  <thead className="bg-gray-50">
-                    <tr>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Product
-                      </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Category
-                      </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Brand
-                      </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        MOQ
-                      </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Date
-                      </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Actions
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody className="bg-white divide-y divide-gray-200">
-                    {filteredProducts.map((product) => (
-                      <tr key={product._id}>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <div className="text-sm font-medium text-gray-900">
-                            {product.productName}
-                          </div>
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <div className="text-sm text-gray-500">
-                            {product.category}
-                          </div>
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <div className="text-sm text-gray-500">
-                            {product.brandName || "-"}
-                          </div>
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <div className="text-sm text-gray-500">
-                            {product.moq}
-                          </div>
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                          {new Date(
-                            product.createdAt
-                          ).toLocaleDateString()}
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                          <div className="flex space-x-2">
-                            <Button 
-                              variant="ghost" 
-                              size="icon"
-                              onClick={() => {
-                                setViewingProductId(product._id);
-                                setShowViewProductModal(true);
-                              }}
-                            >
-                              <Eye className="h-4 w-4" />
-                            </Button>
-                            <Button
-                              variant="ghost"
-                              size="icon"
-                              onClick={() => {
-                                setEditingProduct(product);
-                                setShowProductModal(true);
-                              }}
-                            >
-                              <Edit className="h-4 w-4" />
-                            </Button>
-                            <Button
-                              variant="ghost"
-                              size="icon"
-                              onClick={() => handleDeleteProduct(product._id)}
-                            >
-                              <Trash2 className="h-4 w-4" />
-                            </Button>
-                          </div>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </CardContent>
-          </Card>
+        {/* Products Grid */}
+        <div className="flex-1">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4">
+            <div className="text-sm text-gray-600">
+              Showing {filteredProducts.length} of {products.length} products
+            </div>
+            <div className="flex gap-2">
+              <Button
+                variant="outline"
+                onClick={() => setGridColumns(2)}
+                className={`${gridColumns === 2 ? 'bg-emerald-600 text-white' : ''}`}
+              >
+                <Grid2X2 className="h-4 w-4" />
+              </Button>
+              <Button
+                variant="outline"
+                onClick={() => setGridColumns(3)}
+                className={`${gridColumns === 3 ? 'bg-emerald-600 text-white' : ''}`}
+              >
+                <Grid3X3 className="h-4 w-4" />
+              </Button>
+              <Button
+                variant="outline"
+                onClick={() => setGridColumns(4)}
+                className={`${gridColumns === 4 ? 'bg-emerald-600 text-white' : ''}`}
+              >
+                <LayoutGrid className="h-4 w-4" />
+              </Button>
+            </div>
+          </div>
+          
+          {filteredProducts.length > 0 ? (
+            <div 
+              className={`grid gap-6 ${
+                gridColumns === 2 ? 'grid-cols-1 md:grid-cols-2' :
+                gridColumns === 3 ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3' :
+                'grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'
+              }`}
+            >
+              {filteredProducts.map((product) => (
+                <div 
+                  key={product._id} 
+                  className="bg-white rounded-xl shadow-md border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow duration-300"
+                >
+                  {product.pictures && product.pictures.length > 0 && (
+                    <div className="h-48 overflow-hidden">
+                      <img
+                        src={product.pictures[0]}
+                        alt={product.productName}
+                        className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
+                      />
+                    </div>
+                  )}
+                  <div className="p-4">
+                    <h3 className="font-bold text-lg text-gray-800 mb-1 line-clamp-1">
+                      {product.productName}
+                    </h3>
+                    <p className="text-sm text-gray-600 mb-3 line-clamp-2">
+                      {product.productDetails}
+                    </p>
+                    <div className="grid grid-cols-2 gap-2 mb-3 text-xs">
+                      <div className="bg-gray-100 p-2 rounded">
+                        <div className="text-gray-500">MOQ</div>
+                        <div className="font-medium">{product.moq}</div>
+                      </div>
+                      <div className="bg-gray-100 p-2 rounded">
+                        <div className="text-gray-500">Category</div>
+                        <div className="font-medium">{product.category}</div>
+                      </div>
+                      <div className="bg-gray-100 p-2 rounded">
+                        <div className="text-gray-500">Cost</div>
+                        <div className="font-medium">${product.costOfGoods}</div>
+                      </div>
+                      <div className="bg-gray-100 p-2 rounded">
+                        <div className="text-gray-500">Ship to USA</div>
+                        <div className="font-medium">${product.shipToUsa}</div>
+                      </div>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm font-semibold text-emerald-600">
+                        ${product.costOfGoods}
+                      </span>
+                      <div className="flex gap-2">
+                        <Button 
+                          variant="outline" 
+                          size="sm"
+                          onClick={() => {
+                            setViewingProductId(product._id);
+                            setShowViewProductModal(true);
+                          }}
+                        >
+                          <Eye className="h-4 w-4" />
+                        </Button>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => {
+                            setEditingProduct(product);
+                            setShowProductModal(true);
+                          }}
+                        >
+                          <Edit className="h-4 w-4" />
+                        </Button>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => handleDeleteProduct(product._id)}
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-12">
+              <p className="text-gray-500 text-lg">No products found</p>
+              <p className="text-gray-400 mt-2">
+                {productFilters.search || productFilters.category || productFilters.brandName 
+                  ? "No products match your current filters." 
+                  : "No products available in the database."}
+              </p>
+            </div>
+          )}
         </div>
       </div>
 

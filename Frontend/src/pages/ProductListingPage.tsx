@@ -32,8 +32,8 @@ const ProductListingPage: React.FC = () => {
 
   // Filter states
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
-  const [moqRange, setMoqRange] = useState<[number, number]>([0, 2000]);
-  const [priceRange, setPriceRange] = useState<[number, number]>([0, 100]);
+  const [moqRange, setMoqRange] = useState<[number | '', number | '']>(['', '']);
+  const [priceRange, setPriceRange] = useState<[number | '', number | '']>(['', '']);
 
   // Navigation and parameters
   const { category } = useParams<{ category: string }>();
@@ -78,13 +78,17 @@ const ProductListingPage: React.FC = () => {
     // Filter by MOQ range
     result = result.filter((product) => {
       const moq = parseInt(product.moq) || 0;
-      return moq >= moqRange[0] && moq <= moqRange[1];
+      const minMoq = typeof moqRange[0] === 'number' ? moqRange[0] : 0;
+      const maxMoq = typeof moqRange[1] === 'number' ? moqRange[1] : Infinity;
+      return moq >= minMoq && moq <= maxMoq;
     });
 
     // Filter by price range
     result = result.filter((product) => {
       const price = parseFloat(product.costOfGoods) || 0;
-      return price >= priceRange[0] && price <= priceRange[1];
+      const minPrice = typeof priceRange[0] === 'number' ? priceRange[0] : 0;
+      const maxPrice = typeof priceRange[1] === 'number' ? priceRange[1] : Infinity;
+      return price >= minPrice && price <= maxPrice;
     });
 
     setFilteredProducts(result);
@@ -108,8 +112,8 @@ const ProductListingPage: React.FC = () => {
   // Reset all filters
   const resetFilters = () => {
     setSelectedCategories([]);
-    setMoqRange([0, 2000]);
-    setPriceRange([0, 100]);
+    setMoqRange(['', '']);
+    setPriceRange(['', '']);
   };
 
   // Get human-readable category name
@@ -132,7 +136,7 @@ const ProductListingPage: React.FC = () => {
         <div className="container mx-auto px-4 py-3">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             {/* Breadcrumb */}
-            <div className="flex items-center text-sm text-gray-600 dark:text-gray-300">
+            <div className="flex items-center text-sm text-gray-600 dark:text-gray-300 font-sans">
               <span
                 className="cursor-pointer hover:text-gray-900 dark:hover:text-gray-100"
                 onClick={() => navigate("/")}
@@ -140,7 +144,7 @@ const ProductListingPage: React.FC = () => {
                 Home
               </span>
               <ChevronRight className="h-4 w-4 mx-1 dark:text-gray-400" />
-              <span className="text-gray-900 dark:text-white font-medium">
+              <span className="text-gray-900 dark:text-white font-medium tracking-tight">
                 {category ? getReadableCategory(category) : "ALL PRODUCTS"}
               </span>
             </div>
@@ -193,7 +197,7 @@ const ProductListingPage: React.FC = () => {
           >
             {/* Mobile header with close button */}
             <div className="md:hidden flex justify-between items-center mb-4 pb-2 border-b border-gray-200 dark:border-gray-700">
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Filters</h2>
+              <h2 className="text-lg font-semibold text-gray-900 dark:text-white tracking-tight font-sans">Filters</h2>
               <button
                 onClick={() => setShowFilters(false)}
                 className="p-1 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700"
@@ -205,18 +209,18 @@ const ProductListingPage: React.FC = () => {
             <div className="space-y-6">
               {/* Active filters */}
               {(selectedCategories.length > 0 ||
-                moqRange[0] > 0 ||
-                moqRange[1] < 2000 ||
-                priceRange[0] > 0 ||
-                priceRange[1] < 100) && (
+                moqRange[0] !== '' ||
+                moqRange[1] !== '' ||
+                priceRange[0] !== '' ||
+                priceRange[1] !== '') && (
                 <div className="mb-4">
                   <div className="flex justify-between items-center mb-2">
-                    <h3 className="text-sm font-medium text-gray-900 dark:text-gray-200">
+                    <h3 className="text-sm font-medium text-gray-900 dark:text-gray-200 tracking-tight font-sans uppercase">
                       Active Filters
                     </h3>
                     <button
                       onClick={resetFilters}
-                      className="text-xs text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
+                      className="text-xs text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 font-sans"
                     >
                       Clear all
                     </button>
@@ -236,22 +240,22 @@ const ProductListingPage: React.FC = () => {
                         </button>
                       </span>
                     ))}
-                    {(moqRange[0] > 0 || moqRange[1] < 2000) && (
+                    {(moqRange[0] !== '' || moqRange[1] !== '') && (
                       <span className="inline-flex items-center px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full dark:bg-blue-900/50 dark:text-blue-200">
-                        MOQ: {moqRange[0]}-{moqRange[1]}
+                        MOQ: {moqRange[0] !== '' ? moqRange[0] : '0'}-{moqRange[1] !== '' ? moqRange[1] : '∞'}
                         <button
-                          onClick={() => setMoqRange([0, 2000])}
+                          onClick={() => setMoqRange(['', ''])}
                           className="ml-1 text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300"
                         >
                           ×
                         </button>
                       </span>
                     )}
-                    {(priceRange[0] > 0 || priceRange[1] < 100) && (
+                    {(priceRange[0] !== '' || priceRange[1] !== '') && (
                       <span className="inline-flex items-center px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full dark:bg-blue-900/50 dark:text-blue-200">
-                        Price: ${priceRange[0]}-${priceRange[1]}
+                        Price: ${priceRange[0] !== '' ? priceRange[0] : '0'}-${priceRange[1] !== '' ? priceRange[1] : '∞'}
                         <button
-                          onClick={() => setPriceRange([0, 100])}
+                          onClick={() => setPriceRange(['', ''])}
                           className="ml-1 text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300"
                         >
                           ×
@@ -292,35 +296,39 @@ const ProductListingPage: React.FC = () => {
                   <AccordionTrigger>MOQ</AccordionTrigger>
                   <AccordionContent>
                     <div className="space-y-4">
-                      <div className="flex items-center justify-between text-sm">
-                        <span>Min: {moqRange[0]}</span>
-                        <span>Max: {moqRange[1]}</span>
-                      </div>
-                      <div className="space-y-2">
-                        <input
-                          type="range"
-                          min="0"
-                          max="2000"
-                          value={moqRange[0]}
-                          onChange={(e) =>
-                            setMoqRange([Number(e.target.value), moqRange[1]])
-                          }
-                          className="w-full"
-                        />
-                        <input
-                          type="range"
-                          min="0"
-                          max="2000"
-                          value={moqRange[1]}
-                          onChange={(e) =>
-                            setMoqRange([moqRange[0], Number(e.target.value)])
-                          }
-                          className="w-full"
-                        />
-                      </div>
-                      <div className="flex justify-between text-xs text-gray-500">
-                        <span>0</span>
-                        <span>2000</span>
+                      <div className="grid grid-cols-2 gap-3">
+                        <div>
+                          <label className="block text-xs text-gray-600 mb-1">Min MOQ</label>
+                          <input
+                            type="number"
+                            min="0"
+                            value={moqRange[0] === '' ? '' : moqRange[0]}
+                            onChange={(e) =>
+                              setMoqRange([
+                                e.target.value === '' ? '' : Number(e.target.value) >= 0 ? Number(e.target.value) : 0,
+                                moqRange[1],
+                              ])
+                            }
+                            className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            placeholder="Min"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-xs text-gray-600 mb-1">Max MOQ</label>
+                          <input
+                            type="number"
+                            min="0"
+                            value={moqRange[1] === '' ? '' : moqRange[1]}
+                            onChange={(e) =>
+                              setMoqRange([
+                                moqRange[0],
+                                e.target.value === '' ? '' : Number(e.target.value) >= 0 ? Number(e.target.value) : 0,
+                              ])
+                            }
+                            className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            placeholder="Max"
+                          />
+                        </div>
                       </div>
                     </div>
                   </AccordionContent>
@@ -331,41 +339,41 @@ const ProductListingPage: React.FC = () => {
                   <AccordionTrigger>Price ($)</AccordionTrigger>
                   <AccordionContent>
                     <div className="space-y-4">
-                      <div className="flex items-center justify-between text-sm">
-                        <span>${priceRange[0]}</span>
-                        <span>${priceRange[1]}</span>
-                      </div>
-                      <div className="space-y-2">
-                        <input
-                          type="range"
-                          min="0"
-                          max="100"
-                          value={priceRange[0]}
-                          onChange={(e) =>
-                            setPriceRange([
-                              Number(e.target.value),
-                              priceRange[1],
-                            ])
-                          }
-                          className="w-full"
-                        />
-                        <input
-                          type="range"
-                          min="0"
-                          max="100"
-                          value={priceRange[1]}
-                          onChange={(e) =>
-                            setPriceRange([
-                              priceRange[0],
-                              Number(e.target.value),
-                            ])
-                          }
-                          className="w-full"
-                        />
-                      </div>
-                      <div className="flex justify-between text-xs text-gray-500">
-                        <span>$0</span>
-                        <span>$100</span>
+                      <div className="grid grid-cols-2 gap-3">
+                        <div>
+                          <label className="block text-xs text-gray-600 mb-1">Min Price</label>
+                          <input
+                            type="number"
+                            min="0"
+                            step="0.01"
+                            value={priceRange[0] === '' ? '' : priceRange[0]}
+                            onChange={(e) =>
+                              setPriceRange([
+                                e.target.value === '' ? '' : Number(e.target.value) >= 0 ? Number(e.target.value) : 0,
+                                priceRange[1],
+                              ])
+                            }
+                            className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            placeholder="Min"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-xs text-gray-600 mb-1">Max Price</label>
+                          <input
+                            type="number"
+                            min="0"
+                            step="0.01"
+                            value={priceRange[1] === '' ? '' : priceRange[1]}
+                            onChange={(e) =>
+                              setPriceRange([
+                                priceRange[0],
+                                e.target.value === '' ? '' : Number(e.target.value) >= 0 ? Number(e.target.value) : 0,
+                              ])
+                            }
+                            className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            placeholder="Max"
+                          />
+                        </div>
                       </div>
                     </div>
                   </AccordionContent>
@@ -382,7 +390,7 @@ const ProductListingPage: React.FC = () => {
               <div className="flex items-center justify-center h-72">
                 <div className="text-center">
                   <div className="inline-block animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500 dark:border-blue-400"></div>
-                  <p className="mt-4 text-gray-600 dark:text-gray-300">Loading products...</p>
+                  <p className="mt-4 text-gray-600 dark:text-gray-300 font-sans">Loading products...</p>
                 </div>
               </div>
             )}
@@ -390,7 +398,7 @@ const ProductListingPage: React.FC = () => {
             {isError && (
               <div className="flex items-center justify-center h-64">
                 <div className="text-center">
-                  <p className="text-red-500 dark:text-red-400">
+                  <p className="text-red-500 dark:text-red-400 font-sans">
                     Error loading products. Please try again later.
                   </p>
                 </div>
@@ -430,10 +438,10 @@ const ProductListingPage: React.FC = () => {
                   </>
                 ) : (
                   <div className="flex flex-col items-center justify-center py-12">
-                    <h3 className="text-xl font-medium text-gray-900 dark:text-white mb-2">
+                    <h3 className="text-xl font-medium text-gray-900 dark:text-white mb-2 tracking-tight font-sans">
                       No products found
                     </h3>
-                    <p className="text-gray-600 dark:text-gray-300 mb-2 text-center">
+                    <p className="text-gray-600 dark:text-gray-300 mb-2 text-center font-sans leading-relaxed">
                       {category
                         ? `There are no products in the "${getReadableCategory(
                             category
@@ -444,7 +452,7 @@ const ProductListingPage: React.FC = () => {
                     {category && (
                       <button
                         onClick={() => navigate("/products")}
-                        className="mt-2 text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 text-sm"
+                        className="mt-2 text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 text-sm font-sans"
                       >
                         View all products
                       </button>
@@ -457,7 +465,7 @@ const ProductListingPage: React.FC = () => {
                       priceRange[1] < 100) && (
                       <button
                         onClick={resetFilters}
-                        className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800"
+                        className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800 font-sans"
                       >
                         Reset All Filters
                       </button>

@@ -23,7 +23,7 @@ const Button = ({
       "bg-emerald-600 hover:bg-emerald-700 text-white focus:ring-emerald-500 shadow-lg hover:shadow-xl",
     secondary: "bg-gray-800 hover:bg-gray-900 text-white focus:ring-gray-500",
     outline:
-      "border-2 border-emerald-600 text-emerald-600 hover:bg-emerald-600 hover:text-white focus:ring-emerald-500",
+      "border-2 border-emerald-600 text-emerald-600 hover:bg-emerald-600 hover:text-white focus:ring-emerald-500 dark:border-emerald-500 dark:text-emerald-400 dark:hover:bg-emerald-500 dark:hover:text-white",
     red: "bg-red-600 hover:bg-red-700 text-white focus:ring-red-500 shadow-lg hover:shadow-xl",
   };
   const sizeClasses = {
@@ -44,9 +44,13 @@ const Button = ({
   );
 };
 
+import { useTheme } from "@/context/ThemeContext";
+
 const AboutMe = () => {
+  const { theme } = useTheme();
+
   return (
-    <section className="py-16 md:py-24 bg-gradient-to-br from-gray-900 to-black relative overflow-hidden">
+    <section className={`py-16 md:py-24 bg-gradient-to-br ${theme === 'dark' ? 'from-gray-900 to-gray-800' : 'from-gray-100 to-white'} relative overflow-hidden`}>
       <div className="absolute top-10 left-0 w-32 h-32 bg-emerald-900/10 rounded-full blur-xl"></div>
       <div className="absolute bottom-10 right-0 w-48 h-48 bg-emerald-700/10 rounded-full blur-xl"></div>
       <div className="container mx-auto px-4 relative z-10">
@@ -58,39 +62,42 @@ const AboutMe = () => {
                   src="https://res.cloudinary.com/dtyqscfja/image/upload/v1761153173/Ebrahim/Ibrahim_HD_edited_3_qcawtw.jpg"
                   alt="Ebrahim Kamal - Sourcing & Logistics Expert"
                   className="w-full h-full object-cover"
+                  loading="lazy"
+                  width="600"
+                  height="600"
                 />
               </div>
               <div className="absolute -bottom-6 -left-6 w-40 h-40 bg-gradient-to-tr from-emerald-500/20 to-transparent rotate-45 rounded-lg"></div>
             </div>
           </div>
           <div className="lg:w-1/2 space-y-6">
-            <span className="inline-block px-4 py-1 text-xs font-semibold bg-emerald-900 text-emerald-300 rounded-full uppercase tracking-wider">
+            <span className={`inline-block px-4 py-1 text-xs font-semibold ${theme === 'dark' ? 'bg-emerald-900 text-emerald-100' : 'bg-emerald-100 text-emerald-800'} rounded-full uppercase tracking-wider`}>
               ABOUT ME
             </span>
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight">
+            <h2 className={`text-3xl md:text-4xl lg:text-5xl font-bold leading-tight ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
               I Help You Scale Without Hiring a Team
             </h2>
-            <p className="text-lg text-gray-300">
+            <p className={`text-lg ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>
               As your dedicated sourcing and logistics partner, I handle
               everything from finding reliable suppliers in China to delivering
               your products to your doorstep — so you can focus on growing your
               business, not managing operations.
             </p>
             <div className="space-y-4 pt-4">
-              <p className="text-gray-400">
-                Whether you’re a first-time importer or scaling across borders,
-                I act as your <strong>personal freight team</strong>. No
+              <p className={theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}>
+                Whether you're a first-time importer or scaling across borders,
+                I act as your <strong className={theme === 'dark' ? 'text-white' : 'text-gray-900'}>personal freight team</strong>. No
                 corporate bureaucracy. Just results.
               </p>
-              <div className="flex items-center gap-3 p-4 bg-gray-800/50 rounded-lg border border-gray-700">
+              <div className={`flex items-center gap-3 p-4 ${theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-gray-100 border-gray-300'} rounded-lg border`}>
                 <div className="w-10 h-10 bg-emerald-900 rounded-full flex items-center justify-center">
                   <Award className="w-5 h-5 text-yellow-400" />
                 </div>
                 <div>
-                  <div className="font-bold text-white">
+                  <div className={theme === 'dark' ? 'font-bold text-white' : 'font-bold text-gray-900'}>
                     Trusted by 50+ Businesses
                   </div>
-                  <div className="text-sm text-gray-400">
+                  <div className={theme === 'dark' ? 'text-sm text-gray-400' : 'text-sm text-gray-600'}>
                     Rated 4.9/5 by clients worldwide
                   </div>
                 </div>
@@ -107,7 +114,7 @@ const AboutMe = () => {
                   })
                 }
               >
-                Let’s Work Together
+                Let's Work Together
               </Button>
               <Button variant="outline" size="lg">
                 View My Portfolio

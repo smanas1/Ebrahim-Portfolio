@@ -1,3 +1,4 @@
+import { useTheme } from "@/context/ThemeContext";
 import { Calendar } from "lucide-react";
 
 // Reusable Button Component
@@ -23,7 +24,7 @@ const Button = ({
       "bg-emerald-600 hover:bg-emerald-700 text-white focus:ring-emerald-500 shadow-lg hover:shadow-xl",
     secondary: "bg-gray-800 hover:bg-gray-900 text-white focus:ring-gray-500",
     outline:
-      "border-2 border-emerald-600 text-emerald-600 hover:bg-emerald-600 hover:text-white focus:ring-emerald-500",
+      "border-2 border-emerald-600 text-emerald-600 hover:bg-emerald-600 hover:text-white focus:ring-emerald-500 dark:border-emerald-500 dark:text-emerald-400 dark:hover:bg-emerald-500 dark:hover:text-white",
     red: "bg-red-600 hover:bg-red-700 text-white focus:ring-red-500 shadow-lg hover:shadow-xl",
   };
   const sizeClasses = {
@@ -45,17 +46,19 @@ const Button = ({
 };
 
 const Blog = () => {
+  const { theme } = useTheme();
+
   return (
-    <section className="py-16 bg-gray-50">
+    <section className={`py-16 ${theme === 'dark' ? 'bg-gray-900' : 'bg-gray-50'}`}>
       <div className="container mx-auto px-4">
         <div className="text-center max-w-3xl mx-auto mb-12">
-          <span className="inline-block px-4 py-1 text-xs font-semibold bg-emerald-600 text-white rounded-full uppercase tracking-wider mb-4">
+          <span className={`inline-block px-4 py-1 text-xs font-semibold ${theme === 'dark' ? 'bg-emerald-600 text-white' : 'bg-emerald-600 text-white'} rounded-full uppercase tracking-wider mb-4`}>
             ARTICLES
           </span>
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-800">
+          <h2 className={`text-3xl md:text-4xl font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-800'}`}>
             Smart Freight Insights & Seller Strategies
           </h2>
-          <p className="text-lg text-gray-600 mt-4">
+          <p className={`text-lg ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'} mt-4`}>
             I share practical, no-fluff insights from my 8+ years in global
             sourcing and logistics — so you can make smarter decisions, avoid
             costly mistakes, and scale with confidence.
@@ -88,29 +91,32 @@ const Blog = () => {
           ].map((post, i) => (
             <div
               key={i}
-              className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-shadow"
+              className={`${theme === 'dark' ? 'bg-gray-800' : 'bg-white'} rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-shadow`}
             >
               {post.img && (
                 <img
                   src={post.img}
                   alt={post.title}
                   className="w-full h-48 object-cover"
+                  loading="lazy"
+                  width="400"
+                  height="192"
                 />
               )}
               <div className="p-6">
-                <div className="flex items-center gap-2 text-sm text-gray-500 mb-2">
+                <div className={`flex items-center gap-2 text-sm ${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'} mb-2`}>
                   <Calendar className="w-4 h-4" />
                   <span>{post.date}</span>
                 </div>
-                <h3 className="text-xl font-bold text-gray-800 mb-2">
+                <h3 className={`text-xl font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-800'} mb-2`}>
                   {post.title}
                 </h3>
-                <p className="text-gray-600 mb-4 line-clamp-3">
+                <p className={theme === 'dark' ? 'text-gray-300' : 'text-gray-600' + ' mb-4 line-clamp-3'}>
                   {post.excerpt}
                 </p>
                 <a
                   href="#"
-                  className="text-emerald-600 hover:text-emerald-700 font-medium inline-flex items-center gap-1"
+                  className={`${theme === 'dark' ? 'text-emerald-400 hover:text-emerald-300' : 'text-emerald-600 hover:text-emerald-700'} font-medium inline-flex items-center gap-1`}
                 >
                   Read More →
                 </a>
@@ -118,8 +124,8 @@ const Blog = () => {
             </div>
           ))}
         </div>
-        <div className="mt-12 pt-8 border-t border-gray-200">
-          <h3 className="text-xl font-bold text-gray-800 mb-6">
+        <div className={`mt-12 pt-8 ${theme === 'dark' ? 'border-gray-700' : 'border-gray-200'} border-t`}>
+          <h3 className={`text-xl font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-800'} mb-6`}>
             Recent Articles
           </h3>
           <div className="space-y-6">
@@ -146,21 +152,21 @@ const Blog = () => {
             ].map((article, i) => (
               <div
                 key={i}
-                className="border-b border-gray-200 pb-4 last:border-b-0"
+                className={`${theme === 'dark' ? 'border-gray-700' : 'border-gray-200'} border-b pb-4 last:border-b-0`}
               >
-                <div className="flex items-center gap-2 text-sm text-gray-500 mb-1">
+                <div className={`flex items-center gap-2 text-sm ${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'} mb-1`}>
                   <Calendar className="w-4 h-4" />
                   <span>{article.date}</span>
                 </div>
-                <h4 className="font-bold text-gray-800 mb-1">
+                <h4 className={`font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-800'} mb-1`}>
                   {article.title}
                 </h4>
-                <p className="text-gray-600 text-sm line-clamp-2">
+                <p className={theme === 'dark' ? 'text-gray-400' : 'text-gray-600' + ' text-sm line-clamp-2'}>
                   {article.excerpt}
                 </p>
                 <a
                   href="#"
-                  className="text-emerald-600 hover:text-emerald-700 text-sm font-medium mt-2 inline-block"
+                  className={`${theme === 'dark' ? 'text-emerald-400 hover:text-emerald-300' : 'text-emerald-600 hover:text-emerald-700'} text-sm font-medium mt-2 inline-block`}
                 >
                   Read More →
                 </a>

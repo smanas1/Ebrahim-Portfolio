@@ -104,20 +104,53 @@ export const apiSlice = createApi({
       query: () => "/blog/all-blogs",
       providesTags: ["Blog"],
     }),
-    createBlog: builder.mutation<Blog, CreateBlogRequest>({
-      query: (newBlog) => ({
-        url: "/blog/create",
-        method: "POST",
-        body: newBlog,
-      }),
+    createBlog: builder.mutation<Blog, CreateBlogRequest | FormData>({
+      query: (newBlog) => {
+        if (newBlog instanceof FormData) {
+          return {
+            url: "/blog/create",
+            method: "POST",
+            body: newBlog,
+            headers: {},
+          };
+        } else {
+          return {
+            url: "/blog/create",
+            method: "POST",
+            body: newBlog,
+          };
+        }
+      },
       invalidatesTags: ["Blog"],
     }),
-    updateBlog: builder.mutation<Blog, UpdateBlogRequest>({
-      query: ({ _id, ...patch }) => ({
-        url: `/blog/${_id}`,
-        method: "PATCH",
-        body: patch,
-      }),
+    updateBlog: builder.mutation<Blog, UpdateBlogRequest | FormData>({
+      query: (blogData) => {
+        // Check if blogData is FormData
+        if (blogData instanceof FormData) {
+          const _id = blogData.get("_id") as string;
+          // Remove _id from FormData since it's part of the URL
+          const formData = new FormData();
+          for (const [key, value] of blogData.entries()) {
+            if (key !== "_id") {
+              formData.append(key, value);
+            }
+          }
+          return {
+            url: `/blog/update/${_id}`,
+            method: "PATCH",
+            body: formData,
+            headers: {},
+          };
+        } else {
+          // If it's not FormData, extract _id separately
+          const { _id, ...patch } = blogData;
+          return {
+            url: `/blog/${_id}`,
+            method: "PATCH",
+            body: patch,
+          };
+        }
+      },
       invalidatesTags: ["Blog"],
     }),
     deleteBlog: builder.mutation<{ success: boolean }, string>({

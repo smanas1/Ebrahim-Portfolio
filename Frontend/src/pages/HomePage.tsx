@@ -1,37 +1,68 @@
-import Hero from "../components/home/Hero";
+import { Suspense, lazy } from "react";
+import HeroSkeleton from "../components/home/HeroSkeleton";
+import AboutMeSkeleton from "../components/home/AboutMeSkeleton";
+import HowItWorksSkeleton from "../components/home/HowItWorksSkeleton";
+import ServicesSkeleton from "../components/home/ServicesSkeleton";
+import PartnersSkeleton from "../components/home/PartnersSkeleton";
 
-import HowItWorks from "../components/home/HowItWorks";
-import WhyChooseMe from "../components/home/WhyChooseMe";
-import Services from "../components/home/Services";
-import Partners from "../components/home/Partners";
-import CTA from "../components/home/CTA";
+import ContactSkeleton from "../components/home/ContactSkeleton";
+import WhyChooseMeSkeleton from "../components/home/WhyChooseMeSkeleton";
+import GlobalReachSkeleton from "../components/home/GlobalReachSkeleton";
+import YouTubeSectionSkeleton from "../components/home/YouTubeSectionSkeleton";
 
-import Testimonials from "../components/home/Testimonials";
-import YouTubeSection from "../components/home/YouTubeSection";
-import Blog from "../components/home/Blog";
-import Contact from "../components/home/Contact";
-import FloatingCallButton from "../components/home/FloatingCallButton";
-import GlobalReach from "@/components/home/GlobalReach";
-import AboutMe from "@/components/home/AboutMe";
+// Lazy load components for better performance
+const Hero = lazy(() => import("../components/home/Hero"));
+const AboutMe = lazy(() => import("@/components/home/AboutMe"));
+const HowItWorks = lazy(() => import("../components/home/HowItWorks"));
+const WhyChooseMe = lazy(() => import("../components/home/WhyChooseMe"));
+const Services = lazy(() => import("../components/home/Services"));
+const Partners = lazy(() => import("../components/home/Partners"));
+const CTA = lazy(() => import("../components/home/CTA"));
+const GlobalReach = lazy(() => import("@/components/home/GlobalReach"));
+const Testimonials = lazy(() => import("../components/home/Testimonials"));
+const YouTubeSection = lazy(() => import("../components/home/YouTubeSection"));
+const Blog = lazy(() => import("../components/home/Blog"));
+const Contact = lazy(() => import("../components/home/Contact"));
+const FloatingCallButton = lazy(
+  () => import("../components/home/FloatingCallButton")
+);
 
 // Main HomePage Component
 const HomePage = () => {
   return (
-    <>
-      <Hero />
-      <AboutMe />
-      <HowItWorks />
-      <WhyChooseMe />
-      <Services />
-      <Partners />
-      <CTA />
-      <GlobalReach />
-      <Testimonials />
-      <YouTubeSection />
-      <Blog />
-      <Contact />
-      <FloatingCallButton />
-    </>
+    <div className="">
+      <Suspense fallback={<HeroSkeleton />}>
+        <Hero />
+      </Suspense>
+      <Suspense fallback={<AboutMeSkeleton />}>
+        <AboutMe />
+      </Suspense>
+      <Suspense fallback={<HowItWorksSkeleton />}>
+        <HowItWorks />
+      </Suspense>
+      <Suspense fallback={<WhyChooseMeSkeleton />}>
+        <WhyChooseMe />
+      </Suspense>
+      <Suspense fallback={<ServicesSkeleton />}>
+        <Services />
+      </Suspense>
+      <Suspense fallback={<PartnersSkeleton />}>
+        <Partners />
+        <CTA />
+      </Suspense>
+      <Suspense fallback={<GlobalReachSkeleton />}>
+        <GlobalReach />
+        <Testimonials />
+      </Suspense>
+      <Suspense fallback={<YouTubeSectionSkeleton />}>
+        <YouTubeSection />
+        <Blog />
+      </Suspense>
+      <Suspense fallback={<ContactSkeleton />}>
+        <Contact />
+        <FloatingCallButton />
+      </Suspense>
+    </div>
   );
 };
 

@@ -18,3 +18,4 @@ export { Globe } from "./globe";
 export { WorldMap } from "./world-map";
 export { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./select";
 export { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "./table";
+export { Skeleton } from "./skeleton";

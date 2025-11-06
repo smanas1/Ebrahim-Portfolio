@@ -15,6 +15,7 @@ import { Eye, Edit, Trash2, Plus, X } from "lucide-react";
 const BlogsPage: React.FC = () => {
   const [showBlogModal, setShowBlogModal] = useState(false);
   const [editingBlog, setEditingBlog] = useState<any>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
 
   const {
     data: blogs = [],
@@ -26,23 +27,53 @@ const BlogsPage: React.FC = () => {
   const [updateBlog] = useUpdateBlogMutation();
   const [deleteBlog] = useDeleteBlogMutation();
 
+  // Clean up image previews when component unmounts or when modal is closed
+  React.useEffect(() => {
+    return () => {
+      if (imagePreview) {
+        URL.revokeObjectURL(imagePreview);
+      }
+    };
+  }, []);
+
   // Handle creating a new blog
   const handleCreateBlog = async (e: React.FormEvent) => {
     e.preventDefault();
-    const formData = new FormData(e.target as HTMLFormElement);
-    const blogData = {
-      title: formData.get("title") as string,
-      content: formData.get("content") as string,
-      author: formData.get("author") as string,
-      category: formData.get("category") as string,
-      isPublished: formData.get("isPublished") === "on",
-    };
+    const form = e.target as HTMLFormElement;
+    const formData = new FormData(form);
+    
+    // Check if there are image files to upload
+    const coverImageFile = formData.get("coverImage") as File | null;
+
+    let blogData: any;
+    if (coverImageFile && coverImageFile.size > 0) {
+      // If image is present, send as multipart/form-data
+      blogData = new FormData();
+      blogData.append("title", formData.get("title") as string);
+      blogData.append("content", formData.get("content") as string);
+      blogData.append("author", formData.get("author") as string);
+      blogData.append("category", formData.get("category") as string);
+      blogData.append("isPublished", String(formData.get("isPublished") === "on"));
+      
+      // Add cover image file
+      blogData.append("coverImage", coverImageFile);
+    } else {
+      // If no image, send as regular object
+      blogData = {
+        title: formData.get("title") as string,
+        content: formData.get("content") as string,
+        author: formData.get("author") as string,
+        category: formData.get("category") as string,
+        isPublished: formData.get("isPublished") === "on",
+      };
+    }
 
     try {
-      await createBlog(blogData as any).unwrap();
+      await createBlog(blogData).unwrap();
       setShowBlogModal(false);
+      setImagePreview(null);
       // Reset form
-      (e.target as HTMLFormElement).reset();
+      form.reset();
     } catch (err) {
       console.error("Failed to create blog:", err);
     }
@@ -53,20 +84,42 @@ const BlogsPage: React.FC = () => {
     e.preventDefault();
     if (!editingBlog) return;
 
-    const formData = new FormData(e.target as HTMLFormElement);
-    const blogData = {
-      _id: editingBlog._id,
-      title: formData.get("title") as string,
-      content: formData.get("content") as string,
-      author: formData.get("author") as string,
-      category: formData.get("category") as string,
-      isPublished: formData.get("isPublished") === "on",
-    };
+    const form = e.target as HTMLFormElement;
+    const formData = new FormData(form);
+    
+    // Check if there are image files to upload
+    const coverImageFile = formData.get("coverImage") as File | null;
+
+    let blogData: any;
+    if (coverImageFile && coverImageFile.size > 0) {
+      // If new image is present, send as multipart/form-data
+      blogData = new FormData();
+      blogData.append("_id", editingBlog._id);
+      blogData.append("title", formData.get("title") as string);
+      blogData.append("content", formData.get("content") as string);
+      blogData.append("author", formData.get("author") as string);
+      blogData.append("category", formData.get("category") as string);
+      blogData.append("isPublished", String(formData.get("isPublished") === "on"));
+      
+      // Add cover image file
+      blogData.append("coverImage", coverImageFile);
+    } else {
+      // If no new image uploaded, send as regular object
+      blogData = {
+        _id: editingBlog._id,
+        title: formData.get("title") as string,
+        content: formData.get("content") as string,
+        author: formData.get("author") as string,
+        category: formData.get("category") as string,
+        isPublished: formData.get("isPublished") === "on",
+      };
+    }
 
     try {
-      await updateBlog(blogData as any).unwrap();
+      await updateBlog(blogData).unwrap();
       setEditingBlog(null);
       setShowBlogModal(false);
+      setImagePreview(null);
     } catch (err) {
       console.error("Failed to update blog:", err);
     }
@@ -216,6 +269,11 @@ const BlogsPage: React.FC = () => {
                 onClick={() => {
                   setShowBlogModal(false);
                   setEditingBlog(null);
+                  setImagePreview(null);
+                  // Clean up the preview URL if it exists
+                  if (imagePreview) {
+                    URL.revokeObjectURL(imagePreview);
+                  }
                 }}
                 className="text-gray-500 hover:text-gray-700"
               >
@@ -277,6 +335,45 @@ const BlogsPage: React.FC = () => {
                   required
                 ></textarea>
               </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Cover Image
+                </label>
+                <Input
+                  type="file"
+                  name="coverImage"
+                  accept="image/*"
+                  onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    if (file) {
+                      setImagePreview(URL.createObjectURL(file));
+                    } else {
+                      setImagePreview(null);
+                    }
+                  }}
+                  className="w-full"
+                />
+                {imagePreview && (
+                  <div className="mt-2">
+                    <p className="text-sm text-gray-600">Image Preview:</p>
+                    <img 
+                      src={imagePreview} 
+                      alt="Preview" 
+                      className="mt-1 h-32 object-contain border border-gray-300 rounded-md"
+                    />
+                  </div>
+                )}
+                {editingBlog?.coverImage && !imagePreview && (
+                  <div className="mt-2">
+                    <p className="text-sm text-gray-600">Current Image:</p>
+                    <img 
+                      src={editingBlog.coverImage} 
+                      alt="Current blog cover" 
+                      className="mt-1 h-32 object-contain border border-gray-300 rounded-md"
+                    />
+                  </div>
+                )}
+              </div>
               <div className="flex items-center">
                 <input
                   type="checkbox"
@@ -299,6 +396,11 @@ const BlogsPage: React.FC = () => {
                   onClick={() => {
                     setShowBlogModal(false);
                     setEditingBlog(null);
+                    setImagePreview(null);
+                    // Clean up the preview URL if it exists
+                    if (imagePreview) {
+                      URL.revokeObjectURL(imagePreview);
+                    }
                   }}
                   className="px-4 py-2"
                 >

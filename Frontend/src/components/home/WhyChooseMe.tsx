@@ -1,4 +1,5 @@
 import { Check } from "lucide-react";
+import { useTheme } from "@/context/ThemeContext";
 
 // Reusable Button Component
 const Button = ({
@@ -23,7 +24,7 @@ const Button = ({
       "bg-emerald-600 hover:bg-emerald-700 text-white focus:ring-emerald-500 shadow-lg hover:shadow-xl",
     secondary: "bg-gray-800 hover:bg-gray-900 text-white focus:ring-gray-500",
     outline:
-      "border-2 border-emerald-600 text-emerald-600 hover:bg-emerald-600 hover:text-white focus:ring-emerald-500",
+      "border-2 border-emerald-600 text-emerald-600 hover:bg-emerald-600 hover:text-white focus:ring-emerald-500 dark:border-emerald-500 dark:text-emerald-400 dark:hover:bg-emerald-500 dark:hover:text-white",
     red: "bg-red-600 hover:bg-red-700 text-white focus:ring-red-500 shadow-lg hover:shadow-xl",
   };
   const sizeClasses = {
@@ -45,15 +46,17 @@ const Button = ({
 };
 
 const WhyChooseMe = () => {
+  const { theme } = useTheme();
+
   return (
-    <section className="py-16 bg-white">
+    <section className={`py-16 ${theme === 'dark' ? 'bg-gray-900' : 'bg-white'}`}>
       <div className="container mx-auto px-4">
         <div className="flex flex-col lg:flex-row gap-12 items-center">
           <div className="lg:w-1/2 space-y-6">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-800">
-              Why Choose <span className="text-emerald-600">Ebrahim Kamal</span>
+            <h2 className={`text-3xl md:text-4xl font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-800'}`}>
+              Why Choose <span className={theme === 'dark' ? 'text-emerald-400' : 'text-emerald-600'}>Ebrahim Kamal</span>
             </h2>
-            <p className="text-lg text-gray-600 mb-6">
+            <p className={`text-lg ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'} mb-6`}>
               I operate as your dedicated logistics partner — handling sourcing,
               shipping, customs, and coordination with zero overhead. No
               corporate fluff. Just results.
@@ -70,12 +73,12 @@ const WhyChooseMe = () => {
                   <div className="w-5 h-5 mt-0.5 bg-green-500 rounded-full flex items-center justify-center">
                     <Check className="w-3 h-3 text-white" />
                   </div>
-                  <span className="text-gray-700">{item}</span>
+                  <span className={theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}>{item}</span>
                 </li>
               ))}
             </ul>
-            <div className="mt-6 p-4 bg-emerald-50 rounded-lg border-l-4 border-emerald-500">
-              <p className="text-emerald-700 font-medium">
+            <div className={`mt-6 p-4 ${theme === 'dark' ? 'bg-emerald-900/20' : 'bg-emerald-50'} rounded-lg border-l-4 border-emerald-500`}>
+              <p className={theme === 'dark' ? 'text-emerald-300 font-medium' : 'text-emerald-700 font-medium'}>
                 → What if you could eliminate freight headaches and cut costs by
                 30%?
               </p>
@@ -96,37 +99,37 @@ const WhyChooseMe = () => {
             </div>
           </div>
           <div className="lg:w-1/2">
-            <div className="bg-gray-50 rounded-2xl p-6 shadow-lg border border-gray-200 hover:shadow-xl transition-shadow">
-              <h3 className="text-xl font-bold text-gray-800 mb-6 text-center">
+            <div className={`${theme === 'dark' ? 'bg-gray-800' : 'bg-gray-50'} rounded-2xl p-6 shadow-lg ${theme === 'dark' ? 'border-gray-700' : 'border-gray-200'} hover:shadow-xl transition-shadow`}>
+              <h3 className={`text-xl font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-800'} mb-6 text-center`}>
                 Before & After Savings
               </h3>
               <div className="space-y-6">
-                <div className="flex justify-between items-center pb-3 border-b border-gray-300">
-                  <span className="text-gray-600">Before Ebrahim</span>
-                  <span className="text-2xl font-bold text-gray-900">
+                <div className={`flex justify-between items-center pb-3 ${theme === 'dark' ? 'border-gray-700' : 'border-gray-300'} border-b`}>
+                  <span className={theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}>Before Ebrahim</span>
+                  <span className={theme === 'dark' ? 'text-white font-bold' : 'text-gray-900 font-bold'}>
                     $18.50
                   </span>
                 </div>
-                <div className="text-xs text-gray-500 ml-1">Per unit cost</div>
-                <div className="flex justify-between items-center pb-3 border-b border-gray-300">
-                  <span className="text-red-600 font-medium">
+                <div className={`text-xs ${theme === 'dark' ? 'text-gray-500' : 'text-gray-500'} ml-1`}>Per unit cost</div>
+                <div className={`flex justify-between items-center pb-3 ${theme === 'dark' ? 'border-gray-700' : 'border-gray-300'} border-b`}>
+                  <span className={`${theme === 'dark' ? 'text-red-400' : 'text-red-600'} font-medium`}>
                     After Ebrahim
                   </span>
-                  <span className="text-2xl font-bold text-red-600">
+                  <span className={`${theme === 'dark' ? 'text-red-400 font-bold' : 'text-red-600 font-bold'}`}>
                     $12.95
                   </span>
                 </div>
-                <div className="text-xs text-gray-500 ml-1">Per unit cost</div>
-                <div className="bg-green-50 rounded-lg p-4 mt-4">
+                <div className={`text-xs ${theme === 'dark' ? 'text-gray-500' : 'text-gray-500'} ml-1`}>Per unit cost</div>
+                <div className={`${theme === 'dark' ? 'bg-green-900/20' : 'bg-green-50'} rounded-lg p-4 mt-4`}>
                   <div className="flex justify-between items-center">
-                    <span className="text-green-700 font-medium">
+                    <span className={theme === 'dark' ? 'text-green-300 font-medium' : 'text-green-700 font-medium'}>
                       Annual Savings
                     </span>
-                    <span className="text-2xl font-bold text-green-700">
+                    <span className={theme === 'dark' ? 'text-green-300 font-bold' : 'text-green-700 font-bold'}>
                       $55,500
                     </span>
                   </div>
-                  <div className="text-xs text-gray-500 mt-1">
+                  <div className={`text-xs ${theme === 'dark' ? 'text-gray-500' : 'text-gray-500'} mt-1`}>
                     Based on 10,000 units
                   </div>
                 </div>

@@ -1,3 +1,4 @@
+import { useTheme } from "@/context/ThemeContext";
 import { Youtube } from "lucide-react";
 
 // Reusable Button Component
@@ -23,7 +24,7 @@ const Button = ({
       "bg-emerald-600 hover:bg-emerald-700 text-white focus:ring-emerald-500 shadow-lg hover:shadow-xl",
     secondary: "bg-gray-800 hover:bg-gray-900 text-white focus:ring-gray-500",
     outline:
-      "border-2 border-emerald-600 text-emerald-600 hover:bg-emerald-600 hover:text-white focus:ring-emerald-500",
+      "border-2 border-emerald-600 text-emerald-600 hover:bg-emerald-600 hover:text-white focus:ring-emerald-500 dark:border-emerald-500 dark:text-emerald-400 dark:hover:bg-emerald-500 dark:hover:text-white",
     red: "bg-red-600 hover:bg-red-700 text-white focus:ring-red-500 shadow-lg hover:shadow-xl",
   };
   const sizeClasses = {
@@ -45,24 +46,29 @@ const Button = ({
 };
 
 const YouTubeSection = () => {
+  const { theme } = useTheme();
+
   return (
-    <section className="py-16 bg-white">
+    <section className={`py-16 ${theme === 'dark' ? 'bg-gray-900' : 'bg-white'}`}>
       <div className="container mx-auto px-4">
         <div className="flex flex-col lg:flex-row gap-12 items-start">
           <div className="lg:w-1/2 space-y-6">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-800">
+            <h2 className={`text-3xl md:text-4xl font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-800'}`}>
               Creating Content To Help Sellers
             </h2>
-            <p className="text-lg text-gray-600 mb-6">
+            <p className={`text-lg ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'} mb-6`}>
               I share real-world insights, sourcing hacks, and logistics tips —
               straight from my 8+ years of experience helping sellers scale
               globally.
             </p>
-            <div className="relative rounded-xl overflow-hidden shadow-lg border border-gray-200 group">
+            <div className={`relative rounded-xl overflow-hidden shadow-lg ${theme === 'dark' ? 'border-gray-700' : 'border-gray-200'} border group`}>
               <img
                 src="https://images.unsplash.com/photo-1573164713988-8665fc963095?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=350&q=80"
                 alt="Ebrahim Kamal - Sourcing Tips Before Visiting China"
                 className="w-full h-auto object-cover transition-transform duration-300 group-hover:scale-105"
+                loading="lazy"
+                width="600"
+                height="350"
               />
               <div className="absolute inset-0 bg-black/30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                 <div className="w-16 h-16 bg-emerald-600 rounded-full flex items-center justify-center cursor-pointer">
@@ -99,12 +105,15 @@ const YouTubeSection = () => {
               ].map((video, i) => (
                 <div
                   key={i}
-                  className="relative rounded-lg overflow-hidden shadow-sm border border-gray-200 group"
+                  className={`relative rounded-lg overflow-hidden shadow-sm ${theme === 'dark' ? 'border-gray-700' : 'border-gray-200'} border group`}
                 >
                   <img
                     src={video.img}
                     alt={video.title}
                     className="w-full h-24 object-cover transition-transform duration-300 group-hover:scale-105"
+                    loading="lazy"
+                    width="200"
+                    height="96"
                   />
                   <div className="absolute inset-0 bg-black/30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                     <div className="w-10 h-10 bg-emerald-600 rounded-full flex items-center justify-center">
@@ -141,17 +150,17 @@ const YouTubeSection = () => {
             </div>
           </div>
           <div className="lg:w-1/2 space-y-6">
-            <span className="inline-block px-4 py-1 text-xs font-semibold bg-emerald-100 text-emerald-700 rounded-full uppercase tracking-wider mb-4">
+            <span className={`inline-block px-4 py-1 text-xs font-semibold ${theme === 'dark' ? 'bg-emerald-900/30 text-emerald-300' : 'bg-emerald-100 text-emerald-700'} rounded-full uppercase tracking-wider mb-4`}>
               GET INSIDER TIPS
             </span>
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-800">
+            <h2 className={`text-3xl md:text-4xl font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-800'}`}>
               Creating Content To Help Sellers
             </h2>
-            <p className="text-lg text-gray-600">
+            <p className={`text-lg ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>
               Take action today and experience the difference I can make for
               your business.
             </p>
-            <p className="text-gray-600 mt-4">
+            <p className={theme === 'dark' ? 'text-gray-400 mt-4' : 'text-gray-600 mt-4'}>
               Watch my videos on YouTube where I share insider tips and
               knowledge to help sellers like you understand the intricacies of
               sourcing, logistics, and global trade — so you can grow your

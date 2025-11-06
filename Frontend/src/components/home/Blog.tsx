@@ -1,5 +1,6 @@
 import { useTheme } from "@/context/ThemeContext";
 import { Calendar } from "lucide-react";
+import { useGetAllBlogsQuery } from "@/store/api";
 
 // Reusable Button Component
 const Button = ({
@@ -47,76 +48,224 @@ const Button = ({
 
 const Blog = () => {
   const { theme } = useTheme();
+  const { data: blogs, isLoading, isError } = useGetAllBlogsQuery();
+
+  // Filter published blogs
+  const publishedBlogs = blogs;
+
+  // Get the first 3 blogs for the main display
+  const featuredBlogs = publishedBlogs?.slice(0, 3);
+
+  // Get next 3 blogs for the "Recent Articles" section
+  const recentBlogs = publishedBlogs?.slice(3, 6);
+
+  if (isLoading) {
+    return (
+      <section
+        className={`py-16 ${theme === "dark" ? "bg-gray-900" : "bg-gray-50"}`}
+      >
+        <div className="container mx-auto px-4">
+          <div className="text-center max-w-3xl mx-auto mb-12">
+            <span
+              className={`inline-block px-4 py-1 text-xs font-semibold ${
+                theme === "dark"
+                  ? "bg-emerald-600 text-white"
+                  : "bg-emerald-600 text-white"
+              } rounded-full uppercase tracking-wider mb-4`}
+            >
+              ARTICLES
+            </span>
+            <h2
+              className={`text-3xl md:text-4xl font-bold ${
+                theme === "dark" ? "text-white" : "text-gray-800"
+              }`}
+            >
+              Smart Freight Insights & Seller Strategies
+            </h2>
+            <p
+              className={`text-lg ${
+                theme === "dark" ? "text-gray-300" : "text-gray-600"
+              } mt-4`}
+            >
+              Loading articles...
+            </p>
+          </div>
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            {[...Array(3)].map((_, i) => (
+              <div
+                key={i}
+                className={`${
+                  theme === "dark" ? "bg-gray-800" : "bg-white"
+                } rounded-xl overflow-hidden shadow-md h-80 animate-pulse`}
+              >
+                <div
+                  className={`${
+                    theme === "dark" ? "bg-gray-700" : "bg-gray-200"
+                  } h-48 w-full`}
+                ></div>
+                <div className="p-6">
+                  <div
+                    className={`${
+                      theme === "dark" ? "bg-gray-700" : "bg-gray-200"
+                    } h-4 rounded mb-2 w-3/4`}
+                  ></div>
+                  <div
+                    className={`${
+                      theme === "dark" ? "bg-gray-700" : "bg-gray-200"
+                    } h-4 rounded mb-4 w-full`}
+                  ></div>
+                  <div
+                    className={`${
+                      theme === "dark" ? "bg-gray-700" : "bg-gray-200"
+                    } h-3 rounded w-1/2`}
+                  ></div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  if (isError) {
+    return (
+      <section
+        className={`py-16 ${theme === "dark" ? "bg-gray-900" : "bg-gray-50"}`}
+      >
+        <div className="container mx-auto px-4">
+          <div className="text-center max-w-3xl mx-auto mb-12">
+            <span
+              className={`inline-block px-4 py-1 text-xs font-semibold ${
+                theme === "dark"
+                  ? "bg-emerald-600 text-white"
+                  : "bg-emerald-600 text-white"
+              } rounded-full uppercase tracking-wider mb-4`}
+            >
+              ARTICLES
+            </span>
+            <h2
+              className={`text-3xl md:text-4xl font-bold ${
+                theme === "dark" ? "text-white" : "text-gray-800"
+              }`}
+            >
+              Smart Freight Insights & Seller Strategies
+            </h2>
+            <p
+              className={`text-lg ${
+                theme === "dark" ? "text-gray-300" : "text-gray-600"
+              } mt-4`}
+            >
+              Error loading blog articles
+            </p>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
-    <section className={`py-16 ${theme === 'dark' ? 'bg-gray-900' : 'bg-gray-50'}`}>
+    <section
+      className={`py-16 ${theme === "dark" ? "bg-gray-900" : "bg-gray-50"}`}
+    >
       <div className="container mx-auto px-4">
         <div className="text-center max-w-3xl mx-auto mb-12">
-          <span className={`inline-block px-4 py-1 text-xs font-semibold ${theme === 'dark' ? 'bg-emerald-600 text-white' : 'bg-emerald-600 text-white'} rounded-full uppercase tracking-wider mb-4`}>
+          <span
+            className={`inline-block px-4 py-1 text-xs font-semibold ${
+              theme === "dark"
+                ? "bg-emerald-600 text-white"
+                : "bg-emerald-600 text-white"
+            } rounded-full uppercase tracking-wider mb-4`}
+          >
             ARTICLES
           </span>
-          <h2 className={`text-3xl md:text-4xl font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-800'}`}>
+          <h2
+            className={`text-3xl md:text-4xl font-bold ${
+              theme === "dark" ? "text-white" : "text-gray-800"
+            }`}
+          >
             Smart Freight Insights & Seller Strategies
           </h2>
-          <p className={`text-lg ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'} mt-4`}>
+          <p
+            className={`text-lg ${
+              theme === "dark" ? "text-gray-300" : "text-gray-600"
+            } mt-4`}
+          >
             I share practical, no-fluff insights from my 8+ years in global
             sourcing and logistics — so you can make smarter decisions, avoid
             costly mistakes, and scale with confidence.
           </p>
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {[
-            {
-              img: "https://expressitdelivery.com/wp-content/uploads/2022/01/01-in-house-vs-outsourced-logistics.jpg",
-              date: "04 August 2025",
-              title:
-                "Should You Build an In-House Logistics Team or Outsource It?",
-              excerpt:
-                "When it comes to freight management, businesses face a crucial decision...",
-            },
-            {
-              img: "https://www.icw.io/wp-content/uploads/2022/11/2-Pre-shipment-Inspection2_2-10.jpg",
-              date: "23 June 2023",
-              title: "The Important Aspect of Pre-Shipment Inspection",
-              excerpt:
-                "Conducting an inspection prior to shipment ensures the quality...",
-            },
-            {
-              img: "https://d2lewffsa8rdxy.cloudfront.net/wp-content/uploads/2022/06/Steps-involved-in-pre-shipment-inspection-1024x576.jpg",
-              date: "23 November 2021",
-              title: "5 Important Aspects of a Pre-Shipment Inspection",
-              excerpt:
-                "Conducting an inspection prior to shipment ensures the quality...",
-            },
-          ].map((post, i) => (
+          {featuredBlogs?.map((blog) => (
             <div
-              key={i}
-              className={`${theme === 'dark' ? 'bg-gray-800' : 'bg-white'} rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-shadow`}
+              key={blog._id}
+              className={`${
+                theme === "dark" ? "bg-gray-800" : "bg-white"
+              } rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-shadow`}
             >
-              {post.img && (
+              {blog.coverImage && (
                 <img
-                  src={post.img}
-                  alt={post.title}
+                  src={blog.coverImage}
+                  alt={blog.title}
                   className="w-full h-48 object-cover"
                   loading="lazy"
                   width="400"
                   height="192"
                 />
               )}
-              <div className="p-6">
-                <div className={`flex items-center gap-2 text-sm ${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'} mb-2`}>
-                  <Calendar className="w-4 h-4" />
-                  <span>{post.date}</span>
+              {!blog.coverImage && (
+                <div
+                  className={`${
+                    theme === "dark" ? "bg-gray-700" : "bg-gray-200"
+                  } w-full h-48 flex items-center justify-center`}
+                >
+                  <div className="text-center">
+                    <div className="w-12 h-12 mx-auto bg-emerald-500 rounded-full flex items-center justify-center">
+                      <span className="text-white text-xl font-bold">B</span>
+                    </div>
+                    <p className="mt-2 text-sm opacity-75">No image</p>
+                  </div>
                 </div>
-                <h3 className={`text-xl font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-800'} mb-2`}>
-                  {post.title}
+              )}
+              <div className="p-6">
+                <div
+                  className={`flex items-center gap-2 text-sm ${
+                    theme === "dark" ? "text-gray-400" : "text-gray-500"
+                  } mb-2`}
+                >
+                  <Calendar className="w-4 h-4" />
+                  <span>
+                    {new Date(blog.createdAt).toLocaleDateString("en-US", {
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                    })}
+                  </span>
+                </div>
+                <h3
+                  className={`text-xl font-bold ${
+                    theme === "dark" ? "text-white" : "text-gray-800"
+                  } mb-2 line-clamp-2`}
+                >
+                  {blog.title}
                 </h3>
-                <p className={theme === 'dark' ? 'text-gray-300' : 'text-gray-600' + ' mb-4 line-clamp-3'}>
-                  {post.excerpt}
+                <p
+                  className={
+                    theme === "dark"
+                      ? "text-gray-300"
+                      : "text-gray-600" + " mb-4 line-clamp-3"
+                  }
+                >
+                  {blog.content.substring(0, 120)}...
                 </p>
                 <a
-                  href="#"
-                  className={`${theme === 'dark' ? 'text-emerald-400 hover:text-emerald-300' : 'text-emerald-600 hover:text-emerald-700'} font-medium inline-flex items-center gap-1`}
+                  href={`/blog/${blog.slug}`}
+                  className={`${
+                    theme === "dark"
+                      ? "text-emerald-400 hover:text-emerald-300"
+                      : "text-emerald-600 hover:text-emerald-700"
+                  } font-medium inline-flex items-center gap-1`}
                 >
                   Read More →
                 </a>
@@ -124,49 +273,63 @@ const Blog = () => {
             </div>
           ))}
         </div>
-        <div className={`mt-12 pt-8 ${theme === 'dark' ? 'border-gray-700' : 'border-gray-200'} border-t`}>
-          <h3 className={`text-xl font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-800'} mb-6`}>
+        <div
+          className={`mt-12 pt-8 ${
+            theme === "dark" ? "border-gray-700" : "border-gray-200"
+          } border-t`}
+        >
+          <h3
+            className={`text-xl font-bold ${
+              theme === "dark" ? "text-white" : "text-gray-800"
+            } mb-6`}
+          >
             Recent Articles
           </h3>
           <div className="space-y-6">
-            {[
-              {
-                date: "21 November 2021",
-                title: "Role of Inspection and Testing in Maintaining Quality",
-                excerpt:
-                  "In manufacturing and other industries, maintaining high-quality standards...",
-              },
-              {
-                date: "20 November 2021",
-                title:
-                  "What Can Cause Professional Quality Inspectors to Miss QC Issues?",
-                excerpt:
-                  "Professional quality inspectors are responsible for ensuring that products...",
-              },
-              {
-                date: "18 November 2021",
-                title: "How to Negotiate with Chinese Suppliers Like a Pro",
-                excerpt:
-                  "Negotiating with suppliers in China requires cultural awareness...",
-              },
-            ].map((article, i) => (
+            {recentBlogs?.map((blog, i) => (
               <div
-                key={i}
-                className={`${theme === 'dark' ? 'border-gray-700' : 'border-gray-200'} border-b pb-4 last:border-b-0`}
+                key={`${blog._id}-${i}`}
+                className={`${
+                  theme === "dark" ? "border-gray-700" : "border-gray-200"
+                } border-b pb-4 last:border-b-0`}
               >
-                <div className={`flex items-center gap-2 text-sm ${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'} mb-1`}>
+                <div
+                  className={`flex items-center gap-2 text-sm ${
+                    theme === "dark" ? "text-gray-400" : "text-gray-500"
+                  } mb-1`}
+                >
                   <Calendar className="w-4 h-4" />
-                  <span>{article.date}</span>
+                  <span>
+                    {new Date(blog.createdAt).toLocaleDateString("en-US", {
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                    })}
+                  </span>
                 </div>
-                <h4 className={`font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-800'} mb-1`}>
-                  {article.title}
+                <h4
+                  className={`font-bold ${
+                    theme === "dark" ? "text-white" : "text-gray-800"
+                  } mb-1`}
+                >
+                  {blog.title}
                 </h4>
-                <p className={theme === 'dark' ? 'text-gray-400' : 'text-gray-600' + ' text-sm line-clamp-2'}>
-                  {article.excerpt}
+                <p
+                  className={
+                    theme === "dark"
+                      ? "text-gray-400"
+                      : "text-gray-600" + " text-sm line-clamp-2"
+                  }
+                >
+                  {blog.content.substring(0, 100)}...
                 </p>
                 <a
-                  href="#"
-                  className={`${theme === 'dark' ? 'text-emerald-400 hover:text-emerald-300' : 'text-emerald-600 hover:text-emerald-700'} text-sm font-medium mt-2 inline-block`}
+                  href={`/blog/${blog.slug}`}
+                  className={`${
+                    theme === "dark"
+                      ? "text-emerald-400 hover:text-emerald-300"
+                      : "text-emerald-600 hover:text-emerald-700"
+                  } text-sm font-medium mt-2 inline-block`}
                 >
                   Read More →
                 </a>
@@ -175,7 +338,11 @@ const Blog = () => {
           </div>
         </div>
         <div className="text-center mt-12">
-          <Button variant="outline" size="lg">
+          <Button
+            variant="outline"
+            size="lg"
+            onClick={() => (window.location.href = "/blogs")}
+          >
             View All Articles
           </Button>
         </div>

@@ -153,6 +153,10 @@ export const apiSlice = createApi({
       },
       invalidatesTags: ["Blog"],
     }),
+    getBlogById: builder.query<Blog, string>({
+      query: (id) => `/blog/${id}`,
+      providesTags: (result, error, id) => [{ type: "Blog", id }],
+    }),
     deleteBlog: builder.mutation<{ success: boolean }, string>({
       query: (id) => ({
         url: `/blog/${id}`,
@@ -162,6 +166,14 @@ export const apiSlice = createApi({
     }),
 
     // User endpoints
+    getAllUsers: builder.query<User[], void>({
+      query: () => "/user/all-users",
+      providesTags: ["User"],
+    }),
+    getUserById: builder.query<User, string>({
+      query: (id) => `/user/${id}`,
+      providesTags: (result, error, id) => [{ type: "User", id }],
+    }),
     registerUser: builder.mutation<
       RegisterResponse,
       Omit<User, "_id" | "createdAt" | "updatedAt"> & { password: string }
@@ -170,6 +182,24 @@ export const apiSlice = createApi({
         url: "/user/register",
         method: "POST",
         body: userData,
+      }),
+      invalidatesTags: ["User"],
+    }),
+    updateUser: builder.mutation<
+      { message: string; user: User },
+      { id: string; name: string; email: string; role: string }
+    >({
+      query: ({ id, ...patch }) => ({
+        url: `/user/update/${id}`,
+        method: "PATCH",
+        body: patch,
+      }),
+      invalidatesTags: ["User"],
+    }),
+    deleteUser: builder.mutation<{ message: string }, string>({
+      query: (id) => ({
+        url: `/user/delete/${id}`,
+        method: "DELETE",
       }),
       invalidatesTags: ["User"],
     }),
@@ -191,13 +221,18 @@ export const apiSlice = createApi({
 export const {
   useGetAllProductsQuery,
   useGetAllBlogsQuery,
+  useGetAllUsersQuery,
+  useGetUserByIdQuery,
   useCreateProductMutation,
   useUpdateProductMutation,
   useDeleteProductMutation,
   useGetProductByIdQuery,
+  useGetBlogByIdQuery,
   useCreateBlogMutation,
   useUpdateBlogMutation,
   useDeleteBlogMutation,
   useRegisterUserMutation,
   useLoginUserMutation,
+  useUpdateUserMutation,
+  useDeleteUserMutation,
 } = apiSlice;

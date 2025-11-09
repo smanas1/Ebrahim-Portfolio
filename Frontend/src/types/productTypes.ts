@@ -36,6 +36,7 @@ export interface User {
   _id: string;
   name: string;
   email: string;
+  role: "user" | "admin" | "moderator";
   createdAt: string;
   updatedAt: string;
 }
@@ -97,7 +98,3 @@ export interface UpdateBlogRequest {
   category?: string;
   isPublished?: boolean;
 }
-
-// This file exports TypeScript interfaces and types only
-// This empty export statement ensures the file is treated as a module
-export {};

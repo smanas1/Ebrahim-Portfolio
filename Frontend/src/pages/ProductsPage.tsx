@@ -414,9 +414,9 @@ const ProductsPage: React.FC = () => {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 bg-background min-h-screen p-4">
       <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-bold">Products Management</h2>
+        <h2 className="text-2xl font-bold text-foreground">Products Management</h2>
         <Button onClick={() => {
           setEditingProduct(null);
           setShowProductModal(true);
@@ -442,7 +442,7 @@ const ProductsPage: React.FC = () => {
         {/* Products Grid */}
         <div className="flex-1">
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4">
-            <div className="text-sm text-gray-600">
+            <div className="text-sm text-foreground">
               Showing {filteredProducts.length} of {products.length} products
             </div>
             <div className="flex gap-2">
@@ -481,7 +481,7 @@ const ProductsPage: React.FC = () => {
               {filteredProducts.map((product) => (
                 <div 
                   key={product._id} 
-                  className="bg-white rounded-xl shadow-md border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow duration-300"
+                  className="bg-card rounded-xl shadow-md border border-border overflow-hidden hover:shadow-lg transition-shadow duration-300"
                 >
                   {product.pictures && product.pictures.length > 0 && (
                     <div className="h-48 overflow-hidden">
@@ -493,27 +493,27 @@ const ProductsPage: React.FC = () => {
                     </div>
                   )}
                   <div className="p-4">
-                    <h3 className="font-bold text-lg text-gray-800 mb-1 line-clamp-1">
+                    <h3 className="font-bold text-lg text-foreground mb-1 line-clamp-1">
                       {product.productName}
                     </h3>
-                    <p className="text-sm text-gray-600 mb-3 line-clamp-2">
+                    <p className="text-sm text-muted-foreground mb-3 line-clamp-2">
                       {product.productDetails}
                     </p>
                     <div className="grid grid-cols-2 gap-2 mb-3 text-xs">
-                      <div className="bg-gray-100 p-2 rounded">
-                        <div className="text-gray-500">MOQ</div>
+                      <div className="bg-muted p-2 rounded">
+                        <div className="text-muted-foreground">MOQ</div>
                         <div className="font-medium">{product.moq}</div>
                       </div>
-                      <div className="bg-gray-100 p-2 rounded">
-                        <div className="text-gray-500">Category</div>
+                      <div className="bg-muted p-2 rounded">
+                        <div className="text-muted-foreground">Category</div>
                         <div className="font-medium">{product.category}</div>
                       </div>
-                      <div className="bg-gray-100 p-2 rounded">
-                        <div className="text-gray-500">Cost</div>
+                      <div className="bg-muted p-2 rounded">
+                        <div className="text-muted-foreground">Cost</div>
                         <div className="font-medium">${product.costOfGoods}</div>
                       </div>
-                      <div className="bg-gray-100 p-2 rounded">
-                        <div className="text-gray-500">Ship to USA</div>
+                      <div className="bg-muted p-2 rounded">
+                        <div className="text-muted-foreground">Ship to USA</div>
                         <div className="font-medium">${product.shipToUsa}</div>
                       </div>
                     </div>
@@ -557,8 +557,8 @@ const ProductsPage: React.FC = () => {
             </div>
           ) : (
             <div className="text-center py-12">
-              <p className="text-gray-500 text-lg">No products found</p>
-              <p className="text-gray-400 mt-2">
+              <p className="text-muted-foreground text-lg">No products found</p>
+              <p className="text-muted-foreground/70 mt-2">
                 {productFilters.search || productFilters.category || productFilters.brandName 
                   ? "No products match your current filters." 
                   : "No products available in the database."}
@@ -570,10 +570,10 @@ const ProductsPage: React.FC = () => {
 
       {/* Product Modal */}
       {showProductModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-lg p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+        <div className="fixed inset-0 bg-background/80 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-card rounded-lg p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto border border-border">
             <div className="flex justify-between items-center mb-4">
-              <h3 className="text-lg font-semibold text-gray-900">
+              <h3 className="text-lg font-semibold text-foreground">
                 {editingProduct ? "Edit Product" : "Add New Product"}
               </h3>
               <Button
@@ -585,7 +585,7 @@ const ProductsPage: React.FC = () => {
                   setImagePreview(null);
                   setMultipleImagePreviews([]);
                 }}
-                className="text-gray-500 hover:text-gray-700"
+                className="text-muted-foreground hover:text-foreground"
               >
                 <X className="h-5 w-5" />
               </Button>
@@ -597,7 +597,7 @@ const ProductsPage: React.FC = () => {
               className="space-y-4"
             >
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-foreground mb-1">
                   Product Name
                 </label>
                 <Input
@@ -610,7 +610,7 @@ const ProductsPage: React.FC = () => {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-foreground mb-1">
                   Category
                 </label>
                 <Input
@@ -623,7 +623,7 @@ const ProductsPage: React.FC = () => {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-foreground mb-1">
                   Brand Name
                 </label>
                 <Input
@@ -635,7 +635,7 @@ const ProductsPage: React.FC = () => {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-foreground mb-1">
                   MOQ (Minimum Order Quantity)
                 </label>
                 <Input
@@ -648,11 +648,11 @@ const ProductsPage: React.FC = () => {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-foreground mb-1">
                   Product Details
                 </label>
                 <textarea
-                  className="w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full p-2 border border-input rounded-md focus:ring-blue-500 focus:border-blue-500 bg-background text-foreground"
                   name="productDetails"
                   defaultValue={editingProduct?.productDetails || ""}
                   rows={4}
@@ -662,7 +662,7 @@ const ProductsPage: React.FC = () => {
               </div>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-foreground mb-1">
                     Cost of Goods <span className="text-red-500">*</span>
                   </label>
                   <Input
@@ -675,7 +675,7 @@ const ProductsPage: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-foreground mb-1">
                     Sample Cost <span className="text-red-500">*</span>
                   </label>
                   <Input
@@ -688,7 +688,7 @@ const ProductsPage: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-foreground mb-1">
                     Ship to USA <span className="text-red-500">*</span>
                   </label>
                   <Input
@@ -702,7 +702,7 @@ const ProductsPage: React.FC = () => {
                 </div>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-foreground mb-1">
                   Product Images
                 </label>
                 <Input
@@ -715,7 +715,7 @@ const ProductsPage: React.FC = () => {
                 />
                 {multipleImagePreviews.length > 0 && (
                   <div className="mt-2">
-                    <p className="text-sm text-gray-600">
+                    <p className="text-sm text-foreground">
                       New images to add:
                     </p>
                     <div className="flex flex-wrap gap-2 mt-1">
@@ -724,7 +724,7 @@ const ProductsPage: React.FC = () => {
                           <img
                             src={preview}
                             alt={`Preview ${index + 1}`}
-                            className="w-20 h-20 object-cover rounded-md border border-gray-300"
+                            className="w-20 h-20 object-cover rounded-md border border-input"
                           />
                           <button
                             type="button"
@@ -745,7 +745,7 @@ const ProductsPage: React.FC = () => {
                   editingProduct.pictures &&
                   editingProduct.pictures.length > 0 && (
                     <div className="mt-4">
-                      <p className="text-sm text-gray-600">
+                      <p className="text-sm text-foreground">
                         Current images:
                       </p>
                       <div className="flex flex-wrap gap-2 mt-1">
@@ -755,7 +755,7 @@ const ProductsPage: React.FC = () => {
                               <img
                                 src={picture}
                                 alt={`Current ${index + 1}`}
-                                className="w-20 h-20 object-cover rounded-md border border-gray-300"
+                                className="w-20 h-20 object-cover rounded-md border border-input"
                               />
                               <button
                                 type="button"
@@ -817,10 +817,10 @@ const ProductsPage: React.FC = () => {
 
       {/* View Product Modal */}
       {showViewProductModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-lg p-6 w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+        <div className="fixed inset-0 bg-background/80 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-card rounded-lg p-6 w-full max-w-4xl max-h-[90vh] overflow-y-auto border border-border">
             <div className="flex justify-between items-center mb-4">
-              <h3 className="text-lg font-semibold text-gray-900">
+              <h3 className="text-lg font-semibold text-foreground">
                 Product Details
               </h3>
               <Button
@@ -830,7 +830,7 @@ const ProductsPage: React.FC = () => {
                   setShowViewProductModal(false);
                   setViewingProductId(null);
                 }}
-                className="text-gray-500 hover:text-gray-700"
+                className="text-muted-foreground hover:text-foreground"
               >
                 <X className="h-5 w-5" />
               </Button>
@@ -840,13 +840,13 @@ const ProductsPage: React.FC = () => {
               <div className="flex items-center justify-center h-32">
                 <div className="text-center">
                   <div className="h-8 w-8 border-t-2 border-r-2 border-blue-500 rounded-full animate-spin mx-auto"></div>
-                  <p className="mt-2 text-gray-600">Loading product...</p>
+                  <p className="mt-2 text-foreground">Loading product...</p>
                 </div>
               </div>
             )}
             
             {viewingProductError && (
-              <div className="text-red-500 text-center py-8">
+              <div className="text-destructive text-center py-8">
                 <p>Error loading product details.</p>
               </div>
             )}
@@ -857,7 +857,7 @@ const ProductsPage: React.FC = () => {
                 {viewingProduct.pictures && viewingProduct.pictures.length > 0 && (
                   <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                     {viewingProduct.pictures.map((picture: string, index: number) => (
-                      <div key={index} className="rounded-lg overflow-hidden border">
+                      <div key={index} className="rounded-lg overflow-hidden border border-border">
                         <img
                           src={picture}
                           alt={`Product ${index + 1}`}
@@ -872,45 +872,45 @@ const ProductsPage: React.FC = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-4">
                     <div>
-                      <h4 className="text-sm font-medium text-gray-500">Product Name</h4>
-                      <p className="text-lg font-semibold">{viewingProduct.productName}</p>
+                      <h4 className="text-sm font-medium text-muted-foreground">Product Name</h4>
+                      <p className="text-lg font-semibold text-foreground">{viewingProduct.productName}</p>
                     </div>
                     
                     <div>
-                      <h4 className="text-sm font-medium text-gray-500">Category</h4>
-                      <p className="text-gray-900">{viewingProduct.category}</p>
+                      <h4 className="text-sm font-medium text-muted-foreground">Category</h4>
+                      <p className="text-foreground">{viewingProduct.category}</p>
                     </div>
                     
                     <div>
-                      <h4 className="text-sm font-medium text-gray-500">Brand Name</h4>
-                      <p className="text-gray-900">{viewingProduct.brandName || "-"}</p>
+                      <h4 className="text-sm font-medium text-muted-foreground">Brand Name</h4>
+                      <p className="text-foreground">{viewingProduct.brandName || "-"}</p>
                     </div>
                     
                     <div>
-                      <h4 className="text-sm font-medium text-gray-500">MOQ</h4>
-                      <p className="text-gray-900">{viewingProduct.moq}</p>
+                      <h4 className="text-sm font-medium text-muted-foreground">MOQ</h4>
+                      <p className="text-foreground">{viewingProduct.moq}</p>
                     </div>
                   </div>
                   
                   <div className="space-y-4">
                     <div>
-                      <h4 className="text-sm font-medium text-gray-500">Cost of Goods</h4>
-                      <p className="text-gray-900">${viewingProduct.costOfGoods}</p>
+                      <h4 className="text-sm font-medium text-muted-foreground">Cost of Goods</h4>
+                      <p className="text-foreground">${viewingProduct.costOfGoods}</p>
                     </div>
                     
                     <div>
-                      <h4 className="text-sm font-medium text-gray-500">Sample Cost</h4>
-                      <p className="text-gray-900">${viewingProduct.sampleCost}</p>
+                      <h4 className="text-sm font-medium text-muted-foreground">Sample Cost</h4>
+                      <p className="text-foreground">${viewingProduct.sampleCost}</p>
                     </div>
                     
                     <div>
-                      <h4 className="text-sm font-medium text-gray-500">Ship to USA</h4>
-                      <p className="text-gray-900">${viewingProduct.shipToUsa}</p>
+                      <h4 className="text-sm font-medium text-muted-foreground">Ship to USA</h4>
+                      <p className="text-foreground">${viewingProduct.shipToUsa}</p>
                     </div>
                     
                     <div>
-                      <h4 className="text-sm font-medium text-gray-500">Date Added</h4>
-                      <p className="text-gray-900">
+                      <h4 className="text-sm font-medium text-muted-foreground">Date Added</h4>
+                      <p className="text-foreground">
                         {new Date(viewingProduct.createdAt).toLocaleDateString()}
                       </p>
                     </div>
@@ -919,9 +919,9 @@ const ProductsPage: React.FC = () => {
                 
                 {/* Product Details */}
                 <div>
-                  <h4 className="text-sm font-medium text-gray-500 mb-2">Product Details</h4>
-                  <div className="bg-gray-50 p-4 rounded-lg">
-                    <p className="text-gray-900 whitespace-pre-line">{viewingProduct.productDetails}</p>
+                  <h4 className="text-sm font-medium text-muted-foreground mb-2">Product Details</h4>
+                  <div className="bg-muted p-4 rounded-lg">
+                    <p className="text-foreground whitespace-pre-line">{viewingProduct.productDetails}</p>
                   </div>
                 </div>
               </div>

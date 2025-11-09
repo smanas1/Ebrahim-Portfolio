@@ -4,9 +4,9 @@ import Footer from './Footer';
 
 const MainLayout = () => {
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <div className="min-h-screen bg-background text-foreground transition-colors duration-300">
       <Header />
-      <main>
+      <main className="flex-1">
         <Outlet />
       </main>
       <Footer />

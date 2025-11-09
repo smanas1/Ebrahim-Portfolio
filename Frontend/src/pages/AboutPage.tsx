@@ -17,8 +17,10 @@ import {
   CheckCircle,
 } from "lucide-react";
 import { World } from "@/components/ui/globe";
+import { useTheme } from "@/context/ThemeContext";
 
 const AboutPage = () => {
+  const { theme } = useTheme();
   const [isChatOpen, setIsChatOpen] = useState(false);
   const globeConfig = {
     pointSize: 4,
@@ -514,9 +516,9 @@ const AboutPage = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className={`min-h-screen ${theme === 'dark' ? 'bg-gray-900' : 'bg-white'}`}>
       {/* 1. Hero */}
-      <section className="relative h-[70vh] bg-gradient-to-br from-green-900 to-red-800 text-white overflow-hidden">
+      <section className={`relative h-[70vh] ${theme === 'dark' ? 'bg-gradient-to-br from-gray-900 to-gray-800' : 'bg-gradient-to-br from-green-900 to-red-800'} text-white overflow-hidden`}>
         <div className="absolute inset-0 bg-black/30"></div>
         <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1581092580497-e0d23cbdf1dc?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80')] bg-cover bg-center opacity-15"></div>
         <div className="relative container mx-auto px-6 flex flex-col justify-center h-full max-w-4xl">
@@ -540,9 +542,9 @@ const AboutPage = () => {
             <motion.button
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.98 }}
-              className="mt-4 inline-flex items-center gap-2 bg-white text-red-700 font-semibold px-6 py-3 rounded-lg"
+              className={`mt-4 inline-flex items-center gap-2 ${theme === 'dark' ? 'bg-white text-red-700' : 'bg-white text-red-700'} font-semibold px-6 py-3 rounded-lg`}
             >
-              Let’s Work Together
+              Let's Work Together
               <ArrowRight className="w-4 h-4" />
             </motion.button>
           </motion.div>
@@ -550,7 +552,7 @@ const AboutPage = () => {
       </section>
 
       {/* 2. Personal Journey */}
-      <section className="py-20 bg-gray-50">
+      <section className={`py-20 ${theme === 'dark' ? 'bg-gray-800' : 'bg-gray-50'}`}>
         <div className="container mx-auto px-6 max-w-6xl">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <motion.div
@@ -560,25 +562,25 @@ const AboutPage = () => {
               className="space-y-6"
             >
               <div>
-                <span className="inline-block bg-green-100 text-green-800 text-xs font-semibold px-3 py-1 rounded-full mb-3">
+                <span className={`inline-block ${theme === 'dark' ? 'bg-emerald-900 text-emerald-100' : 'bg-green-100 text-green-800'} text-xs font-semibold px-3 py-1 rounded-full mb-3`}>
                   MY JOURNEY
                 </span>
-                <h2 className="text-3xl font-bold text-gray-900">
+                <h2 className={`text-3xl font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
                   From Frustration to Trusted Partner
                 </h2>
               </div>
-              <p className="text-gray-700 leading-relaxed">
+              <p className={`${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'} leading-relaxed`}>
                 Over 8 years ago, I faced the same sourcing nightmares many of
                 you do today: delayed shipments, hidden defects, unreliable
                 suppliers, and communication breakdowns across time zones.
               </p>
-              <p className="text-gray-700 leading-relaxed">
+              <p className={`${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'} leading-relaxed`}>
                 That frustration became my mission. Today, I’ve partnered with
                 50+ global clients — from Amazon FBA sellers to enterprise
                 brands — to build transparent, resilient supply chains that just{" "}
                 <em>work</em>.
               </p>
-              <p className="text-gray-700 leading-relaxed font-medium">
+              <p className={`${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'} leading-relaxed font-medium`}>
                 I don’t just manage logistics. I protect your reputation, your
                 margins, and your peace of mind.
               </p>
@@ -590,14 +592,14 @@ const AboutPage = () => {
               viewport={{ once: true }}
               className="relative"
             >
-              <div className="bg-white p-1 rounded-2xl shadow-xl">
+              <div className={`${theme === 'dark' ? 'bg-gray-700' : 'bg-white'} p-1 rounded-2xl shadow-xl`}>
                 <img
                   src="https://res.cloudinary.com/dtyqscfja/image/upload/v1761153174/Ebrahim/IMG_9764_fmyyuo.jpg"
                   alt="Ebrahim Mohammad Kamal"
                   className="w-full rounded-2xl object-cover aspect-square"
                 />
               </div>
-              <div className="absolute -bottom-6 -right-6 bg-red-600 text-white px-5 py-3 rounded-lg shadow-lg">
+              <div className={`absolute -bottom-6 -right-6 bg-red-600 ${theme === 'dark' ? 'text-white' : 'text-white'} px-5 py-3 rounded-lg shadow-lg`}>
                 <div className="font-bold text-lg">8+ Years</div>
                 <div className="text-sm opacity-90">
                   In Sourcing & Logistics
@@ -656,16 +658,16 @@ const AboutPage = () => {
       </section>
 
       {/* 4. Services */}
-      <section className="py-20 bg-gray-50">
+      <section className={`py-20 ${theme === 'dark' ? 'bg-gray-800' : 'bg-gray-50'}`}>
         <div className="container mx-auto px-6 max-w-6xl">
           <div className="text-center mb-16">
-            <span className="inline-block bg-green-100 text-green-800 text-xs font-semibold px-3 py-1 rounded-full mb-3">
+            <span className={`inline-block ${theme === 'dark' ? 'bg-emerald-900 text-emerald-100' : 'bg-green-100 text-green-800'} text-xs font-semibold px-3 py-1 rounded-full mb-3`}>
               MY EXPERTISE
             </span>
-            <h2 className="text-3xl font-bold text-gray-900">
+            <h2 className={`text-3xl font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
               End-to-End Supply Chain Solutions
             </h2>
-            <p className="text-gray-600 mt-4 max-w-2xl mx-auto">
+            <p className={`${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'} mt-4 max-w-2xl mx-auto`}>
               I offer hands-on, white-glove support at every stage — because
               your success depends on details.
             </p>
@@ -679,15 +681,15 @@ const AboutPage = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1 }}
-                className="group p-6 bg-white rounded-2xl border border-gray-200 hover:border-green-400 transition-all shadow-sm hover:shadow-md"
+                className={`group p-6 ${theme === 'dark' ? 'bg-gray-700 border-gray-600' : 'bg-white border-gray-200'} rounded-2xl border hover:border-green-400 transition-all shadow-sm hover:shadow-md`}
               >
-                <div className="w-12 h-12 rounded-xl bg-green-50 flex items-center justify-center text-green-600 mb-4 group-hover:bg-green-100 transition-colors">
+                <div className={`w-12 h-12 rounded-xl ${theme === 'dark' ? 'bg-emerald-900/20 text-emerald-400' : 'bg-green-50 text-green-600'} flex items-center justify-center mb-4 group-hover:${theme === 'dark' ? 'bg-emerald-800' : 'bg-green-100'} transition-colors`}>
                   {service.icon}
                 </div>
-                <h3 className="font-semibold text-lg text-gray-900 mb-2">
+                <h3 className={`font-semibold text-lg ${theme === 'dark' ? 'text-white' : 'text-gray-900'} mb-2`}>
                   {service.name}
                 </h3>
-                <p className="text-gray-600 text-sm">{service.desc}</p>
+                <p className={`${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'} text-sm`}>{service.desc}</p>
               </motion.div>
             ))}
           </div>
@@ -695,7 +697,7 @@ const AboutPage = () => {
       </section>
 
       {/* 5. Stats & Achievements */}
-      <section className="py-16 bg-gradient-to-r from-green-50 to-red-50">
+      <section className={`py-16 ${theme === 'dark' ? 'bg-gradient-to-r from-gray-800 to-gray-900' : 'bg-gradient-to-r from-green-50 to-red-50'}`}>
         <div className="container mx-auto px-6 max-w-5xl">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
             {achievements.map((stat, i) => (
@@ -706,10 +708,10 @@ const AboutPage = () => {
                 viewport={{ once: true }}
                 className="p-6"
               >
-                <div className="text-3xl md:text-4xl font-bold text-gray-900 mb-1">
+                <div className={`text-3xl md:text-4xl font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-900'} mb-1`}>
                   {stat.value}
                 </div>
-                <div className="text-gray-600 text-sm">{stat.label}</div>
+                <div className={`${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'} text-sm`}>{stat.label}</div>
               </motion.div>
             ))}
           </div>
@@ -717,13 +719,13 @@ const AboutPage = () => {
       </section>
 
       {/* 6. Testimonials */}
-      <section className="py-20 bg-white">
+      <section className={`py-20 ${theme === 'dark' ? 'bg-gray-900' : 'bg-white'}`}>
         <div className="container mx-auto px-6 max-w-5xl">
           <div className="text-center mb-16">
-            <span className="inline-block bg-red-100 text-red-800 text-xs font-semibold px-3 py-1 rounded-full mb-3">
+            <span className={`inline-block ${theme === 'dark' ? 'bg-red-900/30 text-red-300' : 'bg-red-100 text-red-800'} text-xs font-semibold px-3 py-1 rounded-full mb-3`}>
               CLIENT LOVE
             </span>
-            <h2 className="text-3xl font-bold text-gray-900">
+            <h2 className={`text-3xl font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
               Trusted by Global Brands
             </h2>
           </div>
@@ -735,17 +737,17 @@ const AboutPage = () => {
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                className="bg-gray-50 p-6 rounded-2xl"
+                className={`${theme === 'dark' ? 'bg-gray-800' : 'bg-gray-50'} p-6 rounded-2xl`}
               >
                 <div className="text-yellow-400 mb-3">★★★★★</div>
-                <p className="text-gray-700 text-sm mb-4 italic">"{t.text}"</p>
+                <p className={`${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'} text-sm mb-4 italic`}>"{t.text}"</p>
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center">
-                    <User className="w-5 h-5 text-green-600" />
+                  <div className={`w-10 h-10 rounded-full ${theme === 'dark' ? 'bg-emerald-900/30 text-emerald-400' : 'bg-green-100 text-green-600'} flex items-center justify-center`}>
+                    <User className={`w-5 h-5 ${theme === 'dark' ? 'text-emerald-400' : 'text-green-600'}`} />
                   </div>
                   <div>
-                    <div className="font-medium text-gray-900">{t.name}</div>
-                    <div className="text-xs text-gray-500">{t.role}</div>
+                    <div className={`${theme === 'dark' ? 'font-medium text-white' : 'font-medium text-gray-900'}`}>{t.name}</div>
+                    <div className={`${theme === 'dark' ? 'text-xs text-gray-400' : 'text-xs text-gray-500'}`}>{t.role}</div>
                   </div>
                 </div>
               </motion.div>
@@ -755,7 +757,7 @@ const AboutPage = () => {
       </section>
 
       {/* 7. CTA + Contact */}
-      <section className="py-20 bg-gray-900 text-white">
+      <section className={`py-20 ${theme === 'dark' ? 'bg-gray-800' : 'bg-gray-900'} text-white`}>
         <div className="container mx-auto px-6 text-center max-w-3xl">
           <h2 className="text-3xl md:text-4xl font-bold mb-6">
             Ready to Simplify Your Supply Chain?
@@ -797,9 +799,9 @@ const AboutPage = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 20 }}
-              className="mb-4 bg-white text-gray-800 rounded-2xl shadow-xl p-4 w-80"
+              className={`mb-4 ${theme === 'dark' ? 'bg-gray-800 text-white' : 'bg-white text-gray-800'} rounded-2xl shadow-xl p-4 w-80`}
             >
-              <p className="text-sm">
+              <p className={`${theme === 'dark' ? 'text-gray-300' : 'text-sm'}`}>
                 Hi! I’m Ebrahim. Leave your email or WhatsApp, and I’ll get back
                 to you shortly.
               </p>
@@ -807,9 +809,9 @@ const AboutPage = () => {
                 <input
                   type="text"
                   placeholder="Your email or number"
-                  className="flex-1 text-sm px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+                  className={`flex-1 text-sm px-3 py-2 ${theme === 'dark' ? 'bg-gray-700 text-white border-gray-600' : 'border'} rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500`}
                 />
-                <button className="bg-green-600 text-white p-2 rounded-lg">
+                <button className={`${theme === 'dark' ? 'bg-emerald-600 text-white' : 'bg-green-600 text-white'} p-2 rounded-lg`}>
                   <Send className="w-4 h-4" />
                 </button>
               </div>
@@ -820,7 +822,7 @@ const AboutPage = () => {
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           onClick={() => setIsChatOpen(!isChatOpen)}
-          className="bg-green-600 text-white p-4 rounded-full shadow-lg"
+          className={`${theme === 'dark' ? 'bg-emerald-600 text-white' : 'bg-green-600 text-white'} p-4 rounded-full shadow-lg`}
         >
           <MessageSquare className="w-6 h-6" />
         </motion.button>

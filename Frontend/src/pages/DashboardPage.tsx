@@ -105,8 +105,8 @@ const DashboardPage = () => {
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col overflow-hidden">
-        <main className="flex-1 overflow-y-auto p-4 bg-gray-50 md:p-6">
+      <div className="flex-1 flex flex-col overflow-hidden bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300">
+        <main className="flex-1 overflow-y-auto p-4 md:p-6 bg-gray-50 dark:bg-gray-800 transition-colors duration-300">
           <Outlet />
         </main>
       </div>

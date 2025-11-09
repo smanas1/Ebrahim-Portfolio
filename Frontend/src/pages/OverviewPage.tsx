@@ -4,6 +4,7 @@ import { Eye, Edit, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useNavigate } from "react-router-dom";
+import { useTheme } from "@/context/ThemeContext";
 import {
   useGetAllBlogsQuery,
   useGetAllProductsQuery,
@@ -27,10 +28,11 @@ interface ProductFilters {
 }
 
 const OverviewPage: React.FC = () => {
+  const { theme } = useTheme();
   const navigate = useNavigate();
   const [showViewProductModal, setShowViewProductModal] = useState(false);
   const [viewingProductId, setViewingProductId] = useState<string | null>(null);
-  
+
   const {
     data: products = [],
     isLoading: productsLoading,
@@ -94,17 +96,43 @@ const OverviewPage: React.FC = () => {
   }
 
   return (
-    <div className="space-y-6">
-      <h2 className="text-2xl font-bold">Dashboard Overview</h2>
+    <div
+      className={`space-y-6 ${
+        theme === "dark" ? "bg-gray-900" : "bg-white"
+      } p-3`}
+    >
+      <h2
+        className={`text-2xl font-bold ${
+          theme === "dark" ? "text-white" : "text-gray-900"
+        }`}
+      >
+        Dashboard Overview
+      </h2>
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        <Card className="shadow-md hover:shadow-lg transition-shadow">
+        <Card
+          className={`${
+            theme === "dark"
+              ? "bg-gray-800 text-white shadow-gray-700"
+              : "bg-white text-gray-900 shadow-md"
+          } hover:shadow-lg transition-shadow`}
+        >
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium">
+            <CardTitle
+              className={`text-sm font-medium ${
+                theme === "dark" ? "text-gray-300" : "text-gray-500"
+              }`}
+            >
               Total Products
             </CardTitle>
-            <div className="p-2 rounded-full bg-blue-100 text-blue-600">
+            <div
+              className={`p-2 rounded-full ${
+                theme === "dark"
+                  ? "bg-blue-900 text-blue-300"
+                  : "bg-blue-100 text-blue-600"
+              }`}
+            >
               <svg
                 className="h-4 w-4"
                 fill="none"
@@ -123,18 +151,38 @@ const OverviewPage: React.FC = () => {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{products.length}</div>
-            <p className="text-xs text-green-500">
+            <p
+              className={`${
+                theme === "dark" ? "text-green-400" : "text-green-500"
+              }`}
+            >
               +2.5% from last month
             </p>
           </CardContent>
         </Card>
 
-        <Card className="shadow-md hover:shadow-lg transition-shadow">
+        <Card
+          className={`${
+            theme === "dark"
+              ? "bg-gray-800 text-white shadow-gray-700"
+              : "bg-white text-gray-900 shadow-md"
+          } hover:shadow-lg transition-shadow`}
+        >
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium">
+            <CardTitle
+              className={`text-sm font-medium ${
+                theme === "dark" ? "text-gray-300" : "text-gray-500"
+              }`}
+            >
               Total Blogs
             </CardTitle>
-            <div className="p-2 rounded-full bg-green-100 text-green-600">
+            <div
+              className={`p-2 rounded-full ${
+                theme === "dark"
+                  ? "bg-green-900 text-green-300"
+                  : "bg-green-100 text-green-600"
+              }`}
+            >
               <svg
                 className="h-4 w-4"
                 fill="none"
@@ -153,18 +201,38 @@ const OverviewPage: React.FC = () => {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{blogs.length}</div>
-            <p className="text-xs text-green-500">
+            <p
+              className={`${
+                theme === "dark" ? "text-green-400" : "text-green-500"
+              }`}
+            >
               +5.2% from last month
             </p>
           </CardContent>
         </Card>
 
-        <Card className="shadow-md hover:shadow-lg transition-shadow">
+        <Card
+          className={`${
+            theme === "dark"
+              ? "bg-gray-800 text-white shadow-gray-700"
+              : "bg-white text-gray-900 shadow-md"
+          } hover:shadow-lg transition-shadow`}
+        >
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium">
+            <CardTitle
+              className={`text-sm font-medium ${
+                theme === "dark" ? "text-gray-300" : "text-gray-500"
+              }`}
+            >
               Total Users
             </CardTitle>
-            <div className="p-2 rounded-full bg-purple-100 text-purple-600">
+            <div
+              className={`p-2 rounded-full ${
+                theme === "dark"
+                  ? "bg-purple-900 text-purple-300"
+                  : "bg-purple-100 text-purple-600"
+              }`}
+            >
               <svg
                 className="h-4 w-4"
                 fill="none"
@@ -183,18 +251,38 @@ const OverviewPage: React.FC = () => {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">124</div>
-            <p className="text-xs text-green-500">
+            <p
+              className={`${
+                theme === "dark" ? "text-green-400" : "text-green-500"
+              }`}
+            >
               +1.8% from last month
             </p>
           </CardContent>
         </Card>
 
-        <Card className="shadow-md hover:shadow-lg transition-shadow">
+        <Card
+          className={`${
+            theme === "dark"
+              ? "bg-gray-800 text-white shadow-gray-700"
+              : "bg-white text-gray-900 shadow-md"
+          } hover:shadow-lg transition-shadow`}
+        >
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium">
+            <CardTitle
+              className={`text-sm font-medium ${
+                theme === "dark" ? "text-gray-300" : "text-gray-500"
+              }`}
+            >
               Revenue
             </CardTitle>
-            <div className="p-2 rounded-full bg-amber-100 text-amber-600">
+            <div
+              className={`p-2 rounded-full ${
+                theme === "dark"
+                  ? "bg-amber-900 text-amber-300"
+                  : "bg-amber-100 text-amber-600"
+              }`}
+            >
               <svg
                 className="h-4 w-4"
                 fill="none"
@@ -213,7 +301,11 @@ const OverviewPage: React.FC = () => {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">$3,240</div>
-            <p className="text-xs text-green-500">
+            <p
+              className={`${
+                theme === "dark" ? "text-green-400" : "text-green-500"
+              }`}
+            >
               +3.1% from last month
             </p>
           </CardContent>
@@ -222,60 +314,112 @@ const OverviewPage: React.FC = () => {
 
       {/* Recent Products and Blogs */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <Card className="shadow-md">
+        <Card
+          className={`${
+            theme === "dark"
+              ? "bg-gray-800 text-white"
+              : "bg-white text-gray-900"
+          } shadow-md`}
+        >
           <CardHeader>
-            <CardTitle>Recent Products</CardTitle>
+            <CardTitle
+              className={`${theme === "dark" ? "text-white" : "text-gray-900"}`}
+            >
+              Recent Products
+            </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="overflow-x-auto">
-              <table className="min-w-full divide-y divide-gray-200">
-                <thead className="bg-gray-50">
+              <table
+                className={`min-w-full divide-y ${
+                  theme === "dark" ? "divide-gray-700" : "divide-gray-200"
+                }`}
+              >
+                <thead
+                  className={`${
+                    theme === "dark" ? "bg-gray-700" : "bg-gray-50"
+                  }`}
+                >
                   <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th
+                      className={`px-6 py-3 text-left text-xs font-medium ${
+                        theme === "dark" ? "text-gray-300" : "text-gray-500"
+                      } uppercase tracking-wider`}
+                    >
                       Product
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th
+                      className={`px-6 py-3 text-left text-xs font-medium ${
+                        theme === "dark" ? "text-gray-300" : "text-gray-500"
+                      } uppercase tracking-wider`}
+                    >
                       Category
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th
+                      className={`px-6 py-3 text-left text-xs font-medium ${
+                        theme === "dark" ? "text-gray-300" : "text-gray-500"
+                      } uppercase tracking-wider`}
+                    >
                       MOQ
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th
+                      className={`px-6 py-3 text-left text-xs font-medium ${
+                        theme === "dark" ? "text-gray-300" : "text-gray-500"
+                      } uppercase tracking-wider`}
+                    >
                       Actions
                     </th>
                   </tr>
                 </thead>
-                <tbody className="bg-white divide-y divide-gray-200">
+                <tbody
+                  className={`${
+                    theme === "dark" ? "bg-gray-800" : "bg-white"
+                  } ${
+                    theme === "dark" ? "divide-gray-700" : "divide-gray-200"
+                  } divide-y`}
+                >
                   {products.slice(0, 5).map((product) => (
                     <tr key={product._id}>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-sm font-medium text-gray-900">
+                        <div
+                          className={`text-sm font-medium ${
+                            theme === "dark" ? "text-white" : "text-gray-900"
+                          }`}
+                        >
                           {product.productName}
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-sm text-gray-500">
+                        <div
+                          className={`${
+                            theme === "dark" ? "text-gray-300" : "text-gray-500"
+                          }`}
+                        >
                           {product.category}
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-sm text-gray-500">
+                        <div
+                          className={`${
+                            theme === "dark" ? "text-gray-300" : "text-gray-500"
+                          }`}
+                        >
                           {product.moq}
                         </div>
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      <td className="px-6 py-4 whitespace-nowrap text-sm">
                         <div className="flex space-x-2">
-                          <Button 
-                            variant="ghost" 
+                          <Button
+                            variant="ghost"
                             size="icon"
-                            onClick={() => navigate('/dashboard/products')}
+                            onClick={() => navigate("/dashboard/products")}
                           >
                             <Eye className="h-4 w-4" />
                           </Button>
                           <Button
                             variant="ghost"
                             size="icon"
-                            onClick={() => navigate('/dashboard/products')}
+                            onClick={() => navigate("/dashboard/products")}
                           >
                             <Edit className="h-4 w-4" />
                           </Button>
@@ -296,54 +440,100 @@ const OverviewPage: React.FC = () => {
           </CardContent>
         </Card>
 
-        <Card className="shadow-md">
+        <Card
+          className={`${
+            theme === "dark"
+              ? "bg-gray-800 text-white"
+              : "bg-white text-gray-900"
+          } shadow-md`}
+        >
           <CardHeader>
-            <CardTitle>Recent Blogs</CardTitle>
+            <CardTitle
+              className={`${theme === "dark" ? "text-white" : "text-gray-900"}`}
+            >
+              Recent Blogs
+            </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="overflow-x-auto">
-              <table className="min-w-full divide-y divide-gray-200">
-                <thead className="bg-gray-50">
+              <table
+                className={`min-w-full divide-y ${
+                  theme === "dark" ? "divide-gray-700" : "divide-gray-200"
+                }`}
+              >
+                <thead
+                  className={`${
+                    theme === "dark" ? "bg-gray-700" : "bg-gray-50"
+                  }`}
+                >
                   <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th
+                      className={`px-6 py-3 text-left text-xs font-medium ${
+                        theme === "dark" ? "text-gray-300" : "text-gray-500"
+                      } uppercase tracking-wider`}
+                    >
                       Title
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th
+                      className={`px-6 py-3 text-left text-xs font-medium ${
+                        theme === "dark" ? "text-gray-300" : "text-gray-500"
+                      } uppercase tracking-wider`}
+                    >
+                      Category
+                    </th>
+                    <th
+                      className={`px-6 py-3 text-left text-xs font-medium ${
+                        theme === "dark" ? "text-gray-300" : "text-gray-500"
+                      } uppercase tracking-wider`}
+                    >
                       Author
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Status
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th
+                      className={`px-6 py-3 text-left text-xs font-medium ${
+                        theme === "dark" ? "text-gray-300" : "text-gray-500"
+                      } uppercase tracking-wider`}
+                    >
                       Actions
                     </th>
                   </tr>
                 </thead>
-                <tbody className="bg-white divide-y divide-gray-200">
+                <tbody
+                  className={`${
+                    theme === "dark" ? "bg-gray-800" : "bg-white"
+                  } ${
+                    theme === "dark" ? "divide-gray-700" : "divide-gray-200"
+                  } divide-y`}
+                >
                   {blogs.slice(0, 5).map((blog) => (
                     <tr key={blog._id}>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-sm font-medium text-gray-900">
+                        <div
+                          className={`text-sm font-medium ${
+                            theme === "dark" ? "text-white" : "text-gray-900"
+                          }`}
+                        >
                           {blog.title}
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-sm text-gray-500">
-                          {blog.author}
+                        <div
+                          className={`${
+                            theme === "dark" ? "text-gray-300" : "text-gray-500"
+                          }`}
+                        >
+                          {blog.category || "-"}
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <span
-                          className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                            blog.isPublished
-                              ? "bg-green-100 text-green-800"
-                              : "bg-yellow-100 text-yellow-800"
+                        <div
+                          className={`${
+                            theme === "dark" ? "text-gray-300" : "text-gray-500"
                           }`}
                         >
-                          {blog.isPublished ? "Published" : "Draft"}
-                        </span>
+                          {blog.author}
+                        </div>
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      <td className="px-6 py-4 whitespace-nowrap text-sm">
                         <div className="flex space-x-2">
                           <Button variant="ghost" size="icon">
                             <Eye className="h-4 w-4" />
@@ -351,7 +541,7 @@ const OverviewPage: React.FC = () => {
                           <Button
                             variant="ghost"
                             size="icon"
-                            onClick={() => navigate('/dashboard/blogs')}
+                            onClick={() => navigate("/dashboard/blogs")}
                           >
                             <Edit className="h-4 w-4" />
                           </Button>

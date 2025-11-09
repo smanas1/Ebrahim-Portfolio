@@ -1,16 +1,19 @@
+import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 
 const CTASkeleton = () => {
   return (
-    <section className="py-16 md:py-24 bg-gradient-to-r from-emerald-100 to-emerald-50 relative overflow-hidden">
-      <div className="container mx-auto px-4">
-        <div className="max-w-4xl mx-auto text-center">
-          <Skeleton className="h-8 w-2/3 mx-auto mb-6" />
-          <Skeleton className="h-6 w-1/2 mx-auto mb-8" />
-          <Skeleton className="h-12 w-44 mx-auto" />
+    <Card className="w-full py-12 px-4 sm:px-6 lg:px-8">
+      <CardContent className="flex flex-col md:flex-row items-center justify-between gap-8 text-center">
+        <div className="flex-1">
+          <Skeleton className="h-8 w-3/4 mx-auto mb-4" />
+          <Skeleton className="h-4 w-1/2 mx-auto" />
         </div>
-      </div>
-    </section>
+        <div className="flex-1">
+          <Skeleton className="h-12 w-full max-w-xs mx-auto" />
+        </div>
+      </CardContent>
+    </Card>
   );
 };
 

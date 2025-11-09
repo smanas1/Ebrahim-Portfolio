@@ -84,39 +84,39 @@ const Header = () => {
         {
           title: "Product Sourcing",
           items: [
-            { label: "Sourcing from China", href: "#", tag: "Popular" },
-            { label: "Supplier Verification", href: "#" },
+            { label: "Sourcing from China", href: "/services/sourcing-china", tag: "Popular" },
+            { label: "Supplier Verification", href: "/services/supplier-verification" },
           ],
         },
         {
           title: "Quality Control",
           items: [
-            { label: "Pre-Production Inspection", href: "#" },
-            { label: "During Production Inspection", href: "#" },
-            { label: "Pre-Shipment Inspection", href: "#" },
-            { label: "Sample Inspection", href: "#", tag: "Trending" },
+            { label: "Pre-Production Inspection", href: "/services/pre-production-inspection" },
+            { label: "During Production Inspection", href: "/services/during-production-inspection" },
+            { label: "Pre-Shipment Inspection", href: "/services/pre-shipment-inspection" },
+            { label: "Sample Inspection", href: "/services/sample-inspection", tag: "Trending" },
           ],
         },
         {
           title: "Logistics",
           items: [
-            { label: "Sea Freight", href: "#" },
-            { label: "Air Freight", href: "#" },
-            { label: "Express Courier", href: "#" },
+            { label: "Sea Freight", href: "/services/sea-freight" },
+            { label: "Air Freight", href: "/services/air-freight" },
+            { label: "Express Courier", href: "/services/express-courier" },
           ],
         },
         {
           title: "Fulfillment",
           items: [
-            { label: "Amazon FBA Prep", href: "#" },
-            { label: "3PL Services", href: "#" },
+            { label: "Amazon FBA Prep", href: "/services/amazon-fba-prep" },
+            { label: "3PL Services", href: "/services/3pl-services" },
           ],
         },
         {
           title: "Photography",
           items: [
-            { label: "Product Photography", href: "#" },
-            { label: "Lifestyle Photography", href: "#" },
+            { label: "Product Photography", href: "/services/product-photography" },
+            { label: "Lifestyle Photography", href: "/services/lifestyle-photography" },
           ],
         },
       ],
@@ -185,6 +185,7 @@ const Header = () => {
                     <Link
                       to={item.href || "#"}
                       className={`${theme === 'dark' ? 'text-gray-300 hover:text-emerald-400' : 'text-gray-700 hover:text-emerald-600'} font-medium transition-colors`}
+                      onClick={() => setActiveDropdown(null)}
                     >
                       {item.label}
                     </Link>
@@ -335,9 +336,13 @@ const Header = () => {
                       <ul className="space-y-2">
                         {subItem.items.map((service, serviceIndex) => (
                           <li key={serviceIndex}>
-                            <a
-                              href={service.href}
+                            <Link
+                              to={service.href}
                               className={`${theme === 'dark' ? 'text-gray-300 hover:text-emerald-400' : 'text-gray-700 hover:text-emerald-600'} flex justify-between items-center py-2 transition-colors`}
+                              onClick={() => {
+                                setActiveDropdown(null);
+                                setIsMenuOpen(false);
+                              }}
                             >
                               <span>{service.label}</span>
                               {service.tag && (
@@ -345,7 +350,7 @@ const Header = () => {
                                   {service.tag}
                                 </span>
                               )}
-                            </a>
+                            </Link>
                           </li>
                         ))}
                       </ul>

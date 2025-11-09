@@ -1,27 +1,31 @@
+import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 
 const BlogSkeleton = () => {
   return (
-    <section className="py-16 md:py-24 bg-gradient-to-br from-gray-900 to-black">
+    <section className="py-16 bg-background">
       <div className="container mx-auto px-4">
-        <Skeleton className="h-10 w-1/4 mx-auto mb-12 text-center" />
+        <div className="text-center mb-12">
+          <Skeleton className="h-8 w-64 mx-auto mb-4" />
+          <Skeleton className="h-4 w-96 mx-auto" />
+        </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {[1, 2, 3].map((i) => (
-            <div key={i} className="bg-gray-800/50 rounded-2xl overflow-hidden border border-gray-700/50">
-              <Skeleton className="w-full h-48" />
-              <div className="p-6">
-                <Skeleton className="h-5 w-1/4 mb-3" />
-                <Skeleton className="h-6 w-full mb-2" />
-                <Skeleton className="h-6 w-4/5 mb-4" />
-                <div className="flex items-center">
-                  <Skeleton className="w-10 h-10 rounded-full mr-3" />
-                  <div>
-                    <Skeleton className="h-4 w-24" />
-                    <Skeleton className="h-3 w-20 mt-1" />
+          {[1, 2, 3].map((item) => (
+            <Card key={item} className="overflow-hidden">
+              <Skeleton className="h-48 w-full" />
+              <CardContent className="p-6 space-y-4">
+                <Skeleton className="h-5 w-4/5" />
+                <Skeleton className="h-4 w-full" />
+                <Skeleton className="h-4 w-3/4" />
+                <div className="flex items-center gap-2 mt-4">
+                  <Skeleton className="h-8 w-8 rounded-full" />
+                  <div className="space-y-1">
+                    <Skeleton className="h-3 w-24" />
+                    <Skeleton className="h-2 w-16" />
                   </div>
                 </div>
-              </div>
-            </div>
+              </CardContent>
+            </Card>
           ))}
         </div>
       </div>

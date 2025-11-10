@@ -12,6 +12,7 @@ import SettingsPage from "../pages/SettingsPage";
 import ProductListingPage from "../pages/ProductListingPage";
 import MainLayout from "../components/layouts/MainLayout";
 import AboutPage from "../pages/AboutPage";
+import ProtectedRoute from "../components/ProtectedRoute";
 
 // Import menu pages
 import ProductSourcingPage from "../pages/menu/ProductSourcingPage";
@@ -65,7 +66,11 @@ const AppRoutes = () => {
         <Route path="/services/product-photography" element={<ProductPhotographyPage />} />
         <Route path="/services/lifestyle-photography" element={<LifestylePhotographyPage />} />
         
-        <Route path="/dashboard/*" element={<DashboardPage />}>
+        <Route path="/dashboard/*" element={
+          <ProtectedRoute>
+            <DashboardPage />
+          </ProtectedRoute>
+        }>
           <Route index element={<OverviewPage />} />
           <Route path="overview" element={<OverviewPage />} />
           <Route path="products" element={<ProductsPage />} />

@@ -1,15 +1,17 @@
-import type { RootState } from "@/store/store";
-import { useSelector } from "react-redux";
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
-// Custom hook to access auth state
 export const useAuth = () => {
-  const { user, token, isAuthenticated } = useSelector(
-    (state: RootState) => state.auth
-  );
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  return {
-    user,
-    token,
-    isAuthenticated,
+  const logout = () => {
+    // Dispatch logout action which will also remove token from localStorage
+    dispatch({ type: 'auth/logout' });
+    
+    // Navigate to home or login page
+    navigate('/auth');
   };
+
+  return { logout };
 };

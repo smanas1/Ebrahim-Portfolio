@@ -11,8 +11,8 @@ interface AuthState {
 // Initial state for auth
 const initialState: AuthState = {
   user: null,
-  token: null,
-  isAuthenticated: false,
+  token: localStorage.getItem('token') || null,
+  isAuthenticated: !!localStorage.getItem('token'),
 };
 
 // Auth reducer to handle login/logout
@@ -26,6 +26,8 @@ const authReducer = (state = initialState, action: any): AuthState => {
         isAuthenticated: true,
       };
     case 'auth/logout':
+      // Remove token from localStorage on logout
+      localStorage.removeItem('token');
       return {
         ...state,
         user: null,

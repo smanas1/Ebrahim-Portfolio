@@ -10,12 +10,18 @@ import {
   X,
   Eye,
   Edit,
+  LogOut,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link, Outlet } from "react-router-dom";
+import { useAuth } from "../hooks/useAuth";
+import { useSelector } from "react-redux";
+import type { RootState } from "@/store/store";
 
 const DashboardPage = () => {
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  const { logout } = useAuth();
+  const { user } = useSelector((state: RootState) => state.auth);
 
   const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
 
@@ -42,7 +48,14 @@ const DashboardPage = () => {
             </Button>
           </div>
 
-          <nav className="mt-8">
+          {sidebarOpen && user && (
+            <div className="mt-4 p-3 bg-gray-800 rounded-lg">
+              <p className="text-sm truncate">{user.name}</p>
+              <p className="text-xs text-gray-400 truncate">{user.email}</p>
+            </div>
+          )}
+
+          <nav className="mt-4">
             <ul className="space-y-2">
               <li>
                 <Link
@@ -101,11 +114,38 @@ const DashboardPage = () => {
               </li>
             </ul>
           </nav>
+
+          <div className="absolute bottom-0  pb-4">
+            <Button
+              onClick={logout}
+              variant="ghost"
+              className="w-full justify-start p-3 text-red-400 hover:bg-gray-800 transition-colors rounded-lg"
+            >
+              <LogOut className="h-5 w-5" />
+              <span className={`ml-3 ${sidebarOpen ? "" : "hidden md:block"}`}>
+                Logout
+              </span>
+            </Button>
+          </div>
         </div>
       </div>
 
       {/* Main Content */}
       <div className="flex-1 flex flex-col overflow-hidden bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300">
+        <header className="bg-white dark:bg-gray-800 shadow-sm p-4 flex justify-between items-center">
+          <button
+            onClick={toggleSidebar}
+            className="md:hidden text-gray-600 dark:text-gray-300"
+          >
+            <Menu className="h-6 w-6" />
+          </button>
+          <div className="text-right">
+            <p className="text-sm font-medium">{user?.name}</p>
+            <p className="text-xs text-gray-500 dark:text-gray-400">
+              {user?.email}
+            </p>
+          </div>
+        </header>
         <main className="flex-1 overflow-y-auto p-4 md:p-6 bg-gray-50 dark:bg-gray-800 transition-colors duration-300">
           <Outlet />
         </main>

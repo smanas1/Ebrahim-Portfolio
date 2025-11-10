@@ -5,14 +5,11 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   useGetAllUsersQuery,
-  useRegisterUserMutation,
-  useLoginUserMutation,
   useUpdateUserMutation,
   useDeleteUserMutation,
 } from "@/store/api";
 
 import {
-  Plus,
   User as UserIcon,
   Eye,
   Edit,
@@ -25,23 +22,12 @@ import {
 import type { User } from "@/types/productTypes";
 
 const UsersPage = () => {
-  const [showAddUserModal, setShowAddUserModal] = useState(false);
   const [showViewUserModal, setShowViewUserModal] = useState(false);
   const [showEditUserModal, setShowEditUserModal] = useState(false);
-  const [newUser, setNewUser] = useState({
-    name: "",
-    email: "",
-    password: "",
-  });
   const [editingUser, setEditingUser] = useState<User | null>(null);
   const [viewingUser, setViewingUser] = useState<User | null>(null);
   const [userSearch, setUserSearch] = useState("");
-  const [userFilter, setUserFilter] = useState<
-    "all" | "admin" | "user" | "moderator"
-  >("all");
-  const [registerUser, { isLoading: isRegistering }] =
-    useRegisterUserMutation();
-  const [loginUser, { isLoading: isLoggingIn }] = useLoginUserMutation();
+  const [userFilter, setUserFilter] = useState<"all" | "admin" | "user" | "moderator">("all");
   const [updateUser, { isLoading: isUpdating }] = useUpdateUserMutation();
   const [deleteUser, { isLoading: isDeleting }] = useDeleteUserMutation();
 
@@ -61,29 +47,6 @@ const UsersPage = () => {
     const matchesFilter = userFilter === "all" || user.role === userFilter;
     return matchesSearch && matchesFilter;
   });
-
-  const handleAddUser = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    try {
-      // Register the user
-      await registerUser({
-        name: newUser.name,
-        email: newUser.email,
-        password: newUser.password,
-      }).unwrap();
-
-      // Reset the form and close modal
-      setNewUser({ name: "", email: "", password: "" });
-      setShowAddUserModal(false);
-
-      // Refetch users to update the list
-      refetch();
-    } catch (error) {
-      console.error("Failed to add user:", error);
-      // Handle error appropriately
-    }
-  };
 
   const handleEditUser = (user: User) => {
     setEditingUser(user);
@@ -127,14 +90,6 @@ const UsersPage = () => {
     }
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setNewUser((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
-
   const handleEditInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     if (editingUser) {
@@ -152,10 +107,6 @@ const UsersPage = () => {
           <h2 className="text-2xl font-bold text-foreground">
             Users Management
           </h2>
-          <Button onClick={() => setShowAddUserModal(true)}>
-            <Plus className="h-4 w-4 mr-2" />
-            Add User
-          </Button>
         </div>
         <div className="text-center py-12">
           <p className="text-destructive text-lg">Error loading users</p>
@@ -171,10 +122,6 @@ const UsersPage = () => {
     <div className="space-y-6 bg-background min-h-screen p-4">
       <div className="flex justify-between items-center">
         <h2 className="text-2xl font-bold text-foreground">Users Management</h2>
-        <Button onClick={() => setShowAddUserModal(true)}>
-          <Plus className="h-4 w-4 mr-2" />
-          Add User
-        </Button>
       </div>
 
       {/* Search and Filter Controls */}
@@ -287,105 +234,10 @@ const UsersPage = () => {
               <p className="text-muted-foreground/70 mt-2">
                 {userSearch || userFilter !== "all"
                   ? "No users match your current filters."
-                  : "Add your first user using the 'Add User' button above."}
+                  : "No users available."}
               </p>
             </div>
           )}
-        </div>
-      )}
-
-      {/* Add User Modal */}
-      {showAddUserModal && (
-        <div className="fixed inset-0 bg-background/80 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="bg-card rounded-lg p-6 w-full max-w-md border border-border">
-            <div className="flex justify-between items-center mb-4">
-              <h3 className="text-lg font-semibold text-foreground">
-                Add New User
-              </h3>
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => {
-                  setShowAddUserModal(false);
-                  setNewUser({ name: "", email: "", password: "" });
-                }}
-                className="text-muted-foreground hover:text-foreground"
-              >
-                <X className="h-5 w-5" />
-              </Button>
-            </div>
-            <form onSubmit={handleAddUser} className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-foreground mb-1">
-                  Full Name
-                </label>
-                <Input
-                  type="text"
-                  name="name"
-                  value={newUser.name}
-                  onChange={handleInputChange}
-                  placeholder="Enter user's full name"
-                  required
-                  className="w-full"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-foreground mb-1">
-                  Email
-                </label>
-                <Input
-                  type="email"
-                  name="email"
-                  value={newUser.email}
-                  onChange={handleInputChange}
-                  placeholder="Enter user's email"
-                  required
-                  className="w-full"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-foreground mb-1">
-                  Password
-                </label>
-                <Input
-                  type="password"
-                  name="password"
-                  value={newUser.password}
-                  onChange={handleInputChange}
-                  placeholder="Enter password"
-                  required
-                  className="w-full"
-                />
-              </div>
-              <div className="flex justify-end space-x-3 pt-4">
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={() => {
-                    setShowAddUserModal(false);
-                    setNewUser({ name: "", email: "", password: "" });
-                  }}
-                  className="px-4 py-2"
-                >
-                  Cancel
-                </Button>
-                <Button
-                  type="submit"
-                  className="px-4 py-2"
-                  disabled={isRegistering}
-                >
-                  {isRegistering ? (
-                    <span className="flex items-center">
-                      <span className="h-4 w-4 border-t-2 border-r-2 border-primary-foreground rounded-full animate-spin mr-2"></span>
-                      Adding...
-                    </span>
-                  ) : (
-                    "Add User"
-                  )}
-                </Button>
-              </div>
-            </form>
-          </div>
         </div>
       )}
 
@@ -426,7 +278,7 @@ const UsersPage = () => {
                 <h4 className="text-sm font-medium text-muted-foreground">
                   Role
                 </h4>
-                <p className="text-foreground">{(viewingUser as IUser).role}</p>
+                <p className="text-foreground">{(viewingUser as any).role}</p>
               </div>
               <div>
                 <h4 className="text-sm font-medium text-muted-foreground">

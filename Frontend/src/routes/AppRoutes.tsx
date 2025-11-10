@@ -13,6 +13,7 @@ import ProductListingPage from "../pages/ProductListingPage";
 import MainLayout from "../components/layouts/MainLayout";
 import AboutPage from "../pages/AboutPage";
 import ProtectedRoute from "../components/ProtectedRoute";
+import ScrollToTop from "../components/ScrollToTop";
 
 // Import menu pages
 import ProductSourcingPage from "../pages/menu/ProductSourcingPage";
@@ -36,7 +37,9 @@ import LifestylePhotographyPage from "../pages/menu/LifestylePhotographyPage";
 
 const AppRoutes = () => {
   return (
-    <Routes>
+    <>
+      <ScrollToTop />
+      <Routes>
       <Route path="/" element={<MainLayout />}>
         <Route index element={<HomePage />} />
         <Route path="/about" element={<AboutPage />} />
@@ -80,6 +83,7 @@ const AppRoutes = () => {
         </Route>
       </Route>
     </Routes>
+    </>
   );
 };
 

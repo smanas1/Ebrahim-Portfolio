@@ -40,6 +40,7 @@ const BlogsPage: React.FC = () => {
     isLoading: blogsLoading,
     isError: blogsError,
     error: blogsApiError,
+    refetch,
   } = useGetAllBlogsQuery();
   const [createBlog] = useCreateBlogMutation();
   const [updateBlog] = useUpdateBlogMutation();
@@ -210,7 +211,7 @@ const BlogsPage: React.FC = () => {
     if (coverImageFile && coverImageFile.size > 0) {
       // If new image is present, send as multipart/form-data
       blogData = new FormData();
-      blogData.append("_id", editingBlog._id);
+      blogData.append("_id", editingBlog._id); // Add _id to FormData as the API expects
       blogData.append("title", formData.get("title") as string);
       blogData.append("content", formData.get("content") as string);
       blogData.append("author", formData.get("author") as string);
@@ -221,7 +222,7 @@ const BlogsPage: React.FC = () => {
     } else {
       // If no new image uploaded, send as regular object
       blogData = {
-        _id: editingBlog._id,
+        _id: editingBlog._id, // Include _id in the object as the API expects
         title: formData.get("title") as string,
         content: formData.get("content") as string,
         author: formData.get("author") as string,
@@ -244,6 +245,8 @@ const BlogsPage: React.FC = () => {
     if (window.confirm("Are you sure you want to delete this blog?")) {
       try {
         await deleteBlog(id).unwrap();
+        // Optionally refetch to ensure the UI updates
+        // The invalidatesTags should handle this, but refetching ensures UI update
       } catch (err) {
         console.error("Failed to delete blog:", err);
       }

@@ -34,55 +34,99 @@ import AmazonFBAPrepPage from "../pages/menu/AmazonFBAPrepPage";
 import ThreePLServicesPage from "../pages/menu/ThreePLServicesPage";
 import ProductPhotographyPage from "../pages/menu/ProductPhotographyPage";
 import LifestylePhotographyPage from "../pages/menu/LifestylePhotographyPage";
+import ContactPage from "@/pages/ContactPage";
 
 const AppRoutes = () => {
   return (
     <>
       <ScrollToTop />
       <Routes>
-      <Route path="/" element={<MainLayout />}>
-        <Route index element={<HomePage />} />
-        <Route path="/about" element={<AboutPage />} />
-        <Route path="/product" element={<ProductPage />} />
-        <Route path="/products" element={<ProductListingPage />} />
-        <Route path="/products/:category" element={<ProductListingPage />} />
-        <Route path="/blogs" element={<BlogPage />} />
-        <Route path="/auth" element={<AuthPage />} />
-        
-        {/* Menu Routes */}
-        <Route path="/services/product-sourcing" element={<ProductSourcingPage />} />
-        <Route path="/services/quality-control" element={<QualityControlPage />} />
-        <Route path="/services/logistics" element={<LogisticsPage />} />
-        <Route path="/services/fulfillment" element={<FulfillmentPage />} />
-        <Route path="/services/photography" element={<PhotographyPage />} />
-        <Route path="/services/sourcing-china" element={<SourcingFromChinaPage />} />
-        <Route path="/services/supplier-verification" element={<SupplierVerificationPage />} />
-        <Route path="/services/pre-production-inspection" element={<PreProductionInspectionPage />} />
-        <Route path="/services/during-production-inspection" element={<DuringProductionInspectionPage />} />
-        <Route path="/services/pre-shipment-inspection" element={<PreShipmentInspectionPage />} />
-        <Route path="/services/sample-inspection" element={<SampleInspectionPage />} />
-        <Route path="/services/sea-freight" element={<SeaFreightPage />} />
-        <Route path="/services/air-freight" element={<AirFreightPage />} />
-        <Route path="/services/express-courier" element={<ExpressCourierPage />} />
-        <Route path="/services/amazon-fba-prep" element={<AmazonFBAPrepPage />} />
-        <Route path="/services/3pl-services" element={<ThreePLServicesPage />} />
-        <Route path="/services/product-photography" element={<ProductPhotographyPage />} />
-        <Route path="/services/lifestyle-photography" element={<LifestylePhotographyPage />} />
-        
-        <Route path="/dashboard/*" element={
-          <ProtectedRoute>
-            <DashboardPage />
-          </ProtectedRoute>
-        }>
-          <Route index element={<OverviewPage />} />
-          <Route path="overview" element={<OverviewPage />} />
-          <Route path="products" element={<ProductsPage />} />
-          <Route path="blogs" element={<BlogsPage />} />
-          <Route path="users" element={<UsersPage />} />
-          <Route path="settings" element={<SettingsPage />} />
+        <Route path="/" element={<MainLayout />}>
+          <Route index element={<HomePage />} />
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="/product" element={<ProductPage />} />
+          <Route path="/products" element={<ProductListingPage />} />
+          <Route path="/products/:category" element={<ProductListingPage />} />
+          <Route path="/blogs" element={<BlogPage />} />
+          <Route path="/auth" element={<AuthPage />} />
+          <Route path="/contact" element={<ContactPage />} />
+
+          {/* Menu Routes */}
+          <Route
+            path="/services/product-sourcing"
+            element={<ProductSourcingPage />}
+          />
+          <Route
+            path="/services/quality-control"
+            element={<QualityControlPage />}
+          />
+          <Route path="/services/logistics" element={<LogisticsPage />} />
+          <Route path="/services/fulfillment" element={<FulfillmentPage />} />
+          <Route path="/services/photography" element={<PhotographyPage />} />
+          <Route
+            path="/services/sourcing-china"
+            element={<SourcingFromChinaPage />}
+          />
+          <Route
+            path="/services/supplier-verification"
+            element={<SupplierVerificationPage />}
+          />
+          <Route
+            path="/services/pre-production-inspection"
+            element={<PreProductionInspectionPage />}
+          />
+          <Route
+            path="/services/during-production-inspection"
+            element={<DuringProductionInspectionPage />}
+          />
+          <Route
+            path="/services/pre-shipment-inspection"
+            element={<PreShipmentInspectionPage />}
+          />
+          <Route
+            path="/services/sample-inspection"
+            element={<SampleInspectionPage />}
+          />
+          <Route path="/services/sea-freight" element={<SeaFreightPage />} />
+          <Route path="/services/air-freight" element={<AirFreightPage />} />
+          <Route
+            path="/services/express-courier"
+            element={<ExpressCourierPage />}
+          />
+          <Route
+            path="/services/amazon-fba-prep"
+            element={<AmazonFBAPrepPage />}
+          />
+          <Route
+            path="/services/3pl-services"
+            element={<ThreePLServicesPage />}
+          />
+          <Route
+            path="/services/product-photography"
+            element={<ProductPhotographyPage />}
+          />
+          <Route
+            path="/services/lifestyle-photography"
+            element={<LifestylePhotographyPage />}
+          />
+
+          <Route
+            path="/dashboard/*"
+            element={
+              <ProtectedRoute>
+                <DashboardPage />
+              </ProtectedRoute>
+            }
+          >
+            <Route index element={<OverviewPage />} />
+            <Route path="overview" element={<OverviewPage />} />
+            <Route path="products" element={<ProductsPage />} />
+            <Route path="blogs" element={<BlogsPage />} />
+            <Route path="users" element={<UsersPage />} />
+            <Route path="settings" element={<SettingsPage />} />
+          </Route>
         </Route>
-      </Route>
-    </Routes>
+      </Routes>
     </>
   );
 };

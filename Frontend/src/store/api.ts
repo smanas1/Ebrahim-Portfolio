@@ -145,7 +145,7 @@ export const apiSlice = createApi({
           // If it's not FormData, extract _id separately
           const { _id, ...patch } = blogData;
           return {
-            url: `/blog/${_id}`,
+            url: `/blog/update/${_id}`,
             method: "PATCH",
             body: patch,
           };

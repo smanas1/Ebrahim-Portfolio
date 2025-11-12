@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import { Button } from "@/components/ui/button";
 import { Package, CheckCircle, TrendingUp, Globe } from "lucide-react";
 
@@ -14,7 +14,8 @@ const ProductSourcingPage = () => {
             Product Sourcing
           </h1>
           <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-            Professional sourcing services to help you find the right products from trusted suppliers worldwide
+            Professional sourcing services to help you find the right products
+            from trusted suppliers worldwide
           </p>
         </div>
 
@@ -24,24 +25,33 @@ const ProductSourcingPage = () => {
               <div className="p-3 bg-emerald-100 dark:bg-emerald-900/30 rounded-lg mr-4">
                 <Globe className="h-8 w-8 text-emerald-600 dark:text-emerald-400" />
               </div>
-              <h2 className="text-3xl font-bold text-gray-800 dark:text-white">Sourcing from China</h2>
+              <h2 className="text-3xl font-bold text-gray-800 dark:text-white">
+                Sourcing from China
+              </h2>
             </div>
             <p className="text-gray-600 dark:text-gray-300 text-lg mb-6">
-              Access to verified suppliers in China with competitive pricing and quality products. 
-              We handle everything from factory audits to quality inspections.
+              Access to verified suppliers in China with competitive pricing and
+              quality products. We handle everything from factory audits to
+              quality inspections.
             </p>
             <div className="space-y-4">
               <div className="flex items-center">
                 <CheckCircle className="h-5 w-5 text-emerald-500 mr-3 flex-shrink-0" />
-                <span className="text-gray-700 dark:text-gray-300">Verified supplier network</span>
+                <span className="text-gray-700 dark:text-gray-300">
+                  Verified supplier network
+                </span>
               </div>
               <div className="flex items-center">
                 <CheckCircle className="h-5 w-5 text-emerald-500 mr-3 flex-shrink-0" />
-                <span className="text-gray-700 dark:text-gray-300">Competitive pricing</span>
+                <span className="text-gray-700 dark:text-gray-300">
+                  Competitive pricing
+                </span>
               </div>
               <div className="flex items-center">
                 <CheckCircle className="h-5 w-5 text-emerald-500 mr-3 flex-shrink-0" />
-                <span className="text-gray-700 dark:text-gray-300">Quality assurance</span>
+                <span className="text-gray-700 dark:text-gray-300">
+                  Quality assurance
+                </span>
               </div>
             </div>
             <Button className="mt-6 w-full bg-emerald-600 hover:bg-emerald-700 text-white py-3 text-lg">
@@ -54,41 +64,57 @@ const ProductSourcingPage = () => {
               <div className="p-3 bg-cyan-100 dark:bg-cyan-900/30 rounded-lg mr-4">
                 <CheckCircle className="h-8 w-8 text-cyan-600 dark:text-cyan-400" />
               </div>
-              <h2 className="text-3xl font-bold text-gray-800 dark:text-white">Supplier Verification</h2>
+              <h2 className="text-3xl font-bold text-gray-800 dark:text-white">
+                Supplier Verification
+              </h2>
             </div>
             <p className="text-gray-600 dark:text-gray-300 text-lg mb-6">
-              Ensuring your suppliers meet quality standards and are legitimate. We perform thorough 
-              background checks and factory visits before you commit to any partnership.
+              Ensuring your suppliers meet quality standards and are legitimate.
+              We perform thorough background checks and factory visits before
+              you commit to any partnership.
             </p>
             <div className="space-y-4">
               <div className="flex items-center">
                 <CheckCircle className="h-5 w-5 text-cyan-500 mr-3 flex-shrink-0" />
-                <span className="text-gray-700 dark:text-gray-300">Factory audits</span>
+                <span className="text-gray-700 dark:text-gray-300">
+                  Factory audits
+                </span>
               </div>
               <div className="flex items-center">
                 <CheckCircle className="h-5 w-5 text-cyan-500 mr-3 flex-shrink-0" />
-                <span className="text-gray-700 dark:text-gray-300">Background checks</span>
+                <span className="text-gray-700 dark:text-gray-300">
+                  Background checks
+                </span>
               </div>
               <div className="flex items-center">
                 <CheckCircle className="h-5 w-5 text-cyan-500 mr-3 flex-shrink-0" />
-                <span className="text-gray-700 dark:text-gray-300">Reference verification</span>
+                <span className="text-gray-700 dark:text-gray-300">
+                  Reference verification
+                </span>
               </div>
             </div>
-            <Button variant="outline" className="mt-6 w-full py-3 text-lg border-2">
+            <Button
+              variant="outline"
+              className="mt-6 w-full py-3 text-lg border-2"
+            >
               Verify Supplier
             </Button>
           </div>
         </div>
 
         <div className="bg-gradient-to-r from-emerald-600 to-cyan-600 rounded-2xl p-12 text-white text-center">
-          <h2 className="text-4xl font-bold mb-6">Why Choose Our Product Sourcing Services?</h2>
+          <h2 className="text-4xl font-bold mb-6">
+            Why Choose Our Product Sourcing Services?
+          </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div className="flex items-center justify-center">
               <div className="flex items-center">
                 <TrendingUp className="h-12 w-12 mr-4" />
                 <div>
                   <h3 className="text-2xl font-bold">Cost Optimization</h3>
-                  <p className="text-emerald-100">Save up to 30% on product costs</p>
+                  <p className="text-emerald-100">
+                    Save up to 30% on product costs
+                  </p>
                 </div>
               </div>
             </div>

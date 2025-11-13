@@ -2,7 +2,6 @@ import { useParams } from "react-router-dom";
 import { Calendar, User } from "lucide-react";
 import { useGetBlogByIdQuery } from "@/store/api";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
 
 const BlogDetailPage = () => {
   const { id } = useParams<{ id: string }>();

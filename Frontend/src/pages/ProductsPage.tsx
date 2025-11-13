@@ -1,8 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState, useMemo } from "react";
-import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import {
   useGetAllProductsQuery,
@@ -30,7 +28,6 @@ interface ProductFilters {
 }
 
 const ProductsPage: React.FC = () => {
-  const navigate = useNavigate();
   const [showProductModal, setShowProductModal] = useState(false);
   const [showViewProductModal, setShowViewProductModal] = useState(false);
   const [editingProduct, setEditingProduct] = useState<any>(null);
@@ -203,11 +200,6 @@ const ProductsPage: React.FC = () => {
     return unique;
   }, [products]);
 
-  const handleViewProduct = (id: string) => {
-    setViewingProductId(id);
-    setShowViewProductModal(true);
-  };
-
   const handleProductFilterChange = (
     key: keyof ProductFilters,
     value: string | "yes" | "no" | ""
@@ -282,11 +274,11 @@ const ProductsPage: React.FC = () => {
       productData.append("shipToUsa", formData.get("shipToUsa") as string);
 
       // Add all image files with the same field name
-      imageFiles.forEach((file, _index) => {
+      for (const file of imageFiles) {
         if (file.size > 0) {
           productData.append(`pictures`, file); // Changed to match backend expectation
         }
-      });
+      }
     } else {
       // If no image, send as regular object
       productData = {
@@ -345,11 +337,11 @@ const ProductsPage: React.FC = () => {
       productData.append("shipToUsa", formData.get("shipToUsa") as string);
 
       // Add new image files with the same field name
-      imageFiles.forEach((file, _index) => {
+      for (const file of imageFiles) {
         if (file.size > 0) {
           productData.append(`pictures`, file); // Changed to match backend expectation
         }
-      });
+      };
       
       // Also include any existing images that weren't removed
       if (editingProduct.pictures && editingProduct.pictures.length > 0) {

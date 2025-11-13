@@ -64,7 +64,7 @@ export default function ContactPage() {
       } else {
         setErrors({ form: data.message || "Something went wrong. Please try again later." });
       }
-    } catch (err) {
+    } catch {
       setErrors({ form: "Network error. Please check your connection and try again." });
     } finally {
       setSending(false);

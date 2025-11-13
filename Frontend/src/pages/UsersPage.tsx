@@ -37,8 +37,8 @@ const UsersPage = () => {
   const [userSearch, setUserSearch] = useState("");
   const [userFilter, setUserFilter] = useState<"all" | "admin" | "user" | "moderator">("all");
   const [registerUser, { isLoading: isRegistering }] = useRegisterUserMutation();
-  const [updateUser, { isLoading: isUpdating }] = useUpdateUserMutation();
-  const [deleteUser, { isLoading: isDeleting }] = useDeleteUserMutation();
+  const [updateUser] = useUpdateUserMutation();
+  const [deleteUser] = useDeleteUserMutation();
 
   // Fetch all users from the API
   const {

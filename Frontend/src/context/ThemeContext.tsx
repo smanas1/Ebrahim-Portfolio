@@ -54,10 +54,13 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
   );
 };
 
-export const useTheme = () => {
+const useTheme = () => {
   const context = useContext(ThemeContext);
   if (!context) {
     throw new Error("useTheme must be used within a ThemeProvider");
   }
   return context;
 };
+
+// eslint-disable-next-line react-refresh/only-export-components
+export { useTheme };

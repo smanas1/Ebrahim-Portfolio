@@ -1,7 +1,7 @@
 import type { RootState } from "@/store/store";
 import React from "react";
 import { useSelector } from "react-redux";
-import { Navigate, useLocation, useParams } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
 import { hasAccessToPage } from "@/utils/roleUtils";
 
 interface RoleProtectedRouteProps {
@@ -19,7 +19,6 @@ const RoleProtectedRoute: React.FC<RoleProtectedRouteProps> = ({
     (state: RootState) => state.auth
   );
   const location = useLocation();
-  const params = useParams();
 
   if (!isAuthenticated || !user) {
     // Redirect to login page with return url

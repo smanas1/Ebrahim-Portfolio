@@ -1,6 +1,5 @@
 import {
   Linkedin,
-  Instagram,
   Mail,
   Phone,
   Clock,

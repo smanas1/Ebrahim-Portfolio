@@ -42,14 +42,12 @@ const ContactButton = () => {
               </a>
               
               <a
-                href="https://wa.me/8801712345678"
-                target="_blank"
-                rel="noopener noreferrer"
+                href="tel:+8801712345678"
                 className="flex items-center gap-3 p-2 rounded-md hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors"
                 onClick={() => setShowOptions(false)}
               >
-                <MessageCircle size={18} className="text-green-600" />
-                <span className="text-sm font-medium">WhatsApp</span>
+                <Phone size={18} className="text-green-600" />
+                <span className="text-sm font-medium">Call</span>
               </a>
             </div>
           </div>

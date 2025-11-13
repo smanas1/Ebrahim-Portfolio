@@ -1,4 +1,4 @@
-import { Suspense, lazy, useState, useEffect } from "react";
+import { Suspense, lazy, useEffect } from "react";
 import HeroSkeleton from "../components/home/HeroSkeleton";
 import AboutMeSkeleton from "../components/home/AboutMeSkeleton";
 import HowItWorksSkeleton from "../components/home/HowItWorksSkeleton";
@@ -31,63 +31,65 @@ const FloatingCallButton = lazy(
 
 // Performance-optimized HomePage Component
 const HomePage = () => {
-  const [heroLoaded, setHeroLoaded] = useState(false);
-
   // Preload critical components when component mounts
   useEffect(() => {
-    const preloadComponents = async () => {
-      // Preload the Hero component
-      import("../components/home/Hero").then(() => setHeroLoaded(true));
-    };
-    
-    preloadComponents();
+    // Preload the Hero component
+    import("../components/home/Hero");
   }, []);
-
+  
   return (
-    <div className="">
-      {/* Critical sections with optimized loading */}
+    <div className="min-h-screen bg-white dark:bg-slate-950">
       <Suspense fallback={<HeroSkeleton />}>
         <Hero />
       </Suspense>
-      
+
       <Suspense fallback={<AboutMeSkeleton />}>
         <AboutMe />
       </Suspense>
-      
+
       <Suspense fallback={<HowItWorksSkeleton />}>
         <HowItWorks />
       </Suspense>
-      
-      {/* Less critical sections that load as user scrolls */}
+
       <Suspense fallback={<WhyChooseMeSkeleton />}>
         <WhyChooseMe />
       </Suspense>
+
       <Suspense fallback={<ServicesSkeleton />}>
         <Services />
       </Suspense>
-      <Suspense fallback={<PartnersSkeleton />}>
-        <Partners />
-      </Suspense>
-      <Suspense fallback={<CTASkeleton />}>
-        <CTA />
-      </Suspense>
-      <Suspense fallback={<GlobalReachSkeleton />}>
-        <GlobalReach />
-      </Suspense>
+
       <Suspense fallback={<TestimonialsSkeleton />}>
         <Testimonials />
       </Suspense>
+
+      <Suspense fallback={<PartnersSkeleton />}>
+        <Partners />
+      </Suspense>
+
       <Suspense fallback={<YouTubeSectionSkeleton />}>
         <YouTubeSection />
       </Suspense>
+
+      <Suspense fallback={<GlobalReachSkeleton />}>
+        <GlobalReach />
+      </Suspense>
+
       <Suspense fallback={<BlogSkeleton />}>
         <Blog />
       </Suspense>
+
+      <Suspense fallback={<CTASkeleton />}>
+        <CTA />
+      </Suspense>
+
       <Suspense fallback={<ContactSkeleton />}>
         <Contact />
       </Suspense>
-      
-      <FloatingCallButton />
+
+      <Suspense fallback={null}>
+        <FloatingCallButton />
+      </Suspense>
     </div>
   );
 };

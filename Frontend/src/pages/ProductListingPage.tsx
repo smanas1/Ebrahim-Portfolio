@@ -124,11 +124,6 @@ const ProductListingPage: React.FC = () => {
       .toUpperCase();
   };
 
-  // Handle breadcrumb navigation
-  const handleBreadcrumbClick = (cat: string) => {
-    navigate(`/products/${cat}`);
-  };
-
   return (
     <div className="min-h-screen bg-background">
       {/* Top Controls Bar */}

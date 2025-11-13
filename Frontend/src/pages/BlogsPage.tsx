@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState, useMemo } from "react";
-import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -21,7 +20,6 @@ interface BlogFilters {
 }
 
 const BlogsPage: React.FC = () => {
-  const navigate = useNavigate();
   const [showBlogModal, setShowBlogModal] = useState(false);
   const [showViewBlogModal, setShowViewBlogModal] = useState(false);
   const [editingBlog, setEditingBlog] = useState<any>(null);
@@ -40,7 +38,6 @@ const BlogsPage: React.FC = () => {
     isLoading: blogsLoading,
     isError: blogsError,
     error: blogsApiError,
-    refetch,
   } = useGetAllBlogsQuery();
   const [createBlog] = useCreateBlogMutation();
   const [updateBlog] = useUpdateBlogMutation();
@@ -130,20 +127,11 @@ const BlogsPage: React.FC = () => {
     return unique;
   }, [blogs]);
 
-  const handleViewBlog = (id: string) => {
-    setViewingBlogId(id);
-    setShowViewBlogModal(true);
-  };
-
   const handleBlogFilterChange = (
     key: keyof BlogFilters,
     value: string
   ) => {
     setBlogFilters((prev) => ({ ...prev, [key]: value }));
-  };
-
-  const handleBlogClearFilter = (key: keyof BlogFilters) => {
-    setBlogFilters((prev) => ({ ...prev, [key]: "" }));
   };
 
   const handleBlogResetFilters = () => {

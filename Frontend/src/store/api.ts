@@ -9,8 +9,6 @@ import type {
   CreateBlogRequest,
   CreateProductRequest,
   UpdateProductRequest,
-  CreateProductFormData,
-  UpdateProductFormData,
   UpdateBlogRequest,
 } from "@/types/productTypes";
 

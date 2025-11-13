@@ -8,8 +8,6 @@ import {
   Settings,
   Menu,
   X,
-  Eye,
-  Edit,
   LogOut,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";

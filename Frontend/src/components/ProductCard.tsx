@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Card, CardContent, CardFooter, CardHeader, CardTitle, ImageSlider, Button, Badge } from '@/components/ui';
+import { CardFooter, CardHeader, CardTitle, ImageSlider, Button, Badge } from '@/components/ui';
 import { DollarSign, Truck, Star, Package } from 'lucide-react';
 import { FaWhatsapp } from 'react-icons/fa';
 import clsx from 'clsx';
@@ -13,19 +13,18 @@ const categoryMap: Record<string, string> = {
 
 interface ProductCardProps {
   product: Product;
-  onClick?: () => void;
 }
 
-const ProductCard: React.FC<ProductCardProps> = ({ product, onClick }) => {
+const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   // Format cost of goods - handle both raw numbers and pre-formatted strings
-  const formatCurrency = (value: any) => {
+  const formatCurrency = (value: number | string | undefined) => {
     if (!value) return '$0.00';
-    
+
     // If the value is already formatted with a dollar sign, return as is
     if (typeof value === 'string' && value.startsWith('$')) {
       return value;
     }
-    
+
     // If it's a number or number string, format it with dollar sign and two decimals
     const strValue = String(value);
     const num = parseFloat(strValue);
@@ -48,19 +47,19 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onClick }) => {
           alt={product.productName}
           className="w-full h-full"
         />
-        
+
         {/* Category badge with better styling */}
         <div className="absolute top-3 left-3">
           <Badge className="bg-white/90 dark:bg-gray-800/90 backdrop-blur text-gray-800 dark:text-gray-200 text-xs font-medium px-3 py-1 shadow-lg">
-            {product.category ? 
+            {product.category ?
               (categoryMap[product.category] || product.category)
                 .replace(/([a-z])([A-Z])/g, "$1 $2")
-                .toUpperCase() 
+                .toUpperCase()
               : "GENERAL"}
           </Badge>
         </div>
       </div>
-      
+
       {/* Content area */}
       <div className="flex flex-col flex-1 p-4">
         <CardHeader className="p-0 pb-2">
@@ -71,8 +70,8 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onClick }) => {
             {product.productDetails}
           </p>
         </CardHeader>
-        
-        <CardContent className="p-0 pb-3 flex-1">
+
+        <div className="p-0 pb-3 flex-1">
           <div className="space-y-3">
             {/* Pricing info with better visual hierarchy */}
             <div className="grid grid-cols-2 gap-3">
@@ -95,7 +94,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onClick }) => {
                 </div>
               </div>
             </div>
-            
+
             {/* MOQ and Sample with better layout */}
             <div className="grid grid-cols-2 gap-3">
               <div className="flex items-center bg-yellow-50 dark:bg-yellow-950/30 rounded-lg p-2">
@@ -118,25 +117,23 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onClick }) => {
               </div>
             </div>
           </div>
-        </CardContent>
-        
+        </div>
+
         <CardFooter className="p-0 pt-2">
           <Button
             className="w-full bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 py-3 rounded-lg text-white font-medium shadow-md hover:shadow-lg transition-all dark:from-green-600 dark:hover:from-green-700 dark:to-emerald-700 dark:hover:to-emerald-800 font-sans flex items-center justify-center gap-2"
             onClick={(e) => {
               e.stopPropagation();
               // Create formatted WhatsApp message with product details
-              const productName = encodeURIComponent(product.productName);
-              const productDetails = encodeURIComponent(product.productDetails);
               const cost = formatCurrency(product.costOfGoods);
               const shipToUsa = formatCurrency(product.shipToUsa);
               const sampleCost = formatCurrency(product.sampleCost);
               const moq = product.moq || "N/A";
-              
+
               const message = encodeURIComponent(
                 `Hello! I'm interested in this product:\n\n` +
-                `*${product.productName}*\n\n` +
-                `*Details:* ${product.productDetails}\n\n` +
+                `*${encodeURIComponent(product.productName)}*\n\n` +
+                `*Details:* ${encodeURIComponent(product.productDetails)}\n\n` +
                 `*Pricing Info:*\n` +
                 `- Cost of Goods: ${cost}\n` +
                 `- Ship to USA: ${shipToUsa}\n` +

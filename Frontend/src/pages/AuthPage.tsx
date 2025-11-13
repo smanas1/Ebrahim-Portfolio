@@ -40,17 +40,22 @@ const AuthPage: React.FC = () => {
         password: formData.password
       }).unwrap();
 
+      // Sanitize user object by removing password for security
+      const sanitizedUser = { ...result.user };
+      delete sanitizedUser.password;
+      
       // Store user and token in Redux store and localStorage
       dispatch({
         type: 'auth/login',
         payload: {
-          user: result.user,
+          user: sanitizedUser,
           token: result.token
         }
       });
 
-      // Store token in localStorage
+      // Store token and user data in localStorage
       localStorage.setItem('token', result.token);
+      localStorage.setItem('user', JSON.stringify(sanitizedUser));
 
       console.log('Login successful:', result);
       

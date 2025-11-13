@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import HomePage from "../pages/HomePage";
 import ProductPage from "../pages/ProductPage";
 import BlogPage from "../pages/BlogPage";
+import BlogDetailPage from "../pages/BlogDetailPage";
 import AuthPage from "../pages/AuthPage";
 import DashboardPage from "../pages/DashboardPage";
 import OverviewPage from "../pages/OverviewPage";
@@ -13,6 +14,7 @@ import ProductListingPage from "../pages/ProductListingPage";
 import MainLayout from "../components/layouts/MainLayout";
 import AboutPage from "../pages/AboutPage";
 import ProtectedRoute from "../components/ProtectedRoute";
+import RoleProtectedRoute from "../components/RoleProtectedRoute";
 import ScrollToTop from "../components/ScrollToTop";
 
 // Import menu pages
@@ -119,13 +121,49 @@ const AppRoutes = () => {
             }
           >
             <Route index element={<OverviewPage />} />
-            <Route path="overview" element={<OverviewPage />} />
-            <Route path="products" element={<ProductsPage />} />
-            <Route path="blogs" element={<BlogsPage />} />
-            <Route path="users" element={<UsersPage />} />
-            <Route path="settings" element={<SettingsPage />} />
+            <Route 
+              path="overview" 
+              element={
+                <RoleProtectedRoute requiredPage="overview">
+                  <OverviewPage />
+                </RoleProtectedRoute>
+              } 
+            />
+            <Route 
+              path="products" 
+              element={
+                <RoleProtectedRoute requiredPage="products">
+                  <ProductsPage />
+                </RoleProtectedRoute>
+              } 
+            />
+            <Route 
+              path="blogs" 
+              element={
+                <RoleProtectedRoute requiredPage="blogs">
+                  <BlogsPage />
+                </RoleProtectedRoute>
+              } 
+            />
+            <Route 
+              path="users" 
+              element={
+                <RoleProtectedRoute requiredPage="users">
+                  <UsersPage />
+                </RoleProtectedRoute>
+              } 
+            />
+            <Route 
+              path="settings" 
+              element={
+                <RoleProtectedRoute requiredPage="settings">
+                  <SettingsPage />
+                </RoleProtectedRoute>
+              } 
+            />
           </Route>
         </Route>
+        <Route path="/blog/:id" element={<BlogDetailPage />} />
       </Routes>
     </>
   );

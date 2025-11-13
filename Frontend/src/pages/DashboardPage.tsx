@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+ 
 import React, { useState } from "react";
 import {
   BarChart3,
@@ -37,7 +37,11 @@ const DashboardPage = () => {
         <div className={`p-4 ${sidebarOpen ? "block" : "hidden md:block"}`}>
           <div className="flex items-center justify-between">
             <h1 className={`text-xl font-bold ${sidebarOpen ? "" : "hidden"}`}>
-              Admin Dashboard
+              {user?.role === "admin"
+                ? "Admin Dashboard"
+                : user?.role === "moderator"
+                ? "Moderator Dashboard"
+                : "User Dashboard"}
             </h1>
             <Button
               variant="ghost"
@@ -69,50 +73,58 @@ const DashboardPage = () => {
                   </span>
                 </Link>
               </li>
-              <li>
-                <Link
-                  to="/dashboard/products"
-                  className="flex items-center w-full p-3 rounded-lg transition-colors hover:bg-gray-800"
-                >
-                  <ShoppingCart className="h-5 w-5" />
-                  <span className={`ml-3 ${!sidebarOpen && "md:hidden"}`}>
-                    Products
-                  </span>
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/dashboard/blogs"
-                  className="flex items-center w-full p-3 rounded-lg transition-colors hover:bg-gray-800"
-                >
-                  <Newspaper className="h-5 w-5" />
-                  <span className={`ml-3 ${!sidebarOpen && "md:hidden"}`}>
-                    Blogs
-                  </span>
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/dashboard/users"
-                  className="flex items-center w-full p-3 rounded-lg transition-colors hover:bg-gray-800"
-                >
-                  <Users className="h-5 w-5" />
-                  <span className={`ml-3 ${!sidebarOpen && "md:hidden"}`}>
-                    Users
-                  </span>
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/dashboard/settings"
-                  className="flex items-center w-full p-3 rounded-lg transition-colors hover:bg-gray-800"
-                >
-                  <Settings className="h-5 w-5" />
-                  <span className={`ml-3 ${!sidebarOpen && "md:hidden"}`}>
-                    Settings
-                  </span>
-                </Link>
-              </li>
+              {(user?.role === "moderator" || user?.role === "admin") && (
+                <li>
+                  <Link
+                    to="/dashboard/products"
+                    className="flex items-center w-full p-3 rounded-lg transition-colors hover:bg-gray-800"
+                  >
+                    <ShoppingCart className="h-5 w-5" />
+                    <span className={`ml-3 ${!sidebarOpen && "md:hidden"}`}>
+                      Products
+                    </span>
+                  </Link>
+                </li>
+              )}
+              {(user?.role === "moderator" || user?.role === "admin") && (
+                <li>
+                  <Link
+                    to="/dashboard/blogs"
+                    className="flex items-center w-full p-3 rounded-lg transition-colors hover:bg-gray-800"
+                  >
+                    <Newspaper className="h-5 w-5" />
+                    <span className={`ml-3 ${!sidebarOpen && "md:hidden"}`}>
+                      Blogs
+                    </span>
+                  </Link>
+                </li>
+              )}
+              {user?.role === "admin" && (
+                <li>
+                  <Link
+                    to="/dashboard/users"
+                    className="flex items-center w-full p-3 rounded-lg transition-colors hover:bg-gray-800"
+                  >
+                    <Users className="h-5 w-5" />
+                    <span className={`ml-3 ${!sidebarOpen && "md:hidden"}`}>
+                      Users
+                    </span>
+                  </Link>
+                </li>
+              )}
+              {(user?.role === "moderator" || user?.role === "admin") && (
+                <li>
+                  <Link
+                    to="/dashboard/settings"
+                    className="flex items-center w-full p-3 rounded-lg transition-colors hover:bg-gray-800"
+                  >
+                    <Settings className="h-5 w-5" />
+                    <span className={`ml-3 ${!sidebarOpen && "md:hidden"}`}>
+                      Settings
+                    </span>
+                  </Link>
+                </li>
+              )}
             </ul>
           </nav>
 
@@ -140,12 +152,6 @@ const DashboardPage = () => {
           >
             <Menu className="h-6 w-6" />
           </button>
-          <div className="text-right">
-            <p className="text-sm font-medium">{user?.name}</p>
-            <p className="text-xs text-gray-500 dark:text-gray-400">
-              {user?.email}
-            </p>
-          </div>
         </header>
         <main className="flex-1 overflow-y-auto p-4 md:p-6 bg-gray-50 dark:bg-gray-800 transition-colors duration-300">
           <Outlet />

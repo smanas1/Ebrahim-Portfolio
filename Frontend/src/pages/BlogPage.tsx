@@ -1,27 +1,25 @@
 import { useState } from "react";
 import { Search, Calendar, User, ChevronRight } from "lucide-react";
 import { useGetAllBlogsQuery } from "@/store/api";
+import { useNavigate } from "react-router-dom";
 
 const BlogPage = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
-  const [selectedTag, setSelectedTag] = useState("");
+  const navigate = useNavigate();
 
   // Fetch blog posts from API
   const { data: blogPosts = [], isLoading, error } = useGetAllBlogsQuery();
 
-  // Extract unique categories and tags from the fetched data
+  // Extract unique categories from the fetched data
   const categories = [
     "All",
     ...Array.from(
       new Set(blogPosts.map((post) => post.category || "Uncategorized"))
     ),
   ];
-  const tags = Array.from(
-    new Set(blogPosts.flatMap((post) => post.tags || []))
-  );
 
-  // Filter posts based on search, category, and tag
+  // Filter posts based on search and category (removed tag filtering)
   const filteredPosts = blogPosts.filter((post) => {
     const title = post.title.toLowerCase();
     const content = post.content.toLowerCase();
@@ -32,10 +30,8 @@ const BlogPage = () => {
     const matchesCategory =
       selectedCategory === "All" ||
       (post.category || "Uncategorized") === selectedCategory;
-    const matchesTag =
-      !selectedTag || (post.tags && post.tags.includes(selectedTag));
 
-    return matchesSearch && matchesCategory && matchesTag;
+    return matchesSearch && matchesCategory;
   });
 
   if (isLoading) {
@@ -118,22 +114,6 @@ const BlogPage = () => {
                 ))}
               </select>
             </div>
-
-            {/* Tag Filter */}
-            <div className="w-full md:w-auto">
-              <select
-                className="w-full py-3 px-4 border border-gray-300 dark:border-gray-600 rounded-xl bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
-                value={selectedTag}
-                onChange={(e) => setSelectedTag(e.target.value)}
-              >
-                <option value="">All Tags</option>
-                {tags.map((tag) => (
-                  <option key={tag} value={tag}>
-                    {tag}
-                  </option>
-                ))}
-              </select>
-            </div>
           </div>
         </div>
 
@@ -181,7 +161,10 @@ const BlogPage = () => {
                         {blogPosts[0].author}
                       </span>
                     </div>
-                    <button className="flex items-center text-emerald-600 dark:text-emerald-400 font-medium hover:text-emerald-800 dark:hover:text-emerald-300 transition-colors">
+                    <button 
+                      className="flex items-center text-emerald-600 dark:text-emerald-400 font-medium hover:text-emerald-800 dark:hover:text-emerald-300 transition-colors"
+                      onClick={() => navigate(`/blog/${blogPosts[0]._id}`)}
+                    >
                       Read More
                       <ChevronRight className="w-4 h-4 ml-1" />
                     </button>
@@ -238,6 +221,13 @@ const BlogPage = () => {
                         {post.author}
                       </span>
                     </div>
+                    <button 
+                      className="flex items-center text-emerald-600 dark:text-emerald-400 font-medium hover:text-emerald-800 dark:hover:text-emerald-300 transition-colors"
+                      onClick={() => navigate(`/blog/${post._id}`)}
+                    >
+                      Read More
+                      <ChevronRight className="w-4 h-4 ml-1" />
+                    </button>
                   </div>
                 </div>
               </div>
@@ -245,24 +235,6 @@ const BlogPage = () => {
           </div>
         </div>
 
-        {/* Newsletter Signup */}
-        <div className="mt-16 bg-gradient-to-r from-emerald-600 to-teal-600 rounded-2xl p-8 text-center">
-          <h3 className="text-2xl font-bold text-white mb-3">Stay Updated</h3>
-          <p className="text-emerald-100 mb-6 max-w-2xl mx-auto">
-            Subscribe to my newsletter to receive the latest insights,
-            resources, and updates directly in your inbox.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
-            <input
-              type="email"
-              placeholder="Enter your email"
-              className="flex-1 px-4 py-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-white"
-            />
-            <button className="bg-white text-emerald-600 hover:bg-gray-100 font-medium px-6 py-3 rounded-xl transition-colors">
-              Subscribe
-            </button>
-          </div>
-        </div>
       </div>
     </div>
   );

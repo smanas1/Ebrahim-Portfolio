@@ -12,6 +12,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import ThemeToggle from "../ThemeToggle";
 import { useTheme } from "@/context/ThemeContext";
+import { FaWhatsapp } from "react-icons/fa";
 
 interface NavItem {
   label: string;
@@ -170,19 +171,25 @@ const Header = () => {
             </div>
             <div className="flex items-center gap-2">
               <Mail className="w-4 h-4" />
-              <span>thisisebrahim@gmail.com</span>
+              <span>ebrahimmdkamal@outlook.com</span>
             </div>
             <div className="flex items-center gap-2">
               <Clock className="w-4 h-4" />
-              <span>Mon - Sat : 8am-6pm</span>
+              <span>Fri - Sat : 10am-12am</span>
             </div>
           </div>
           <div className="flex gap-4">
-            <a href="#" className="hover:text-emerald-200 transition-colors">
+            <a
+              href="https://www.linkedin.com/in/ebrahimmdkamalofficial/"
+              className="hover:text-emerald-200 transition-colors"
+            >
               <Linkedin className="w-5 h-5" />
             </a>
-            <a href="#" className="hover:text-emerald-200 transition-colors">
-              <Instagram className="w-5 h-5" />
+            <a
+              href="https://wa.me/8801750062927"
+              className="hover:text-emerald-200 transition-colors"
+            >
+              <FaWhatsapp className="w-5 h-5" />
             </a>
           </div>
         </div>

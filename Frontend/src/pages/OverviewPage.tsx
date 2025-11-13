@@ -3,11 +3,13 @@ import React, { useState, useMemo } from "react";
 import { Eye, Edit, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import StatsCard from "@/components/StatsCard";
 import { useNavigate } from "react-router-dom";
 import { useTheme } from "@/context/ThemeContext";
 import {
   useGetAllBlogsQuery,
   useGetAllProductsQuery,
+  useGetAllUsersQuery,
   useDeleteProductMutation,
   useDeleteBlogMutation,
   useGetProductByIdQuery,
@@ -43,6 +45,11 @@ const OverviewPage: React.FC = () => {
     isLoading: blogsLoading,
     isError: blogsError,
   } = useGetAllBlogsQuery();
+  const {
+    data: users = [],
+    isLoading: usersLoading,
+    isError: usersError,
+  } = useGetAllUsersQuery();
   const [deleteProduct] = useDeleteProductMutation();
   const [deleteBlog] = useDeleteBlogMutation();
 
@@ -79,7 +86,7 @@ const OverviewPage: React.FC = () => {
     }
   };
 
-  if (productsLoading || blogsLoading) {
+  if (productsLoading || blogsLoading || usersLoading) {
     return (
       <div className="flex items-center justify-center h-screen">
         Loading...
@@ -87,7 +94,7 @@ const OverviewPage: React.FC = () => {
     );
   }
 
-  if (productsError || blogsError) {
+  if (productsError || blogsError || usersError) {
     return (
       <div className="flex items-center justify-center h-screen">
         Error loading data
@@ -110,206 +117,75 @@ const OverviewPage: React.FC = () => {
       </h2>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        <Card
-          className={`${
-            theme === "dark"
-              ? "bg-gray-800 text-white shadow-gray-700"
-              : "bg-white text-gray-900 shadow-md"
-          } hover:shadow-lg transition-shadow`}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <StatsCard
+          title="Total Products"
+          value={products.length}
+          theme={theme}
+          iconBgClass={theme === "dark" ? "bg-blue-900" : "bg-blue-100"}
+          iconColorClass={theme === "dark" ? "text-blue-300" : "text-blue-600"}
         >
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle
-              className={`text-sm font-medium ${
-                theme === "dark" ? "text-gray-300" : "text-gray-500"
-              }`}
-            >
-              Total Products
-            </CardTitle>
-            <div
-              className={`p-2 rounded-full ${
-                theme === "dark"
-                  ? "bg-blue-900 text-blue-300"
-                  : "bg-blue-100 text-blue-600"
-              }`}
-            >
-              <svg
-                className="h-4 w-4"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
-                ></path>
-              </svg>
-            </div>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{products.length}</div>
-            <p
-              className={`${
-                theme === "dark" ? "text-green-400" : "text-green-500"
-              }`}
-            >
-              +2.5% from last month
-            </p>
-          </CardContent>
-        </Card>
+          <svg
+            className="h-4 w-4"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
+            ></path>
+          </svg>
+        </StatsCard>
 
-        <Card
-          className={`${
-            theme === "dark"
-              ? "bg-gray-800 text-white shadow-gray-700"
-              : "bg-white text-gray-900 shadow-md"
-          } hover:shadow-lg transition-shadow`}
+        <StatsCard
+          title="Total Blogs"
+          value={blogs.length}
+          theme={theme}
+          iconBgClass={theme === "dark" ? "bg-green-900" : "bg-green-100"}
+          iconColorClass={theme === "dark" ? "text-green-300" : "text-green-600"}
         >
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle
-              className={`text-sm font-medium ${
-                theme === "dark" ? "text-gray-300" : "text-gray-500"
-              }`}
-            >
-              Total Blogs
-            </CardTitle>
-            <div
-              className={`p-2 rounded-full ${
-                theme === "dark"
-                  ? "bg-green-900 text-green-300"
-                  : "bg-green-100 text-green-600"
-              }`}
-            >
-              <svg
-                className="h-4 w-4"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"
-                ></path>
-              </svg>
-            </div>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{blogs.length}</div>
-            <p
-              className={`${
-                theme === "dark" ? "text-green-400" : "text-green-500"
-              }`}
-            >
-              +5.2% from last month
-            </p>
-          </CardContent>
-        </Card>
+          <svg
+            className="h-4 w-4"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"
+            ></path>
+          </svg>
+        </StatsCard>
 
-        <Card
-          className={`${
-            theme === "dark"
-              ? "bg-gray-800 text-white shadow-gray-700"
-              : "bg-white text-gray-900 shadow-md"
-          } hover:shadow-lg transition-shadow`}
+        <StatsCard
+          title="Total Users"
+          value={users.length}
+          theme={theme}
+          iconBgClass={theme === "dark" ? "bg-purple-900" : "bg-purple-100"}
+          iconColorClass={theme === "dark" ? "text-purple-300" : "text-purple-600"}
         >
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle
-              className={`text-sm font-medium ${
-                theme === "dark" ? "text-gray-300" : "text-gray-500"
-              }`}
-            >
-              Total Users
-            </CardTitle>
-            <div
-              className={`p-2 rounded-full ${
-                theme === "dark"
-                  ? "bg-purple-900 text-purple-300"
-                  : "bg-purple-100 text-purple-600"
-              }`}
-            >
-              <svg
-                className="h-4 w-4"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
-                ></path>
-              </svg>
-            </div>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">124</div>
-            <p
-              className={`${
-                theme === "dark" ? "text-green-400" : "text-green-500"
-              }`}
-            >
-              +1.8% from last month
-            </p>
-          </CardContent>
-        </Card>
-
-        <Card
-          className={`${
-            theme === "dark"
-              ? "bg-gray-800 text-white shadow-gray-700"
-              : "bg-white text-gray-900 shadow-md"
-          } hover:shadow-lg transition-shadow`}
-        >
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle
-              className={`text-sm font-medium ${
-                theme === "dark" ? "text-gray-300" : "text-gray-500"
-              }`}
-            >
-              Revenue
-            </CardTitle>
-            <div
-              className={`p-2 rounded-full ${
-                theme === "dark"
-                  ? "bg-amber-900 text-amber-300"
-                  : "bg-amber-100 text-amber-600"
-              }`}
-            >
-              <svg
-                className="h-4 w-4"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                ></path>
-              </svg>
-            </div>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">$3,240</div>
-            <p
-              className={`${
-                theme === "dark" ? "text-green-400" : "text-green-500"
-              }`}
-            >
-              +3.1% from last month
-            </p>
-          </CardContent>
-        </Card>
+          <svg
+            className="h-4 w-4"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
+            ></path>
+          </svg>
+        </StatsCard>
       </div>
 
       {/* Recent Products and Blogs */}

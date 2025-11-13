@@ -11,6 +11,8 @@ import {
 } from "lucide-react";
 import { motion } from "framer-motion";
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api';
+
 export default function ContactPage() {
   const [form, setForm] = useState({
     name: "",
@@ -41,11 +43,29 @@ export default function ContactPage() {
     setSending(true);
     setErrors({});
     try {
-      await new Promise((r) => setTimeout(r, 900));
-      setSent(true);
-      setForm({ name: "", email: "", subject: "", message: "" });
+      const response = await fetch(`${API_BASE_URL}/contact/send`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: form.name,
+          email: form.email,
+          subject: form.subject,
+          message: form.message,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        setSent(true);
+        setForm({ name: "", email: "", subject: "", message: "" });
+      } else {
+        setErrors({ form: data.message || "Something went wrong. Please try again later." });
+      }
     } catch (err) {
-      setErrors({ form: "Something went wrong. Please try again later." });
+      setErrors({ form: "Network error. Please check your connection and try again." });
     } finally {
       setSending(false);
     }
@@ -219,9 +239,9 @@ export default function ContactPage() {
                     <div className="text-sm font-medium">Email</div>
                     <a
                       className="text-sm text-slate-600 dark:text-slate-300 hover:underline flex items-center gap-2"
-                      href="mailto:hello@example.com"
+                      href="mailto:ebrahimmdkamal@outlook.com"
                     >
-                      hello@example.com{" "}
+                      ebrahimmdkamal@outlook.com
                       <ExternalLink className="w-3 h-3 opacity-60" />
                     </a>
                   </div>
@@ -235,9 +255,9 @@ export default function ContactPage() {
                     <div className="text-sm font-medium">Phone</div>
                     <a
                       className="text-sm text-slate-600 dark:text-slate-300 hover:underline"
-                      href="tel:+8801712345678"
+                      href="tel:+8801750062927"
                     >
-                      +880 17 1234 5678
+                      +8801750062927
                     </a>
                   </div>
                 </div>
@@ -258,25 +278,37 @@ export default function ContactPage() {
               <div className="mt-6 flex gap-3">
                 <a
                   aria-label="LinkedIn"
-                  href="#"
+                  href="https://www.linkedin.com/in/ebrahimmdkamalofficial/"
                   className="inline-flex items-center gap-2 rounded-lg px-3 py-2 border text-sm hover:shadow-sm"
                 >
                   <Linkedin className="w-4 h-4" /> LinkedIn
                 </a>
                 <a
                   aria-label="WhatsApp"
-                  href="#"
+                  href="https://wa.me/8801750062927"
                   className="inline-flex items-center gap-2 rounded-lg px-3 py-2 border text-sm hover:shadow-sm"
                 >
                   <MessageCircle className="w-4 h-4" /> WhatsApp
                 </a>
                 <a
                   aria-label="Calendly"
-                  href="#"
+                  href="https://calendly.com/ebrahimmohammadkamal1/30min"
                   className="inline-flex items-center gap-2 rounded-lg px-3 py-2 border text-sm hover:shadow-sm"
                 >
-                  <Calendar className="w-4 h-4" /> Book Meeting
+                  <Calendar className="w-4 h-4" /> Book a Meeting
                 </a>
+              </div>
+            </div>
+            <div className="bg-gradient-to-r from-blue-600 to-teal-500 text-white rounded-2xl p-6 shadow-lg">
+              <div className="flex items-start justify-center gap-4">
+                <div className="flex items-center justify-center gap-3">
+                  <a
+                    href="https://calendly.com/ebrahimmohammadkamal1/30min"
+                    className="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 rounded-md px-3 py-2 font-semibold"
+                  >
+                    <Calendar className="w-4 h-4" /> Book a Meeting
+                  </a>
+                </div>
               </div>
             </div>
 
@@ -291,19 +323,6 @@ export default function ContactPage() {
                 <div className="text-sm font-medium">Office hours</div>
                 <div className="text-sm text-slate-600 dark:text-slate-300 mt-1">
                   Mon — Fri · 9:00 — 18:00 (GMT+6)
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-gradient-to-r from-indigo-600 to-emerald-500 text-white rounded-2xl p-6 shadow-lg">
-              <div className="flex items-start justify-center gap-4">
-                <div className="flex items-center justify-center gap-3">
-                  <a
-                    href="#"
-                    className="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 rounded-md px-3 py-2 font-semibold"
-                  >
-                    <Calendar className="w-4 h-4" /> Book a Meeting
-                  </a>
                 </div>
               </div>
             </div>

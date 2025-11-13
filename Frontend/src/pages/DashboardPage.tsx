@@ -17,6 +17,7 @@ import { Link, Outlet } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 import { useSelector } from "react-redux";
 import type { RootState } from "@/store/store";
+import ContactButton from "@/components/ContactButton";
 
 const DashboardPage = () => {
   const [sidebarOpen, setSidebarOpen] = useState(true);
@@ -150,6 +151,7 @@ const DashboardPage = () => {
           <Outlet />
         </main>
       </div>
+      <ContactButton />
     </div>
   );
 };

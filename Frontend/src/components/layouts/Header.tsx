@@ -7,7 +7,7 @@ import {
   Menu,
   X,
 } from "lucide-react";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import ThemeToggle from "../ThemeToggle";
 import { useTheme } from "@/context/ThemeContext";
@@ -74,6 +74,16 @@ const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const navigate = useNavigate();
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Clean up any pending timeouts when component unmounts
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, []);
 
   const navItems: NavItem[] = [
     { label: "Home", href: "/" },
@@ -218,10 +228,19 @@ const Header = () => {
                 <div
                   key={index}
                   className="relative"
-                  onMouseEnter={() =>
-                    item.dropdown && setActiveDropdown(item.label)
-                  }
-                  onMouseLeave={() => setActiveDropdown(null)}
+                  onMouseEnter={() => {
+                    // Clear any pending timeout when cursor enters
+                    if (timeoutRef.current) {
+                      clearTimeout(timeoutRef.current);
+                    }
+                    item.dropdown && setActiveDropdown(item.label);
+                  }}
+                  onMouseLeave={() => {
+                    // Set a timeout to close the dropdown after 0.3 seconds
+                    timeoutRef.current = setTimeout(() => {
+                      setActiveDropdown(null);
+                    }, 300);
+                  }}
                 >
                   {item.dropdown ? (
                     <div className="flex items-center gap-1 cursor-pointer group">
@@ -250,7 +269,14 @@ const Header = () => {
                           ? "text-gray-300 hover:text-emerald-400"
                           : "text-gray-700 hover:text-emerald-600"
                       } font-medium transition-colors`}
-                      onClick={() => setActiveDropdown(null)}
+                      onClick={() => {
+                        // Clear any pending timeout and close dropdown immediately
+                        if (timeoutRef.current) {
+                          clearTimeout(timeoutRef.current);
+                          timeoutRef.current = null;
+                        }
+                        setActiveDropdown(null);
+                      }}
                     >
                       {item.label}
                     </Link>
@@ -270,7 +296,14 @@ const Header = () => {
             </nav>
             <div className="md:hidden flex items-center">
               <button
-                onClick={() => setIsMenuOpen(!isMenuOpen)}
+                onClick={() => {
+                  // Clear any pending timeout when toggling menu
+                  if (timeoutRef.current) {
+                    clearTimeout(timeoutRef.current);
+                    timeoutRef.current = null;
+                  }
+                  setIsMenuOpen(!isMenuOpen);
+                }}
                 className={`inline-flex items-center justify-center p-2 rounded-md ${
                   theme === "dark"
                     ? "text-gray-300 hover:text-emerald-400"
@@ -293,6 +326,18 @@ const Header = () => {
             className={`md:hidden ${
               theme === "dark" ? "bg-gray-800" : "bg-gray-100"
             } py-4 px-4`}
+            onMouseEnter={() => {
+              // Clear any pending timeout when cursor enters the menu
+              if (timeoutRef.current) {
+                clearTimeout(timeoutRef.current);
+              }
+            }}
+            onMouseLeave={() => {
+              // Set a timeout to close the menu after 0.3 seconds
+              timeoutRef.current = setTimeout(() => {
+                setIsMenuOpen(false);
+              }, 300);
+            }}
           >
             <div className="flex flex-col space-y-3">
               {navItems.map((item, index) => (
@@ -304,7 +349,14 @@ const Header = () => {
                       ? "text-gray-300 hover:text-emerald-400 hover:bg-gray-700"
                       : "text-gray-700 hover:text-emerald-600 hover:bg-gray-200"
                   } py-2 px-4 rounded transition-colors`}
-                  onClick={() => setIsMenuOpen(false)}
+                  onClick={() => {
+                    // Clear any pending timeout and close menu immediately
+                    if (timeoutRef.current) {
+                      clearTimeout(timeoutRef.current);
+                      timeoutRef.current = null;
+                    }
+                    setIsMenuOpen(false);
+                  }}
                 >
                   {item.label}
                 </Link>
@@ -312,7 +364,14 @@ const Header = () => {
               <div className="pt-4 flex flex-col sm:flex-row gap-3">
                 <ThemeToggle />
                 <Button
-                  onClick={() => navigate("/contact")}
+                  onClick={() => {
+                    // Clear any pending timeout and close menu immediately
+                    if (timeoutRef.current) {
+                      clearTimeout(timeoutRef.current);
+                      timeoutRef.current = null;
+                    }
+                    navigate("/contact");
+                  }}
                   variant="outline"
                   size="sm"
                   className="w-full"
@@ -333,8 +392,18 @@ const Header = () => {
           } shadow-2xl border-b ${
             theme === "dark" ? "border-gray-800" : "border-gray-200"
           }`}
-          onMouseEnter={() => setActiveDropdown("Services")}
-          onMouseLeave={() => setActiveDropdown(null)}
+          onMouseEnter={() => {
+            // Clear any pending timeout when cursor enters the dropdown
+            if (timeoutRef.current) {
+              clearTimeout(timeoutRef.current);
+            }
+          }}
+          onMouseLeave={() => {
+            // Set a timeout to close the dropdown after 0.3 seconds
+            timeoutRef.current = setTimeout(() => {
+              setActiveDropdown(null);
+            }, 300);
+          }}
         >
           <div className="container mx-auto px-6 py-8">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -460,6 +529,11 @@ const Header = () => {
                                   : "text-gray-700 hover:text-emerald-600"
                               } flex justify-between items-center py-2 transition-colors`}
                               onClick={() => {
+                                // Clear any pending timeout and close dropdown immediately
+                                if (timeoutRef.current) {
+                                  clearTimeout(timeoutRef.current);
+                                  timeoutRef.current = null;
+                                }
                                 setActiveDropdown(null);
                                 setIsMenuOpen(false);
                               }}

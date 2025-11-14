@@ -425,8 +425,6 @@ const ProductListingPage: React.FC = () => {
                       {filteredProducts.map((product) => (
                         <div
                           key={product._id}
-                          onClick={() => navigate(`/product/${product._id}`)}
-                          className="cursor-pointer"
                         >
                           <ProductCard
                             product={product}

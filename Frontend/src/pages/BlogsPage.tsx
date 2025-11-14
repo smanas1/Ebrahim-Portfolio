@@ -39,8 +39,8 @@ const BlogsPage: React.FC = () => {
     isError: blogsError,
     error: blogsApiError,
   } = useGetAllBlogsQuery();
-  const [createBlog] = useCreateBlogMutation();
-  const [updateBlog] = useUpdateBlogMutation();
+  const [createBlog, { isLoading: isCreating }] = useCreateBlogMutation();
+  const [updateBlog, { isLoading: isUpdating }] = useUpdateBlogMutation();
   const [deleteBlog] = useDeleteBlogMutation();
 
   const {
@@ -615,8 +615,15 @@ const BlogsPage: React.FC = () => {
                 >
                   Cancel
                 </Button>
-                <Button type="submit" className="px-4 py-2">
-                  {editingBlog ? "Update Blog" : "Add Blog"}
+                <Button type="submit" className="px-4 py-2" disabled={isCreating || isUpdating}>
+                  {isCreating || isUpdating ? (
+                    <span className="flex items-center">
+                      <span className="h-4 w-4 border-t-2 border-r-2 border-primary-foreground rounded-full animate-spin mr-2"></span>
+                      {editingBlog ? "Updating..." : "Creating..."}
+                    </span>
+                  ) : (
+                    editingBlog ? "Update Blog" : "Add Blog"
+                  )}
                 </Button>
               </div>
             </form>

@@ -36,7 +36,6 @@ const ProductsPage: React.FC = () => {
   const [multipleImagePreviews, setMultipleImagePreviews] = useState<string[]>(
     []
   );
-  const [isProductLoading, setIsProductLoading] = useState(false);
   const [gridColumns, setGridColumns] = useState<number>(3);
   const [productFilters, setProductFilters] = useState<ProductFilters>({
     category: "",
@@ -61,8 +60,8 @@ const ProductsPage: React.FC = () => {
     error: productsApiError,
   } = useGetAllProductsQuery();
   const [deleteProduct] = useDeleteProductMutation();
-  const [createProduct] = useCreateProductMutation();
-  const [updateProduct] = useUpdateProductMutation();
+  const [createProduct, { isLoading: isCreating }] = useCreateProductMutation();
+  const [updateProduct, { isLoading: isUpdating }] = useUpdateProductMutation();
 
   const {
     data: viewingProduct,
@@ -267,7 +266,6 @@ const ProductsPage: React.FC = () => {
     }
 
     try {
-      setIsProductLoading(true);
       await createProduct(productData).unwrap();
       setShowProductModal(false);
       setImagePreview(null);
@@ -276,8 +274,6 @@ const ProductsPage: React.FC = () => {
       form.reset();
     } catch (err) {
       console.error("Failed to create product:", err);
-    } finally {
-      setIsProductLoading(false);
     }
   };
 
@@ -326,7 +322,6 @@ const ProductsPage: React.FC = () => {
     }
 
     try {
-      setIsProductLoading(true);
       await updateProduct(productData).unwrap();
       setEditingProduct(null);
       setShowProductModal(false);
@@ -334,8 +329,6 @@ const ProductsPage: React.FC = () => {
       setMultipleImagePreviews([]);
     } catch (err) {
       console.error("Failed to update product:", err);
-    } finally {
-      setIsProductLoading(false);
     }
   };
 
@@ -757,19 +750,18 @@ const ProductsPage: React.FC = () => {
                     setMultipleImagePreviews([]);
                   }}
                   className="px-4 py-2"
-                  disabled={isProductLoading}
                 >
                   Cancel
                 </Button>
                 <Button
                   type="submit"
                   className="px-4 py-2"
-                  disabled={isProductLoading}
+                  disabled={isCreating || isUpdating}
                 >
-                  {isProductLoading ? (
+                  {isCreating || isUpdating ? (
                     <span className="flex items-center">
                       <span className="h-4 w-4 border-t-2 border-r-2 border-white rounded-full animate-spin mr-2"></span>
-                      {editingProduct ? "Updating..." : "Adding..."}
+                      {editingProduct ? "Updating..." : "Creating..."}
                     </span>
                   ) : editingProduct ? (
                     "Update Product"

@@ -65,7 +65,10 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onViewDetails, isSel
   return (
     <Card className="bg-card rounded-2xl overflow-hidden border border-border group flex flex-col h-full">
       {/* Image container with gradient overlay */}
-      <div className="relative aspect-square w-full overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-700">
+      <div
+        className="relative aspect-square w-full overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-700"
+        onClick={(e) => e.stopPropagation()} // Prevent click propagation to parent container
+      >
         <ImageSlider
           images={product.pictures || ["https://placehold.co/300x300?text=No+Image"]}
           alt={product.productName}

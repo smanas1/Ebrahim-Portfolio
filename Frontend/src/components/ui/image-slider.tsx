@@ -36,6 +36,7 @@ const ImageSlider: React.FC<ImageSliderProps> = ({ images, alt, className = "" }
         <img
           src={images[currentIndex]}
           alt={`${alt} - Image ${currentIndex + 1}`}
+          loading="lazy"
           className="w-full h-full object-cover transition-opacity duration-300"
         />
         

@@ -14,6 +14,7 @@ export {
 } from "./dropdown-menu";
 export { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "./accordion";
 export { default as ImageSlider } from "./image-slider";
+export { default as OptimizedImage } from "./optimized-image";
 export { Globe } from "./globe";
 export { WorldMap } from "./world-map";
 export { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./select";

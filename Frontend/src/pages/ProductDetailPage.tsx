@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import ImageSlider from "@/components/ui/image-slider";
 import { DollarSign, Truck, ImageIcon, Star, Heart, ArrowLeft } from "lucide-react";

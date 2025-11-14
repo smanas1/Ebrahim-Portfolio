@@ -7,7 +7,6 @@ import PartnersSkeleton from "../components/home/PartnersSkeleton";
 import ContactSkeleton from "../components/home/ContactSkeleton";
 import WhyChooseMeSkeleton from "../components/home/WhyChooseMeSkeleton";
 import GlobalReachSkeleton from "../components/home/GlobalReachSkeleton";
-import YouTubeSectionSkeleton from "../components/home/YouTubeSectionSkeleton";
 import CTASkeleton from "../components/home/CTASkeleton";
 import TestimonialsSkeleton from "../components/home/TestimonialsSkeleton";
 import BlogSkeleton from "../components/home/BlogSkeleton";
@@ -22,7 +21,6 @@ const Partners = lazy(() => import("../components/home/Partners"));
 const CTA = lazy(() => import("../components/home/CTA"));
 const GlobalReach = lazy(() => import("@/components/home/GlobalReach"));
 const Testimonials = lazy(() => import("../components/home/Testimonials"));
-const YouTubeSection = lazy(() => import("../components/home/YouTubeSection"));
 const Blog = lazy(() => import("../components/home/Blog"));
 const Contact = lazy(() => import("../components/home/Contact"));
 const FloatingCallButton = lazy(
@@ -67,9 +65,6 @@ const HomePage = () => {
         <Partners />
       </Suspense>
 
-      <Suspense fallback={<YouTubeSectionSkeleton />}>
-        <YouTubeSection />
-      </Suspense>
 
       <Suspense fallback={<GlobalReachSkeleton />}>
         <GlobalReach />

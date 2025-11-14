@@ -319,49 +319,37 @@ const ProductsPage: React.FC = () => {
     // Check if there are image files to upload
     const imageFiles = formData.getAll("productImage") as File[];
 
-    let productData: any;
-    if (imageFiles.length > 0 && imageFiles.some((file) => file.size > 0)) {
-      // If new images are present, send as multipart/form-data
-      productData = new FormData();
-      productData.append("_id", editingProduct._id);
-      productData.append("productName", formData.get("productName") as string);
-      productData.append("category", formData.get("category") as string);
-      productData.append("brandName", formData.get("brandName") as string);
-      productData.append("moq", formData.get("moq") as string);
-      productData.append(
-        "productDetails",
-        formData.get("productDetails") as string
-      );
-      productData.append("costOfGoods", formData.get("costOfGoods") as string);
-      productData.append("sampleCost", formData.get("sampleCost") as string);
-      productData.append("shipToUsa", formData.get("shipToUsa") as string);
+    // Always use FormData to handle both new images and existing images
+    const productData = new FormData();
+    productData.append("_id", editingProduct._id);
+    productData.append("productName", formData.get("productName") as string);
+    productData.append("category", formData.get("category") as string);
+    productData.append("brandName", formData.get("brandName") as string);
+    productData.append("moq", formData.get("moq") as string);
+    productData.append(
+      "productDetails",
+      formData.get("productDetails") as string
+    );
+    productData.append("costOfGoods", formData.get("costOfGoods") as string);
+    productData.append("sampleCost", formData.get("sampleCost") as string);
+    productData.append("shipToUsa", formData.get("shipToUsa") as string);
 
-      // Add new image files with the same field name
+    // Add new image files if any
+    if (imageFiles.length > 0 && imageFiles.some((file) => file.size > 0)) {
       for (const file of imageFiles) {
         if (file.size > 0) {
-          productData.append(`pictures`, file); // Changed to match backend expectation
+          productData.append(`pictures`, file);
         }
-      };
-      
-      // Also include any existing images that weren't removed
-      if (editingProduct.pictures && editingProduct.pictures.length > 0) {
-        productData.append('existingPictures', JSON.stringify(editingProduct.pictures));
       }
+    }
+
+    // Always send existing pictures so the backend knows which ones to keep
+    // In the editingProduct state, we have already filtered out removed pictures
+    if (editingProduct.pictures && editingProduct.pictures.length > 0) {
+      productData.append('existingPictures', JSON.stringify(editingProduct.pictures));
     } else {
-      // If no new images uploaded, send the remaining existing images along with other data
-      productData = {
-        _id: editingProduct._id,
-        productName: formData.get("productName") as string,
-        category: formData.get("category") as string,
-        brandName: formData.get("brandName") as string,
-        moq: formData.get("moq") as string,
-        productDetails: formData.get("productDetails") as string,
-        costOfGoods: formData.get("costOfGoods") as string,
-        sampleCost: formData.get("sampleCost") as string,
-        shipToUsa: formData.get("shipToUsa") as string,
-        // Send the remaining pictures
-        pictures: editingProduct.pictures || [],
-      };
+      // Send an empty array if all existing pictures were removed
+      productData.append('existingPictures', JSON.stringify([]));
     }
 
     try {
@@ -461,9 +449,9 @@ const ProductsPage: React.FC = () => {
               </Button>
             </div>
           </div>
-          
+
           {filteredProducts.length > 0 ? (
-            <div 
+            <div
               className={`grid gap-6 ${
                 gridColumns === 2 ? 'grid-cols-1 md:grid-cols-2' :
                 gridColumns === 3 ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3' :
@@ -471,8 +459,8 @@ const ProductsPage: React.FC = () => {
               }`}
             >
               {filteredProducts.map((product) => (
-                <div 
-                  key={product._id} 
+                <div
+                  key={product._id}
                   className="bg-card rounded-xl shadow-md border border-border overflow-hidden hover:shadow-lg transition-shadow duration-300"
                 >
                   {product.pictures && product.pictures.length > 0 && (
@@ -514,8 +502,8 @@ const ProductsPage: React.FC = () => {
                         ${product.costOfGoods}
                       </span>
                       <div className="flex gap-2">
-                        <Button 
-                          variant="outline" 
+                        <Button
+                          variant="outline"
                           size="sm"
                           onClick={() => {
                             setViewingProductId(product._id);
@@ -551,8 +539,8 @@ const ProductsPage: React.FC = () => {
             <div className="text-center py-12">
               <p className="text-muted-foreground text-lg">No products found</p>
               <p className="text-muted-foreground/70 mt-2">
-                {productFilters.search || productFilters.category || productFilters.brandName 
-                  ? "No products match your current filters." 
+                {productFilters.search || productFilters.category || productFilters.brandName
+                  ? "No products match your current filters."
                   : "No products available in the database."}
               </p>
             </div>
@@ -827,7 +815,7 @@ const ProductsPage: React.FC = () => {
                 <X className="h-5 w-5" />
               </Button>
             </div>
-            
+
             {viewingProductLoading && (
               <div className="flex items-center justify-center h-32">
                 <div className="text-center">
@@ -836,13 +824,13 @@ const ProductsPage: React.FC = () => {
                 </div>
               </div>
             )}
-            
+
             {viewingProductError && (
               <div className="text-destructive text-center py-8">
                 <p>Error loading product details.</p>
               </div>
             )}
-            
+
             {viewingProduct && !viewingProductLoading && !viewingProductError && (
               <div className="space-y-6">
                 {/* Product Images */}
@@ -859,7 +847,7 @@ const ProductsPage: React.FC = () => {
                     ))}
                   </div>
                 )}
-                
+
                 {/* Product Information */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-4">
@@ -867,39 +855,39 @@ const ProductsPage: React.FC = () => {
                       <h4 className="text-sm font-medium text-muted-foreground">Product Name</h4>
                       <p className="text-lg font-semibold text-foreground">{viewingProduct.productName}</p>
                     </div>
-                    
+
                     <div>
                       <h4 className="text-sm font-medium text-muted-foreground">Category</h4>
                       <p className="text-foreground">{viewingProduct.category}</p>
                     </div>
-                    
+
                     <div>
                       <h4 className="text-sm font-medium text-muted-foreground">Brand Name</h4>
                       <p className="text-foreground">{viewingProduct.brandName || "-"}</p>
                     </div>
-                    
+
                     <div>
                       <h4 className="text-sm font-medium text-muted-foreground">MOQ</h4>
                       <p className="text-foreground">{viewingProduct.moq}</p>
                     </div>
                   </div>
-                  
+
                   <div className="space-y-4">
                     <div>
                       <h4 className="text-sm font-medium text-muted-foreground">Cost of Goods</h4>
                       <p className="text-foreground">${viewingProduct.costOfGoods}</p>
                     </div>
-                    
+
                     <div>
                       <h4 className="text-sm font-medium text-muted-foreground">Sample Cost</h4>
                       <p className="text-foreground">${viewingProduct.sampleCost}</p>
                     </div>
-                    
+
                     <div>
                       <h4 className="text-sm font-medium text-muted-foreground">Ship to USA</h4>
                       <p className="text-foreground">${viewingProduct.shipToUsa}</p>
                     </div>
-                    
+
                     <div>
                       <h4 className="text-sm font-medium text-muted-foreground">Date Added</h4>
                       <p className="text-foreground">
@@ -908,7 +896,7 @@ const ProductsPage: React.FC = () => {
                     </div>
                   </div>
                 </div>
-                
+
                 {/* Product Details */}
                 <div>
                   <h4 className="text-sm font-medium text-muted-foreground mb-2">Product Details</h4>
@@ -918,7 +906,7 @@ const ProductsPage: React.FC = () => {
                 </div>
               </div>
             )}
-            
+
             <div className="flex justify-end pt-6">
               <Button
                 type="button"

@@ -260,7 +260,7 @@ const Blog = () => {
                   {blog.content.substring(0, 120)}...
                 </p>
                 <a
-                  href={`/blog/${blog.slug}`}
+                  href={`/blog/${blog._id}`}
                   className={`${
                     theme === "dark"
                       ? "text-emerald-400 hover:text-emerald-300"
@@ -324,7 +324,7 @@ const Blog = () => {
                   {blog.content.substring(0, 100)}...
                 </p>
                 <a
-                  href={`/blog/${blog.slug}`}
+                  href={`/blog/${blog._id}`}
                   className={`${
                     theme === "dark"
                       ? "text-emerald-400 hover:text-emerald-300"

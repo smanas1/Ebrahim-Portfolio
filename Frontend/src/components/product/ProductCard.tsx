@@ -19,14 +19,14 @@ const categoryMap: Record<string, string> = {
 interface Product {
   _id: string;
   category: string;
-  brandName: string;
+  brandName?: string;
   productName: string;
   productDetails: string;
   moq: string;
   costOfGoods: number | string;
   sampleCost: number | string;
   shipToUsa: number | string;
-  asin: string;
+  asin?: string;
   pictures: string[];
   createdAt: string;
   updatedAt: string;
@@ -36,9 +36,11 @@ interface Product {
 interface ProductCardProps {
   product: Product;
   onViewDetails?: (productId: string) => void;
+  isSelected?: boolean;
+  onToggleSelection?: (productId: string) => void;
 }
 
-const ProductCard: React.FC<ProductCardProps> = ({ product, onViewDetails }) => {
+const ProductCard: React.FC<ProductCardProps> = ({ product, onViewDetails, isSelected, onToggleSelection }) => {
   const [isWishlisted, setIsWishlisted] = useState(false);
 
   // Format cost of goods - handle both raw numbers and pre-formatted strings
@@ -152,11 +154,21 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onViewDetails }) => 
         <CardFooter className="p-0 pt-2">
           <div className="flex gap-2 w-full">
             <Button
-              className="flex-1 bg-gradient-to-r from-blue-500 to-cyan-600 hover:from-blue-600 hover:to-cyan-700 py-2 rounded-lg text-white font-medium shadow-md hover:shadow-lg transition-all dark:from-blue-600 dark:hover:from-blue-700 dark:to-cyan-700 dark:hover:to-cyan-800 font-sans"
-              onClick={() => onViewDetails && onViewDetails(product._id)}
+              className={`flex-1 ${
+                isSelected
+                  ? "bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700"
+                  : "bg-gradient-to-r from-blue-500 to-cyan-600 hover:from-blue-600 hover:to-cyan-700"
+              } py-2 rounded-lg text-white font-medium shadow-md hover:shadow-lg transition-all dark:from-blue-600 dark:hover:from-blue-700 dark:to-cyan-700 dark:hover:to-cyan-800 font-sans`}
+              onClick={() => {
+                if (onToggleSelection) {
+                  onToggleSelection(product._id);
+                } else if (onViewDetails) {
+                  onViewDetails(product._id);
+                }
+              }}
             >
               <MessageCircle className="w-4 h-4 mr-1" />
-              Details
+              {isSelected ? 'Selected' : 'Details'}
             </Button>
             <Button
               variant="outline"

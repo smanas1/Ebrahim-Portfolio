@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import { useState, useMemo } from "react";
 import { useGetAllProductsQuery } from "../store/api";
 import ProductCard from "@/components/product/ProductCard";
 import FilterComponent from "@/components/product/FilterComponent";
@@ -19,7 +19,7 @@ interface ProductFilters {
   shipToUsaAvailable: "yes" | "no" | "";
 }
 
-const ProductPage: React.FC = () => {
+const ProductPage = () => {
   const { data: products = [], error, isLoading } = useGetAllProductsQuery();
   const [filters, setFilters] = useState<ProductFilters>({
     category: "",

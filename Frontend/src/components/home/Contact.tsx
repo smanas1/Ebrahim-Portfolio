@@ -9,6 +9,7 @@ const Button = ({
   className = "",
   onClick,
   disabled = false,
+  type,
 }: {
   children: React.ReactNode;
   variant?: "primary" | "secondary" | "outline" | "red";
@@ -16,6 +17,7 @@ const Button = ({
   className?: string;
   onClick?: () => void;
   disabled?: boolean;
+  type?: "button" | "submit" | "reset";
 }) => {
   const baseClasses =
     "font-medium rounded transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2";
@@ -36,6 +38,7 @@ const Button = ({
     <button
       onClick={onClick}
       disabled={disabled}
+      type={type}
       className={`${baseClasses} ${variantClasses[variant]} ${
         sizeClasses[size]
       } ${className} ${disabled ? "opacity-50 cursor-not-allowed" : ""}`}

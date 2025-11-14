@@ -1,4 +1,3 @@
-import React from "react";
 import { Edit, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -59,11 +58,6 @@ const OverviewPage: React.FC = () => {
   const totalProducts = products.length;
   const totalBlogs = blogs.length;
   const totalUsers = users.length;
-  const totalRevenue = products.reduce(
-    (sum, product) =>
-      sum + (typeof product.costOfGoods === "number" ? product.costOfGoods : 0),
-    0
-  );
 
   // Get recent items
   const recentProducts = [...products]
@@ -111,21 +105,45 @@ const OverviewPage: React.FC = () => {
         <StatsCard
           title="Total Products"
           value={totalProducts.toString()}
-          icon="📦"
           theme={theme}
-        />
+          iconBgClass={
+            theme === "dark"
+              ? "bg-emerald-900/30 text-emerald-300"
+              : "bg-emerald-100 text-emerald-600"
+          }
+          iconColorClass=""
+          className=""
+        >
+          <span className="text-2xl">📦</span>
+        </StatsCard>
         <StatsCard
           title="Total Blogs"
           value={totalBlogs.toString()}
-          icon="📝"
           theme={theme}
-        />
+          iconBgClass={
+            theme === "dark"
+              ? "bg-blue-900/30 text-blue-300"
+              : "bg-blue-100 text-blue-600"
+          }
+          iconColorClass=""
+          className=""
+        >
+          <span className="text-2xl">📝</span>
+        </StatsCard>
         <StatsCard
           title="Total Users"
           value={totalUsers.toString()}
-          icon="👥"
           theme={theme}
-        />
+          iconBgClass={
+            theme === "dark"
+              ? "bg-purple-900/30 text-purple-300"
+              : "bg-purple-100 text-purple-600"
+          }
+          iconColorClass=""
+          className=""
+        >
+          <span className="text-2xl">👥</span>
+        </StatsCard>
       </div>
 
       {/* Recent Products and Blogs */}

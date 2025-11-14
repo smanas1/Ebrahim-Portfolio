@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useState } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -31,6 +31,7 @@ const UsersPage = () => {
     name: "",
     email: "",
     password: "",
+    role: "user" as "user" | "admin" | "moderator",
   });
   const [editingUser, setEditingUser] = useState<User | null>(null);
   const [viewingUser, setViewingUser] = useState<User | null>(null);
@@ -66,10 +67,11 @@ const UsersPage = () => {
         name: newUser.name,
         email: newUser.email,
         password: newUser.password,
+        role: newUser.role,
       }).unwrap();
 
       // Reset the form and close modal
-      setNewUser({ name: "", email: "", password: "" });
+      setNewUser({ name: "", email: "", password: "", role: "user" });
       setShowAddUserModal(false);
 
       // Refetch users to update the list
@@ -122,7 +124,7 @@ const UsersPage = () => {
     }
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setNewUser(prev => ({
       ...prev,
@@ -298,7 +300,7 @@ const UsersPage = () => {
                 size="icon"
                 onClick={() => {
                   setShowAddUserModal(false);
-                  setNewUser({ name: "", email: "", password: "" });
+                  setNewUser({ name: "", email: "", password: "", role: "user" });
                 }}
                 className="text-muted-foreground hover:text-foreground"
               >
@@ -348,13 +350,31 @@ const UsersPage = () => {
                   className="w-full"
                 />
               </div>
+              <div>
+                <label className="block text-sm font-medium text-foreground mb-1">
+                  Role
+                </label>
+                <select
+                  name="role"
+                  value={newUser.role}
+                  onChange={(e) => setNewUser(prev => ({
+                    ...prev,
+                    role: e.target.value as "user" | "admin" | "moderator"
+                  }))}
+                  className="w-full p-2 border border-input rounded-md focus:ring-primary focus:border-primary bg-background text-foreground"
+                >
+                  <option value="user">User</option>
+                  <option value="admin">Admin</option>
+                  <option value="moderator">Moderator</option>
+                </select>
+              </div>
               <div className="flex justify-end space-x-3 pt-4">
                 <Button
                   type="button"
                   variant="outline"
                   onClick={() => {
                     setShowAddUserModal(false);
-                    setNewUser({ name: "", email: "", password: "" });
+                    setNewUser({ name: "", email: "", password: "", role: "user" });
                   }}
                   className="px-4 py-2"
                 >

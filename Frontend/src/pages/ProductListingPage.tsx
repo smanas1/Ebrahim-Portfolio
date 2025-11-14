@@ -423,11 +423,15 @@ const ProductListingPage: React.FC = () => {
                       )}
                     >
                       {filteredProducts.map((product) => (
-                        <ProductCard
+                        <div
                           key={product._id}
-                          product={product}
                           onClick={() => navigate(`/product/${product._id}`)}
-                        />
+                          className="cursor-pointer"
+                        >
+                          <ProductCard
+                            product={product}
+                          />
+                        </div>
                       ))}
                     </div>
                   </>
@@ -454,10 +458,10 @@ const ProductListingPage: React.FC = () => {
                     )}
 
                     {(selectedCategories.length > 0 ||
-                      moqRange[0] > 0 ||
-                      moqRange[1] < 2000 ||
-                      priceRange[0] > 0 ||
-                      priceRange[1] < 100) && (
+                      (typeof moqRange[0] === 'number' && moqRange[0] > 0) ||
+                      (typeof moqRange[1] === 'number' && moqRange[1] < 2000) ||
+                      (typeof priceRange[0] === 'number' && priceRange[0] > 0) ||
+                      (typeof priceRange[1] === 'number' && priceRange[1] < 100)) && (
                       <button
                         onClick={resetFilters}
                         className="mt-4 px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 font-sans"

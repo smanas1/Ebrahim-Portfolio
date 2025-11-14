@@ -40,9 +40,8 @@ const AuthPage: React.FC = () => {
         password: formData.password
       }).unwrap();
 
-      // Sanitize user object by removing password for security
-      const sanitizedUser = { ...result.user };
-      delete sanitizedUser.password;
+      // Sanitize user object by removing password for security if it exists
+      const { password, ...sanitizedUser } = result.user as any;
       
       // Store user and token in Redux store and localStorage
       dispatch({

@@ -79,27 +79,6 @@ const getInitialState = (): AuthState => {
 
 const initialState: AuthState = getInitialState();
 
-// Define action interfaces
-interface LoginAction {
-  type: 'auth/login';
-  payload: {
-    user: {
-      _id?: string;
-      name?: string;
-      email?: string;
-      role?: string;
-      __v?: number;
-      [key: string]: string | boolean | number | undefined;
-    };
-    token: string;
-  };
-}
-
-interface LogoutAction {
-  type: 'auth/logout';
-}
-
-type AuthAction = LoginAction | LogoutAction;
 
 // Helper function to sanitize user by removing password
 const sanitizeUser = (user: {
@@ -116,7 +95,7 @@ const sanitizeUser = (user: {
 };
 
 // Auth reducer to handle login/logout
-const authReducer = (state = initialState, action: AuthAction): AuthState => {
+const authReducer = (state = initialState, action: { type: string; payload?: any }): AuthState => {
   switch (action.type) {
     case 'auth/login':
       // Sanitize user object by removing password field for security

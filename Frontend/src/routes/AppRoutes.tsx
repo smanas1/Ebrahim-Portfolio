@@ -121,45 +121,45 @@ const AppRoutes = () => {
             }
           >
             <Route index element={<OverviewPage />} />
-            <Route 
-              path="overview" 
+            <Route
+              path="overview"
               element={
-                <RoleProtectedRoute requiredPage="overview">
+                <RoleProtectedRoute requiredPage="overview" allowedRoles={["admin", "moderator", "user"]}>
                   <OverviewPage />
                 </RoleProtectedRoute>
-              } 
+              }
             />
-            <Route 
-              path="products" 
+            <Route
+              path="products"
               element={
-                <RoleProtectedRoute requiredPage="products">
+                <RoleProtectedRoute requiredPage="products" allowedRoles={["admin", "moderator"]}>
                   <ProductsPage />
                 </RoleProtectedRoute>
-              } 
+              }
             />
-            <Route 
-              path="blogs" 
+            <Route
+              path="blogs"
               element={
-                <RoleProtectedRoute requiredPage="blogs">
+                <RoleProtectedRoute requiredPage="blogs" allowedRoles={["admin", "moderator"]}>
                   <BlogsPage />
                 </RoleProtectedRoute>
-              } 
+              }
             />
-            <Route 
-              path="users" 
+            <Route
+              path="users"
               element={
-                <RoleProtectedRoute requiredPage="users">
+                <RoleProtectedRoute requiredPage="users" allowedRoles={["admin"]}>
                   <UsersPage />
                 </RoleProtectedRoute>
-              } 
+              }
             />
-            <Route 
-              path="settings" 
+            <Route
+              path="settings"
               element={
-                <RoleProtectedRoute requiredPage="settings">
+                <RoleProtectedRoute requiredPage="settings" allowedRoles={["admin", "moderator", "user"]}>
                   <SettingsPage />
                 </RoleProtectedRoute>
-              } 
+              }
             />
           </Route>
         </Route>

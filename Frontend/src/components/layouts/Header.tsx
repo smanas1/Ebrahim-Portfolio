@@ -74,7 +74,7 @@ const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const navigate = useNavigate();
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Clean up any pending timeouts when component unmounts
   useEffect(() => {
@@ -237,6 +237,9 @@ const Header = () => {
                   }}
                   onMouseLeave={() => {
                     // Set a timeout to close the dropdown after 0.3 seconds
+                    if (timeoutRef.current) {
+                      clearTimeout(timeoutRef.current);
+                    }
                     timeoutRef.current = setTimeout(() => {
                       setActiveDropdown(null);
                     }, 300);
@@ -334,6 +337,9 @@ const Header = () => {
             }}
             onMouseLeave={() => {
               // Set a timeout to close the menu after 0.3 seconds
+              if (timeoutRef.current) {
+                clearTimeout(timeoutRef.current);
+              }
               timeoutRef.current = setTimeout(() => {
                 setIsMenuOpen(false);
               }, 300);
@@ -400,6 +406,9 @@ const Header = () => {
           }}
           onMouseLeave={() => {
             // Set a timeout to close the dropdown after 0.3 seconds
+            if (timeoutRef.current) {
+              clearTimeout(timeoutRef.current);
+            }
             timeoutRef.current = setTimeout(() => {
               setActiveDropdown(null);
             }, 300);

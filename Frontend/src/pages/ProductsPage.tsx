@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useState, useMemo } from "react";
+import { useState, useMemo } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -200,33 +200,6 @@ const ProductsPage: React.FC = () => {
     return unique;
   }, [products]);
 
-  const handleProductFilterChange = (
-    key: keyof ProductFilters,
-    value: string | "yes" | "no" | ""
-  ) => {
-    setProductFilters((prev) => ({ ...prev, [key]: value }));
-  };
-
-  const handleProductClearFilter = (key: keyof ProductFilters) => {
-    setProductFilters((prev) => ({ ...prev, [key]: "" }));
-  };
-
-  const handleProductResetFilters = () => {
-    setProductFilters({
-      category: "",
-      minMoq: "",
-      minPrice: "",
-      maxPrice: "",
-      search: "",
-      minSampleCost: "",
-      maxSampleCost: "",
-      minShipToUsa: "",
-      maxShipToUsa: "",
-      shipToUsaAvailable: "",
-      brandName: "",
-      dateAdded: "",
-    });
-  };
 
   // Handle image preview when user selects an image
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -413,9 +386,24 @@ const ProductsPage: React.FC = () => {
             filters={productFilters}
             categories={uniqueCategories}
             brands={uniqueBrands}
-            onFilterChange={handleProductFilterChange}
-            onClearFilter={handleProductClearFilter}
-            onResetFilters={handleProductResetFilters}
+            onFilterChange={(newFilters) => setProductFilters(newFilters)}
+            onClearFilters={() => {
+              // For now, just clear all filters
+              setProductFilters({
+                category: "",
+                minMoq: "",
+                minPrice: "",
+                maxPrice: "",
+                search: "",
+                minSampleCost: "",
+                maxSampleCost: "",
+                minShipToUsa: "",
+                maxShipToUsa: "",
+                shipToUsaAvailable: "",
+                brandName: "",
+                dateAdded: "",
+              });
+            }}
           />
         </div>
 

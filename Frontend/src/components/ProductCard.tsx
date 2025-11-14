@@ -40,7 +40,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 
   return (
     <motion.div
-      whileHover
+      whileHover={{ scale: 1.02 }}
       className={clsx(
         "bg-card rounded-2xl overflow-hidden border border-border group",
         "transition-all duration-500 ease-in-out shadow-sm hover:shadow-xl",

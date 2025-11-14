@@ -87,7 +87,7 @@ export const apiSlice = createApi({
     }),
     getProductById: builder.query<Product, string>({
       query: (id) => `/product/get/${id}`,
-      providesTags: (result, error, id) => [{ type: "Product", id }],
+      providesTags: (_result, _error, id) => [{ type: "Product", id }],
     }),
     deleteProduct: builder.mutation<{ success: boolean }, string>({
       query: (id) => ({
@@ -153,7 +153,7 @@ export const apiSlice = createApi({
     }),
     getBlogById: builder.query<Blog, string>({
       query: (id) => `/blog/${id}`,
-      providesTags: (result, error, id) => [{ type: "Blog", id }],
+      providesTags: (_result, _error, id) => [{ type: "Blog", id }],
     }),
     deleteBlog: builder.mutation<{ success: boolean }, string>({
       query: (id) => ({
@@ -170,7 +170,7 @@ export const apiSlice = createApi({
     }),
     getUserById: builder.query<User, string>({
       query: (id) => `/user/${id}`,
-      providesTags: (result, error, id) => [{ type: "User", id }],
+      providesTags: (_result, _error, id) => [{ type: "User", id }],
     }),
     registerUser: builder.mutation<
       RegisterResponse,

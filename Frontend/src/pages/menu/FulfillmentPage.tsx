@@ -1,4 +1,3 @@
-import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Package, Warehouse, ShoppingCart } from "lucide-react";
 

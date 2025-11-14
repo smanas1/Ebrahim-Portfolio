@@ -1,3 +1,4 @@
+import React from "react";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import {
@@ -20,6 +21,9 @@ interface ProductFilters {
   maxSampleCost: string;
   minShipToUsa: string;
   maxShipToUsa: string;
+  shipToUsaAvailable: "yes" | "no" | "";
+  brandName: string;
+  dateAdded: string;
 }
 
 interface SidebarFilterComponentProps {
@@ -27,6 +31,7 @@ interface SidebarFilterComponentProps {
   onFilterChange: (filters: ProductFilters) => void;
   onClearFilters: () => void;
   categories: string[];
+  brands: (string | undefined)[];
 }
 
 const SidebarFilterComponent: React.FC<SidebarFilterComponentProps> = ({
@@ -34,6 +39,7 @@ const SidebarFilterComponent: React.FC<SidebarFilterComponentProps> = ({
   onFilterChange,
   onClearFilters,
   categories,
+  brands,
 }) => {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -205,6 +211,58 @@ const SidebarFilterComponent: React.FC<SidebarFilterComponentProps> = ({
               className="w-full"
             />
           </div>
+        </div>
+
+        {/* Brand Name */}
+        <div>
+          <label className="block text-sm font-medium text-foreground mb-2">
+            Brand Name
+          </label>
+          <select
+            name="brandName"
+            value={filters.brandName}
+            onChange={(e) => handleSelectChange("brandName", e.target.value)}
+            className="w-full p-2 border border-input rounded-md focus:ring-primary focus:border-primary bg-background text-foreground"
+          >
+            <option value="">All Brands</option>
+            {brands.filter(brand => brand).map((brand, index) => (
+              <option key={index} value={brand || ""}>{brand}</option>
+            ))}
+          </select>
+        </div>
+
+        {/* Date Added */}
+        <div>
+          <label className="block text-sm font-medium text-foreground mb-2">
+            Date Added
+          </label>
+          <Input
+            type="date"
+            name="dateAdded"
+            value={filters.dateAdded}
+            onChange={handleInputChange}
+            className="w-full"
+          />
+        </div>
+
+        {/* Ship to USA Available */}
+        <div>
+          <label className="block text-sm font-medium text-foreground mb-2">
+            Ship to USA Available
+          </label>
+          <Select
+            value={filters.shipToUsaAvailable}
+            onValueChange={(value: "yes" | "no" | "") => handleSelectChange("shipToUsaAvailable", value)}
+          >
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="Select availability" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="yes">Yes</SelectItem>
+              <SelectItem value="no">No</SelectItem>
+              <SelectItem value="">All</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
 
         {/* Active Filters */}

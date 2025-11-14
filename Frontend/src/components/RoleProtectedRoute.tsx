@@ -1,20 +1,20 @@
 import type { RootState } from "@/store/store";
-import React from "react";
+import type { ReactNode } from "react";
 import { useSelector } from "react-redux";
 import { Navigate, useLocation } from "react-router-dom";
 import { hasAccessToPage } from "@/utils/roleUtils";
 
-interface RoleProtectedRouteProps {
-  children: React.ReactNode;
+type RoleProtectedRouteProps = {
+  children: ReactNode;
   allowedRoles?: string[]; // Optional: specify exact roles allowed
   requiredPage?: string; // Optional: specify page name to check permissions
 }
 
-const RoleProtectedRoute: React.FC<RoleProtectedRouteProps> = ({ 
-  children, 
+const RoleProtectedRoute = ({
+  children,
   allowedRoles,
-  requiredPage 
-}) => {
+  requiredPage
+}: RoleProtectedRouteProps) => {
   const { isAuthenticated, user } = useSelector(
     (state: RootState) => state.auth
   );
@@ -32,13 +32,13 @@ const RoleProtectedRoute: React.FC<RoleProtectedRouteProps> = ({
   }
 
   // If specific roles are defined, check if user's role is in the list
-  if (allowedRoles && !allowedRoles.includes(user.role)) {
+  if (allowedRoles && user.role && !allowedRoles.includes(user.role)) {
     // Redirect to overview if user doesn't have required role
     return <Navigate to="/dashboard/overview" replace />;
   }
 
   // If a specific page is required, check permissions based on role
-  if (requiredPage && user.role) {
+  if (requiredPage && user?.role) {
     if (!hasAccessToPage(user.role, requiredPage)) {
       // Redirect to overview if user doesn't have access to this page
       return <Navigate to="/dashboard/overview" replace />;

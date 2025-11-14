@@ -1,6 +1,7 @@
 // Define custom types for your data
 export interface Product {
   _id: string;
+  __v: number;
   category: string;
   brandName?: string;
   brandLogo?: string;

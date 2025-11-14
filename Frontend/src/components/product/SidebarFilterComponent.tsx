@@ -49,10 +49,12 @@ const SidebarFilterComponent: React.FC<SidebarFilterComponentProps> = ({
     });
   };
 
-  const handleSelectChange = (name: string, value: string) => {
+  const handleSelectChange = (name: keyof ProductFilters, value: string) => {
+    // Special handling for "all" value - map it to empty string to clear filter
+    const actualValue = value === "all" ? "" : value;
     onFilterChange({
       ...filters,
-      [name]: value,
+      [name]: actualValue,
     });
   };
 
@@ -251,8 +253,8 @@ const SidebarFilterComponent: React.FC<SidebarFilterComponentProps> = ({
             Ship to USA Available
           </label>
           <Select
-            value={filters.shipToUsaAvailable}
-            onValueChange={(value: "yes" | "no" | "") => handleSelectChange("shipToUsaAvailable", value)}
+            value={filters.shipToUsaAvailable || "all"}
+            onValueChange={(value: "yes" | "no" | "all") => handleSelectChange("shipToUsaAvailable", value)}
           >
             <SelectTrigger className="w-full">
               <SelectValue placeholder="Select availability" />
@@ -260,7 +262,7 @@ const SidebarFilterComponent: React.FC<SidebarFilterComponentProps> = ({
             <SelectContent>
               <SelectItem value="yes">Yes</SelectItem>
               <SelectItem value="no">No</SelectItem>
-              <SelectItem value="">All</SelectItem>
+              <SelectItem value="all">All</SelectItem>
             </SelectContent>
           </Select>
         </div>
